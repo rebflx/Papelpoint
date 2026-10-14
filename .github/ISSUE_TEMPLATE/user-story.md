@@ -3,10 +3,9 @@ name: User Story
 about: Plantilla historias de usuario
 title: ''
 labels: ''
-assignees: Diego-Torres-G, nefzitoo, rebflx, erick-gamboa
+assignees: 
 
 ---
-Yo como usuario debo poder realizar cortes de caja para mantener un control de las finanzas del negocio.
 **Yo como** [Usuario]
 **debo poder** [realizar cortes de caja]
 **para** [mantener un control de las finanzas del negocio]
