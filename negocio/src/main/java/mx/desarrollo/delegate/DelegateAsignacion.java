@@ -1,13 +1,13 @@
 package mx.desarrollo.delegate;
-
+/*
 import mx.desarrollo.entity.Asignacion;
 import mx.desarrollo.persistence.integration.ServiceLocator;
 
 import java.time.LocalTime;
 import java.util.List;
-
+*/
 public class DelegateAsignacion {
-
+/*
     //CRUD DE ASIGNACIONES
 
     public boolean asignarMateria(Integer idProfesor, Integer idUnidadAprendizaje, String diaSemana, LocalTime horaInicio, LocalTime horaFin){
@@ -54,5 +54,5 @@ public class DelegateAsignacion {
         return ServiceLocator.getInstanceAsignacionDAO().findByOneParameter(idUnidad, "idUnidadAprendizaje");
     }
 
-
+*/
 }

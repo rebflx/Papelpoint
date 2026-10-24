@@ -1,14 +1,15 @@
-package mx.desarrollo.delegate;
 
+package mx.desarrollo.delegate;
+/*
 import mx.desarrollo.entity.Asignacion;
 import mx.desarrollo.entity.Unidad_aprendizaje;
 import mx.desarrollo.persistence.integration.ServiceLocator;
 import org.eclipse.persistence.jpa.jpql.tools.spi.IEntity;
 
 import java.util.List;
-
+*/
 public class DelegateUnidadAprendizaje {
-
+/*
     public void saveUnidadAprendizaje(Unidad_aprendizaje unidad){
 
         //usar metodo
@@ -56,5 +57,5 @@ public class DelegateUnidadAprendizaje {
 
         return true;
     }
-
+*/
 }

@@ -1,14 +1,14 @@
 package mx.desarrollo.facade;
-
+/*
 import mx.desarrollo.delegate.DelegateAsignacion;
 import mx.desarrollo.delegate.DelegateProfesor;
 import mx.desarrollo.entity.Asignacion;
 
 import java.time.LocalTime;
 import java.util.List;
-
+*/
 public class FacadeAsignacion {
-    private final DelegateAsignacion delegateAsignacion;
+  /*  private final DelegateAsignacion delegateAsignacion;
 
     public FacadeAsignacion() {
         this.delegateAsignacion = new DelegateAsignacion();
@@ -29,4 +29,6 @@ public class FacadeAsignacion {
     public void eliminarAsignacion(Asignacion asignacion){
         delegateAsignacion.eliminarAsignacion(asignacion);
     }
+*/
 }
+

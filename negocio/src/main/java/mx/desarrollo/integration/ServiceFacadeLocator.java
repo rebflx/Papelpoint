@@ -3,7 +3,7 @@ package mx.desarrollo.integration;
 import mx.desarrollo.facade.FacadeAsignacion;
 
 public class ServiceFacadeLocator {
-
+/*
     private static FacadeProfesor facadeProfesor;
     private static FacadeUsuario facadeUsuario;
     private static FacadeAsignacion facadeAsignacion;
@@ -45,5 +45,5 @@ public class ServiceFacadeLocator {
         }
     }
 
-
+*/
 }
