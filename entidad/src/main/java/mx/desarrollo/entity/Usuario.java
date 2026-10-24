@@ -1,56 +1,91 @@
 package mx.desarrollo.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
+import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "usuarios")
+@Table(name = "Usuario")
 public class Usuario {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "idUsuarios", nullable = false)
-    private Integer idUsuarios;
+    @Column(name = "idUsuario")
+    private Integer idUsuario;
 
+    @NotBlank
+    @Size(max = 100)
+    @Column(name = "nombrePersona", length = 100, nullable = false)
+    private String nombrePersona;
 
-    @Size(max = 45)
-    @NotNull
-    @Column(name = "password", nullable = false, length = 50)
-    private String password;
-
-    @NotNull
-    @Column(name = "nombreUsuario", nullable = false)
+    @NotBlank
+    @Size(max = 50)
+    @Column(name = "nombreUsuario", length = 50, nullable = false, unique = true)
     private String nombreUsuario;
 
-    @Size(max = 50)
+    @NotBlank
+    @Size(max = 255)
+    @Column(name = "contrasena", length = 255, nullable = false)
+    private String contrasena;
+
     @NotNull
-    @Column(name = "correo", nullable = false, length = 50)
-    private String correo;
+    @Column(name = "activo", nullable = false)
+    private Boolean activo = true;
 
-    public String getCorreo() {
-        return correo;
-    }
+    @NotBlank
+    @Size(max = 30)
+    @Column(name = "rol", length = 30, nullable = false)
+    private String rol;
 
-    public void setCorreo(String correo) {
-        this.correo = correo;
+    public Usuario() {
     }
 
     public Integer getIdUsuario() {
-        return idUsuarios;
+        return idUsuario;
     }
 
-    public void setIdUsuario(Integer id) {
-        this.idUsuarios = id;
+    public void setIdUsuario(Integer idUsuario) {
+        this.idUsuario = idUsuario;
     }
 
-    public String getPassword() {
-        return password;
+    public String getNombrePersona() {
+        return nombrePersona;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setNombrePersona(String nombrePersona) {
+        this.nombrePersona = nombrePersona;
     }
 
+    public String getNombreUsuario() {
+        return nombreUsuario;
+    }
+
+    public void setNombreUsuario(String nombreUsuario) {
+        this.nombreUsuario = nombreUsuario;
+    }
+
+    public String getContrasena() {
+        return contrasena;
+    }
+
+    public void setContrasena(String contrasena) {
+        this.contrasena = contrasena;
+    }
+
+    public Boolean getActivo() {
+        return activo;
+    }
+
+    public void setActivo(Boolean activo) {
+        this.activo = activo;
+    }
+
+    public String getRol() {
+        return rol;
+    }
+
+    public void setRol(String rol) {
+        this.rol = rol;
+    }
 
 }
