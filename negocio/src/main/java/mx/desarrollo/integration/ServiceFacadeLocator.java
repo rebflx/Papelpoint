@@ -1,8 +1,5 @@
 package mx.desarrollo.integration;
 
-import mx.desarrollo.facade.FacadeProfesor;
-import mx.desarrollo.facade.FacadeUnidad;
-import mx.desarrollo.facade.FacadeUsuario;
 import mx.desarrollo.facade.FacadeAsignacion;
 
 public class ServiceFacadeLocator {
