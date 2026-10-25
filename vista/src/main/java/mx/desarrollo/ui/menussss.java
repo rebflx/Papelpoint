@@ -23,7 +23,7 @@ public class menussss extends javax.swing.JFrame {
      */
     public menussss() {
         initComponents();
-    setContentPane(new AgregarProdPanel());
+    setContentPane(new UsuariosPanel());
     pack();
     setLocationRelativeTo(null);
     }

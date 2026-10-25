@@ -7,7 +7,7 @@ import mx.desarrollo.persistence.integration.ServiceLocator;
 import java.util.List;
 
 /**
- * Logica de negocio de Login y Usuarios (PBI-[LOG]-US1 y PBI-[ALT]-US1..US4).
+ * Logica de negocio de Login y Usuarios.
  */
 public class DelegateUsuario {
 
@@ -17,7 +17,6 @@ public class DelegateUsuario {
     private static final int COSTO_BCRYPT = 12;
     private static final int LONGITUD_MIN_CONTRASENA = 6;
 
-    /** Devuelve el usuario si las credenciales son validas y esta activo; si no, null. */
     public Usuario login(String nombreUsuario, char[] contrasena) {
         if (nombreUsuario == null || nombreUsuario.isBlank()
                 || contrasena == null || contrasena.length == 0) {
@@ -32,7 +31,6 @@ public class DelegateUsuario {
         return ok ? u : null;
     }
 
-    /** US1 ALT: registrar usuario. */
     public void guardar(Usuario u, String contrasenaPlano) {
         validar(u);
         validarContrasena(contrasenaPlano);
@@ -47,7 +45,6 @@ public class DelegateUsuario {
         ServiceLocator.getInstanceUsuarioDAO().save(u);
     }
 
-    /** US3 ALT: modificar usuario. Si nuevaContrasena viene vacia se conserva la actual. */
     public void modificar(Usuario u, String nuevaContrasena) {
         validar(u);
         Usuario otro = ServiceLocator.getInstanceUsuarioDAO()
@@ -62,25 +59,16 @@ public class DelegateUsuario {
         ServiceLocator.getInstanceUsuarioDAO().update(u);
     }
 
-    /**
-     * US2 ALT: "eliminar" usuario. Es baja logica (activo = false) porque
-     * venta, cortecaja e historialmodificacionproducto tienen FK a usuario.
-     */
+
     public void desactivar(Usuario u) {
         u.setActivo(false);
         ServiceLocator.getInstanceUsuarioDAO().update(u);
     }
 
-    /** US4 ALT: consultar usuarios. */
     public List<Usuario> listar() {
         return ServiceLocator.getInstanceUsuarioDAO().findAll();
     }
 
-    /**
-     * Crea el usuario admin/admin123 si la tabla esta vacia, para poder entrar
-     * la primera vez. Cambiar esa contrasena despues.
-     * @return true si se creo.
-     */
     public boolean crearAdminInicialSiNoExiste() {
         if (!listar().isEmpty()) {
             return false;
