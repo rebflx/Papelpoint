@@ -20,7 +20,7 @@ public class Paquete {
 
     @NotNull
     @DecimalMin("0.00")
-    @Column(name = "precio", precision = 10, scale = 2, nullable = false)
+    @Column(name = "precio")
     private Double precio;
 
     @NotNull

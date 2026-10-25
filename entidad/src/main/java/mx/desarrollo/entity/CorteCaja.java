@@ -14,7 +14,7 @@ public class CorteCaja {
     private Integer idCorte;
 
     @DecimalMin("0.00")
-    @Column(name = "totalCalculado", precision = 10, scale = 2)
+    @Column(name = "totalCalculado")
     private Double totalCalculado;
 
     @Column(name = "fechaCierre")
@@ -25,7 +25,7 @@ public class CorteCaja {
     private LocalDateTime fechaInicio;
 
     @DecimalMin("0.00")
-    @Column(name = "totalContado", precision = 10, scale = 2)
+    @Column(name = "totalContado")
     private Double totalContado;
 
     @NotNull

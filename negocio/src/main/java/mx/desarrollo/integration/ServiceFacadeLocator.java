@@ -1,9 +1,22 @@
 package mx.desarrollo.integration;
 
-import mx.desarrollo.facade.FacadeAsignacion;
+import mx.desarrollo.facade.FacadeProducto;
 
 public class ServiceFacadeLocator {
-/*
+
+
+    private static FacadeProducto facadeProducto;
+
+    public static FacadeProducto getInstanceFacadeProducto() {
+        if (facadeProducto == null) {
+            facadeProducto = new FacadeProducto();
+            return facadeProducto;
+        } else {
+            return facadeProducto;
+        }
+
+
+    /*
     private static FacadeProfesor facadeProfesor;
     private static FacadeUsuario facadeUsuario;
     private static FacadeAsignacion facadeAsignacion;
@@ -46,4 +59,5 @@ public class ServiceFacadeLocator {
     }
 
 */
+    }
 }
