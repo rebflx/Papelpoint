@@ -20,7 +20,7 @@ public class Venta {
 
     @NotNull
     @DecimalMin("0.00")
-    @Column(name = "subtotal", precision = 10, scale = 2, nullable = false)
+    @Column(name = "subtotal", nullable = false)
     private Double subtotal;
 
     @NotBlank
@@ -34,7 +34,7 @@ public class Venta {
 
     @NotNull
     @DecimalMin("0.00")
-    @Column(name = "total", precision = 10, scale = 2, nullable = false)
+    @Column(name = "total", nullable = false)
     private Double total;
 
     @NotNull

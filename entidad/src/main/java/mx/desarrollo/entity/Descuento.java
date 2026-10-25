@@ -20,7 +20,7 @@ public class Descuento {
     @NotNull
     @DecimalMin("0.00")
     @DecimalMax("100.00")
-    @Column(name = "porcentajeDescuento", precision = 5, scale = 2, nullable = false)
+    @Column(name = "porcentajeDescuento")
     private Double porcentajeDescuento;
 
     @NotNull

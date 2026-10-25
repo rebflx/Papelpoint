@@ -30,7 +30,7 @@ public class DetalleVentaServicio {
 
     @NotNull
     @DecimalMin("0.00")
-    @Column(name = "precioUnitario", precision = 10, scale = 2, nullable = false)
+    @Column(name = "precioUnitario")
     private Double precioUnitario;
 
     public DetalleVentaServicio() {
