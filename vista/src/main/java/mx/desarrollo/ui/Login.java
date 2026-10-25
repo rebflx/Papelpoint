@@ -41,7 +41,7 @@ public class Login extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBounds(new java.awt.Rectangle(0, 0, 1920, 1080));
 
-        jPanel1.setBackground(new java.awt.Color(134, 179, 121));
+        jPanel1.setBackground(new java.awt.Color(156, 179, 150));
         jPanel1.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -108,7 +108,7 @@ public class Login extends javax.swing.JFrame {
             return;
         }
 
-        new Ventas().setVisible(true);   // abre la pantalla en blanco
+        new menussss().setVisible(true);   // abre la pantalla en blanco
         this.dispose();                     // cierra el login
 
     } catch (Throwable ex) {

@@ -10,6 +10,7 @@
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 
         <class>mx.desarrollo.entity.Usuario</class>
+        <class>mx.desarrollo.entity.Producto</class>
 
         <properties>
 
