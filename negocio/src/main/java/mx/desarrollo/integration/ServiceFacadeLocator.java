@@ -1,49 +1,27 @@
 package mx.desarrollo.integration;
 
-import mx.desarrollo.facade.FacadeAsignacion;
+import mx.desarrollo.facade.FacadeProducto;
+import mx.desarrollo.facade.FacadeUsuario;
 
 public class ServiceFacadeLocator {
-/*
-    private static FacadeProfesor facadeProfesor;
-    private static FacadeUsuario facadeUsuario;
-    private static FacadeAsignacion facadeAsignacion;
-    private static FacadeUnidad facadeUnidad;
 
-    public static FacadeProfesor getInstanceFacadeProfesor() {
-        if (facadeProfesor == null) {
-            facadeProfesor = new FacadeProfesor();
-            return facadeProfesor;
-        } else {
-            return facadeProfesor;
-        }
-    }
+    private static FacadeUsuario facadeUsuario;
+    private static FacadeProducto facadeProducto;
 
     public static FacadeUsuario getInstanceFacadeUsuario() {
         if (facadeUsuario == null) {
             facadeUsuario = new FacadeUsuario();
-            return facadeUsuario;
-        } else {
-            return facadeUsuario;
         }
+        return facadeUsuario;
     }
 
-    public static FacadeAsignacion getInstanceFacadeAsignacion() {
-        if (facadeAsignacion == null) {
-            facadeAsignacion = new FacadeAsignacion();
-            return facadeAsignacion;
+    public static FacadeProducto getInstanceFacadeProducto() {
+        if (facadeProducto == null) {
+            facadeProducto = new FacadeProducto();
+            return facadeProducto;
         } else {
-            return facadeAsignacion;
+            return facadeProducto;
         }
-    }
 
-    public static FacadeUnidad getInstanceFacadeUnidad() {
-        if (facadeUnidad == null) {
-            facadeUnidad = new FacadeUnidad();
-            return facadeUnidad;
-        } else {
-            return facadeUnidad;
-        }
     }
-
-*/
 }
