@@ -70,7 +70,7 @@ placeholder.changeStyle(Font.BOLD); // Estilo de fuente (ej. Itálica)
         jLabel1.setBackground(new java.awt.Color(136, 180, 123));
         jLabel1.setFont(new java.awt.Font("Instrument Sans", 0, 20)); // NOI18N
         jLabel1.setText("Productos  Registrados");
-        add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 340, -1, -1));
+        add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 340, -1, -1));
 
         jLabel2.setBackground(new java.awt.Color(136, 180, 123));
         jLabel2.setFont(new java.awt.Font("Instrument Sans", 0, 24)); // NOI18N
@@ -80,27 +80,25 @@ placeholder.changeStyle(Font.BOLD); // Estilo de fuente (ej. Itálica)
 
         jLabel3.setFont(new java.awt.Font("Instrument Sans", 0, 14)); // NOI18N
         jLabel3.setText("Existencias*");
-        add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 130, -1, -1));
-
-        buscarNom.setText("Buscar Productos");
-        add(buscarNom, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 280, 180, 30));
+        add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 130, -1, -1));
+        add(buscarNom, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 280, 180, 30));
 
         jLabel4.setFont(new java.awt.Font("Instrument Sans", 0, 14)); // NOI18N
         jLabel4.setText("Stock Minimo*");
-        add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 210, -1, -1));
-        add(nombreTxt, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 160, 180, 30));
+        add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 210, -1, -1));
+        add(nombreTxt, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 160, 180, 30));
 
         jLabel5.setFont(new java.awt.Font("Instrument Sans", 0, 14)); // NOI18N
         jLabel5.setText("Precio*");
-        add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 130, -1, -1));
-        add(precioTxt, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 160, 180, 30));
+        add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 130, -1, -1));
+        add(precioTxt, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 160, 180, 30));
 
         jLabel6.setFont(new java.awt.Font("Instrument Sans", 0, 14)); // NOI18N
         jLabel6.setText("Nombre*");
-        add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 130, -1, -1));
+        add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 130, -1, -1));
 
         existenciasTxt.setModel(new javax.swing.SpinnerNumberModel(1, 1, null, 1));
-        add(existenciasTxt, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 160, 180, 30));
+        add(existenciasTxt, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 160, 180, 30));
 
         tablaProductos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -124,7 +122,7 @@ placeholder.changeStyle(Font.BOLD); // Estilo de fuente (ej. Itálica)
         tablaProductos.setColumnSelectionAllowed(true);
         jScrollPane1.setViewportView(tablaProductos);
 
-        add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 370, 750, 230));
+        add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 380, 900, 300));
 
         jLabel7.setBackground(new java.awt.Color(136, 180, 123));
         jLabel7.setFont(new java.awt.Font("Instrument Sans", 0, 24)); // NOI18N
@@ -140,16 +138,16 @@ placeholder.changeStyle(Font.BOLD); // Estilo de fuente (ej. Itálica)
                 guardarBotonActionPerformed(evt);
             }
         });
-        add(guardarBoton, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 290, 150, 30));
+        add(guardarBoton, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 290, 150, 30));
 
         jButton2.setBackground(new java.awt.Color(136, 180, 123));
         jButton2.setForeground(new java.awt.Color(136, 180, 123));
         jButton2.setBorderPainted(false);
         jButton2.setEnabled(false);
-        add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 330, 750, 40));
+        add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 330, 900, 50));
 
         stockTxt.setModel(new javax.swing.SpinnerNumberModel(1, 1, null, 1));
-        add(stockTxt, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 240, 180, 30));
+        add(stockTxt, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 240, 180, 30));
     }// </editor-fold>//GEN-END:initComponents
 
     private void guardarBotonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guardarBotonActionPerformed

@@ -50,7 +50,6 @@ public class UsuariosPanel extends javax.swing.JPanel {
         tablaUsuarios.setShowVerticalLines(false);
         tablaUsuarios.setShowHorizontalLines(true);
         tablaUsuarios.setGridColor(new Color(220, 220, 220));
-        tablaUsuarios.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         tablaUsuarios.setSelectionBackground(new Color(232, 240, 229));
         tablaUsuarios.setSelectionForeground(Color.BLACK);
         tablaUsuarios.getTableHeader().setReorderingAllowed(false);
@@ -123,6 +122,8 @@ public class UsuariosPanel extends javax.swing.JPanel {
         tablaUsuarios = new javax.swing.JTable();
 
         setBackground(new java.awt.Color(255, 255, 255));
+        setMinimumSize(new java.awt.Dimension(1024, 768));
+        setPreferredSize(new java.awt.Dimension(1024, 768));
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         lblTitulo.setFont(new java.awt.Font("Instrument Sans", 0, 24)); // NOI18N
@@ -132,31 +133,29 @@ public class UsuariosPanel extends javax.swing.JPanel {
 
         jSeparator1.setBackground(new java.awt.Color(136, 180, 123));
         jSeparator1.setForeground(new java.awt.Color(136, 180, 123));
-        add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 70, 810, 20));
+        add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 70, 1000, 20));
 
         lblSubtitulo.setFont(new java.awt.Font("Instrument Sans", 0, 24)); // NOI18N
         lblSubtitulo.setText("Registrar un nuevo usuario");
-        add(lblSubtitulo, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 80, -1, -1));
+        add(lblSubtitulo, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 80, -1, -1));
 
         panelDatos.setBackground(new java.awt.Color(255, 255, 255));
-        panelDatos.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Datos del usuario", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Instrument Sans", 0, 16)));
+        panelDatos.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Datos del usuario", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Instrument Sans", 0, 16))); // NOI18N
         panelDatos.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
         lblNombre.setFont(new java.awt.Font("Instrument Sans", 0, 14)); // NOI18N
         lblNombre.setText("Nombre*");
         panelDatos.add(lblNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 28, -1, -1));
-
         panelDatos.add(txtNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 52, 225, 30));
 
         lblUsuario.setFont(new java.awt.Font("Instrument Sans", 0, 14)); // NOI18N
         lblUsuario.setText("Usuario*");
         panelDatos.add(lblUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 28, -1, -1));
-
         panelDatos.add(txtUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 52, 225, 30));
 
         lblContrasena.setFont(new java.awt.Font("Instrument Sans", 0, 14)); // NOI18N
         lblContrasena.setText("Contraseña*");
         panelDatos.add(lblContrasena, new org.netbeans.lib.awtextra.AbsoluteConstraints(505, 28, -1, -1));
-
         panelDatos.add(txtContrasena, new org.netbeans.lib.awtextra.AbsoluteConstraints(505, 52, 225, 30));
 
         lblRol.setFont(new java.awt.Font("Instrument Sans", 0, 14)); // NOI18N
@@ -214,15 +213,14 @@ public class UsuariosPanel extends javax.swing.JPanel {
         });
         panelDatos.add(btnLimpiar, new org.netbeans.lib.awtextra.AbsoluteConstraints(525, 160, 150, 30));
 
-        add(panelDatos, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 125, 750, 205));
-
-        add(txtBuscar, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 345, 300, 32));
+        add(panelDatos, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 130, 750, 205));
+        add(txtBuscar, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 350, 300, 32));
 
         lblRegistrados.setBackground(new java.awt.Color(232, 240, 229));
         lblRegistrados.setFont(new java.awt.Font("Instrument Sans", 0, 18)); // NOI18N
-        lblRegistrados.setOpaque(true);
         lblRegistrados.setText("  Usuarios Registrados");
-        add(lblRegistrados, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 390, 750, 40));
+        lblRegistrados.setOpaque(true);
+        add(lblRegistrados, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 390, 920, 40));
 
         tablaUsuarios.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -241,7 +239,8 @@ public class UsuariosPanel extends javax.swing.JPanel {
             }
         });
         jScrollPane1.setViewportView(tablaUsuarios);
-        add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 430, 750, 195));
+
+        add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 430, 920, 260));
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {

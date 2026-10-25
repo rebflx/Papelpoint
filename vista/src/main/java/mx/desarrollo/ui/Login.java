@@ -30,18 +30,19 @@ public class Login extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         btnIngresar = new javax.swing.JButton();
-        lblTitulo = new javax.swing.JLabel();
         txtUsuario = new javax.swing.JTextField();
         txtContrasena = new javax.swing.JPasswordField();
         lblError = new javax.swing.JLabel();
         lblUsuario = new javax.swing.JLabel();
         lblPass = new javax.swing.JLabel();
+        jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
+        lblTitulo = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBounds(new java.awt.Rectangle(0, 0, 1920, 1080));
 
-        jPanel1.setBackground(new java.awt.Color(156, 179, 150));
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -52,10 +53,6 @@ public class Login extends javax.swing.JFrame {
             }
         });
         jPanel1.add(btnIngresar, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 370, 370, 40));
-
-        lblTitulo.setFont(new java.awt.Font("Dosis", 0, 36)); // NOI18N
-        lblTitulo.setText("PapelPoint");
-        jPanel1.add(lblTitulo, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 40, -1, -1));
         jPanel1.add(txtUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 220, 380, 40));
         jPanel1.add(txtContrasena, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 300, 380, 40));
 
@@ -71,9 +68,39 @@ public class Login extends javax.swing.JFrame {
         lblPass.setText("Contraseña:");
         jPanel1.add(lblPass, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 270, -1, -1));
 
+        jPanel2.setBackground(new java.awt.Color(136, 180, 123));
+
         jLabel1.setFont(new java.awt.Font("Dosis", 0, 14)); // NOI18N
         jLabel1.setText("Sistema de gestión");
-        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 90, -1, -1));
+
+        lblTitulo.setFont(new java.awt.Font("Dosis", 0, 36)); // NOI18N
+        lblTitulo.setText("PapelPoint");
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap(151, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addGap(172, 172, 172))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addComponent(lblTitulo)
+                        .addGap(145, 145, 145))))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(42, 42, 42)
+                .addComponent(lblTitulo)
+                .addGap(31, 31, 31)
+                .addComponent(jLabel1)
+                .addContainerGap(291, Short.MAX_VALUE))
+        );
+
+        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 20, 470, 430));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -146,6 +173,7 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JButton btnIngresar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JLabel lblError;
     private javax.swing.JLabel lblPass;
     private javax.swing.JLabel lblTitulo;

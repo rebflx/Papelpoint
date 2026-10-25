@@ -31,11 +31,12 @@ public class DelegateProducto {
         ServiceLocator.getInstanceUnidadAprendizajeDAO().delete(unidad);
     }
 
-    //modificar unidad
-    public void modificarUnidad(Unidad_aprendizaje unidad) {
-        ServiceLocator.getInstanceUnidadAprendizajeDAO().update(unidad);
+
+     */
+    public void modificarUnidad(Producto prod) {
+        ServiceLocator.getInstanceProductoDAO().update(prod);
     }
-    */
+
 
 
     //validar la unidad
