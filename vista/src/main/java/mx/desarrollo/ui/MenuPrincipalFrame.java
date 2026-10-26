@@ -9,13 +9,17 @@ import java.awt.Color;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
+import mx.desarrollo.delegate.DelegateUsuario;
+import mx.desarrollo.entity.Usuario;
 
 /**
  *
  * @author erick
  */
 public class MenuPrincipalFrame extends javax.swing.JFrame {
-    
+
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(MenuPrincipalFrame.class.getName());
 
     /**
@@ -23,7 +27,24 @@ public class MenuPrincipalFrame extends javax.swing.JFrame {
      */
     public MenuPrincipalFrame() {
         initComponents();
-panelCambiante.add(new AgregarProdPanel(), "AGREGAR_PRODUCTO"); 
+        panelCambiante.add(new AgregarProdPanel(), "AGREGAR_PRODUCTO");
+    }
+
+    private Usuario usuarioActual;
+
+    public MenuPrincipalFrame(Usuario usuario) {
+        this();
+        this.usuarioActual = usuario;
+    }
+
+    private boolean esAdmin() {
+        return usuarioActual != null && DelegateUsuario.ROL_ADMIN.equalsIgnoreCase(usuarioActual.getRol());
+    }
+
+    private boolean validarAdmin() {
+        if (esAdmin()) return true;
+        JOptionPane.showMessageDialog(this, "Esta seccion es solo para los administradores", "Acceso Denegado", JOptionPane.WARNING_MESSAGE);
+        return false;
     }
 
     /**
@@ -94,6 +115,7 @@ panelCambiante.add(new AgregarProdPanel(), "AGREGAR_PRODUCTO");
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 botonSegMouseEntered(evt);
             }
+
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 botonSegMouseExited(evt);
             }
@@ -114,6 +136,7 @@ panelCambiante.add(new AgregarProdPanel(), "AGREGAR_PRODUCTO");
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 botonConsultasMouseEntered(evt);
             }
+
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 botonConsultasMouseExited(evt);
             }
@@ -134,6 +157,7 @@ panelCambiante.add(new AgregarProdPanel(), "AGREGAR_PRODUCTO");
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 botonTicketsMouseEntered(evt);
             }
+
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 botonTicketsMouseExited(evt);
             }
@@ -154,6 +178,7 @@ panelCambiante.add(new AgregarProdPanel(), "AGREGAR_PRODUCTO");
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 botonInventarioMouseEntered(evt);
             }
+
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 botonInventarioMouseExited(evt);
             }
@@ -182,6 +207,7 @@ panelCambiante.add(new AgregarProdPanel(), "AGREGAR_PRODUCTO");
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 botonVentasMouseEntered(evt);
             }
+
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 botonVentasMouseExited(evt);
             }
@@ -202,6 +228,7 @@ panelCambiante.add(new AgregarProdPanel(), "AGREGAR_PRODUCTO");
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 botonCortesMouseEntered(evt);
             }
+
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 botonCortesMouseExited(evt);
             }
@@ -222,6 +249,7 @@ panelCambiante.add(new AgregarProdPanel(), "AGREGAR_PRODUCTO");
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 botonUsuariosMouseEntered(evt);
             }
+
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 botonUsuariosMouseExited(evt);
             }
@@ -243,6 +271,7 @@ panelCambiante.add(new AgregarProdPanel(), "AGREGAR_PRODUCTO");
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 botonEditarMouseEntered(evt);
             }
+
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 botonEditarMouseExited(evt);
             }
@@ -287,12 +316,12 @@ panelCambiante.add(new AgregarProdPanel(), "AGREGAR_PRODUCTO");
         javax.swing.GroupLayout SEGURIDADLayout = new javax.swing.GroupLayout(SEGURIDAD);
         SEGURIDAD.setLayout(SEGURIDADLayout);
         SEGURIDADLayout.setHorizontalGroup(
-            SEGURIDADLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1280, Short.MAX_VALUE)
+                SEGURIDADLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(0, 1280, Short.MAX_VALUE)
         );
         SEGURIDADLayout.setVerticalGroup(
-            SEGURIDADLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 770, Short.MAX_VALUE)
+                SEGURIDADLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(0, 770, Short.MAX_VALUE)
         );
 
         panelCambiante.add(SEGURIDAD, "card8");
@@ -300,12 +329,12 @@ panelCambiante.add(new AgregarProdPanel(), "AGREGAR_PRODUCTO");
         javax.swing.GroupLayout EDITARLayout = new javax.swing.GroupLayout(EDITAR);
         EDITAR.setLayout(EDITARLayout);
         EDITARLayout.setHorizontalGroup(
-            EDITARLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1280, Short.MAX_VALUE)
+                EDITARLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(0, 1280, Short.MAX_VALUE)
         );
         EDITARLayout.setVerticalGroup(
-            EDITARLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 770, Short.MAX_VALUE)
+                EDITARLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(0, 770, Short.MAX_VALUE)
         );
 
         panelCambiante.add(EDITAR, "card7");
@@ -313,12 +342,12 @@ panelCambiante.add(new AgregarProdPanel(), "AGREGAR_PRODUCTO");
         javax.swing.GroupLayout USUARIOSLayout = new javax.swing.GroupLayout(USUARIOS);
         USUARIOS.setLayout(USUARIOSLayout);
         USUARIOSLayout.setHorizontalGroup(
-            USUARIOSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1280, Short.MAX_VALUE)
+                USUARIOSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(0, 1280, Short.MAX_VALUE)
         );
         USUARIOSLayout.setVerticalGroup(
-            USUARIOSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 770, Short.MAX_VALUE)
+                USUARIOSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(0, 770, Short.MAX_VALUE)
         );
 
         panelCambiante.add(USUARIOS, "card6");
@@ -326,12 +355,12 @@ panelCambiante.add(new AgregarProdPanel(), "AGREGAR_PRODUCTO");
         javax.swing.GroupLayout CORTESLayout = new javax.swing.GroupLayout(CORTES);
         CORTES.setLayout(CORTESLayout);
         CORTESLayout.setHorizontalGroup(
-            CORTESLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1280, Short.MAX_VALUE)
+                CORTESLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(0, 1280, Short.MAX_VALUE)
         );
         CORTESLayout.setVerticalGroup(
-            CORTESLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 770, Short.MAX_VALUE)
+                CORTESLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(0, 770, Short.MAX_VALUE)
         );
 
         panelCambiante.add(CORTES, "card5");
@@ -339,12 +368,12 @@ panelCambiante.add(new AgregarProdPanel(), "AGREGAR_PRODUCTO");
         javax.swing.GroupLayout CONSULTASLayout = new javax.swing.GroupLayout(CONSULTAS);
         CONSULTAS.setLayout(CONSULTASLayout);
         CONSULTASLayout.setHorizontalGroup(
-            CONSULTASLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1280, Short.MAX_VALUE)
+                CONSULTASLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(0, 1280, Short.MAX_VALUE)
         );
         CONSULTASLayout.setVerticalGroup(
-            CONSULTASLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 770, Short.MAX_VALUE)
+                CONSULTASLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(0, 770, Short.MAX_VALUE)
         );
 
         panelCambiante.add(CONSULTAS, "card4");
@@ -381,12 +410,12 @@ panelCambiante.add(new AgregarProdPanel(), "AGREGAR_PRODUCTO");
         javax.swing.GroupLayout TICKETSLayout = new javax.swing.GroupLayout(TICKETS);
         TICKETS.setLayout(TICKETSLayout);
         TICKETSLayout.setHorizontalGroup(
-            TICKETSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1280, Short.MAX_VALUE)
+                TICKETSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(0, 1280, Short.MAX_VALUE)
         );
         TICKETSLayout.setVerticalGroup(
-            TICKETSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 770, Short.MAX_VALUE)
+                TICKETSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(0, 770, Short.MAX_VALUE)
         );
 
         panelCambiante.add(TICKETS, "card2");
@@ -394,37 +423,40 @@ panelCambiante.add(new AgregarProdPanel(), "AGREGAR_PRODUCTO");
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(panelIzquierda, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0)
-                .addComponent(panelCambiante, javax.swing.GroupLayout.PREFERRED_SIZE, 1280, javax.swing.GroupLayout.PREFERRED_SIZE))
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                                .addComponent(panelIzquierda, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, 0)
+                                .addComponent(panelCambiante, javax.swing.GroupLayout.PREFERRED_SIZE, 1280, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(panelIzquierda, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(panelCambiante, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(panelIzquierda, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(panelCambiante, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void botonSegActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonSegActionPerformed
-     panelCambiante.removeAll();
-panelCambiante.add(SEGURIDAD);
-panelCambiante.repaint();
-panelCambiante.revalidate();
+        if (!validarAdmin()) return;
+        panelCambiante.removeAll();
+        panelCambiante.add(SEGURIDAD);
+        panelCambiante.repaint();
+        panelCambiante.revalidate();
     }//GEN-LAST:event_botonSegActionPerformed
 
     private void botonVentasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonVentasActionPerformed
-panelCambiante.removeAll();
-panelCambiante.add(EDITAR);
-panelCambiante.repaint();
-panelCambiante.revalidate();
+
+        panelCambiante.removeAll();
+        panelCambiante.add(EDITAR);
+        panelCambiante.repaint();
+        panelCambiante.revalidate();
     }//GEN-LAST:event_botonVentasActionPerformed
 
     private void botonEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonEditarActionPerformed
- panelCambiante.remove(INVENTARIO);
+        if (!validarAdmin()) return;
+        panelCambiante.remove(INVENTARIO);
 
         panelCambiante.add(new EditarProdPanel(), "EDITAR_PRODUCTO");
 
@@ -436,28 +468,34 @@ panelCambiante.revalidate();
     }//GEN-LAST:event_botonEditarActionPerformed
 
     private void botonCortesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonCortesActionPerformed
-panelCambiante.removeAll();
-panelCambiante.add(CORTES);
-panelCambiante.repaint();
-panelCambiante.revalidate();    }//GEN-LAST:event_botonCortesActionPerformed
+        if (!validarAdmin()) return;
+        panelCambiante.removeAll();
+        panelCambiante.add(CORTES);
+        panelCambiante.repaint();
+        panelCambiante.revalidate();
+    }//GEN-LAST:event_botonCortesActionPerformed
 
     private void botonConsultasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonConsultasActionPerformed
-panelCambiante.removeAll();
-panelCambiante.add(CONSULTAS);
-panelCambiante.repaint();
-panelCambiante.revalidate();    }//GEN-LAST:event_botonConsultasActionPerformed
+        panelCambiante.add(new ConsultasProdPanel(), "CONSULTAS_PRODUCTO");
+        CardLayout cl = (CardLayout) panelCambiante.getLayout();
+        cl.show(panelCambiante, "CONSULTAS_PRODUCTO");
+        panelCambiante.repaint();
+        panelCambiante.revalidate();
+    }//GEN-LAST:event_botonConsultasActionPerformed
 
     private void botonInventarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonInventarioActionPerformed
-panelCambiante.removeAll();
-panelCambiante.add(INVENTARIO);
-panelCambiante.repaint();
-panelCambiante.revalidate();    }//GEN-LAST:event_botonInventarioActionPerformed
+        panelCambiante.removeAll();
+        panelCambiante.add(INVENTARIO);
+        panelCambiante.repaint();
+        panelCambiante.revalidate();
+    }//GEN-LAST:event_botonInventarioActionPerformed
 
     private void botonTicketsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonTicketsActionPerformed
-panelCambiante.removeAll();
-panelCambiante.add(TICKETS);
-panelCambiante.repaint();
-panelCambiante.revalidate();    }//GEN-LAST:event_botonTicketsActionPerformed
+        panelCambiante.removeAll();
+        panelCambiante.add(TICKETS);
+        panelCambiante.repaint();
+        panelCambiante.revalidate();
+    }//GEN-LAST:event_botonTicketsActionPerformed
 
     private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
         panelCambiante.remove(INVENTARIO);
@@ -476,7 +514,7 @@ panelCambiante.revalidate();    }//GEN-LAST:event_botonTicketsActionPerformed
     }//GEN-LAST:event_botonVentasMouseEntered
 
     private void botonVentasMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botonVentasMouseExited
-desactivarHover(imgVenta, botonVentas);
+        desactivarHover(imgVenta, botonVentas);
     }//GEN-LAST:event_botonVentasMouseExited
 
     private void botonTicketsMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botonTicketsMouseEntered
@@ -484,7 +522,7 @@ desactivarHover(imgVenta, botonVentas);
     }//GEN-LAST:event_botonTicketsMouseEntered
 
     private void botonTicketsMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botonTicketsMouseExited
-desactivarHover(imgTicket, botonTickets);
+        desactivarHover(imgTicket, botonTickets);
     }//GEN-LAST:event_botonTicketsMouseExited
 
     private void botonInventarioMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botonInventarioMouseEntered
@@ -492,7 +530,7 @@ desactivarHover(imgTicket, botonTickets);
     }//GEN-LAST:event_botonInventarioMouseEntered
 
     private void botonInventarioMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botonInventarioMouseExited
-desactivarHover(imgInventario, botonInventario);
+        desactivarHover(imgInventario, botonInventario);
     }//GEN-LAST:event_botonInventarioMouseExited
 
     private void botonConsultasMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botonConsultasMouseEntered
@@ -500,7 +538,8 @@ desactivarHover(imgInventario, botonInventario);
     }//GEN-LAST:event_botonConsultasMouseEntered
 
     private void botonConsultasMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botonConsultasMouseExited
-desactivarHover(imgConsulta, botonConsultas);    }//GEN-LAST:event_botonConsultasMouseExited
+        desactivarHover(imgConsulta, botonConsultas);
+    }//GEN-LAST:event_botonConsultasMouseExited
 
     private void botonSegMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botonSegMouseEntered
         activarHover(imgSeg, botonSeg);
@@ -535,36 +574,38 @@ desactivarHover(imgConsulta, botonConsultas);    }//GEN-LAST:event_botonConsulta
     }//GEN-LAST:event_botonEditarMouseExited
 
     private void botonUsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonUsuariosActionPerformed
-  panelCambiante.remove(USUARIOS);
+        if (!validarAdmin()) return;
+        panelCambiante.remove(USUARIOS);
 
-        panelCambiante.add(new UsuariosPanel(),"EDITAR_USUARIOS");
+        panelCambiante.add(new UsuariosPanel(), "EDITAR_USUARIOS");
 
         CardLayout cl = (CardLayout) panelCambiante.getLayout();
         cl.show(panelCambiante, "EDITAR_USUARIOS");
 
         panelCambiante.revalidate();
-        panelCambiante.repaint();    }//GEN-LAST:event_botonUsuariosActionPerformed
+        panelCambiante.repaint();
+    }//GEN-LAST:event_botonUsuariosActionPerformed
 
- private void activarHover(JLabel imagen, JButton boton) {
-    imagen.setIcon(new ImageIcon(
-        getClass().getResource("/imagenes/Rectangle3.png")
-    ));
-    boton.setForeground(new Color(46, 94, 42));
-}
+    private void activarHover(JLabel imagen, JButton boton) {
+        imagen.setIcon(new ImageIcon(
+                getClass().getResource("/imagenes/Rectangle3.png")
+        ));
+        boton.setForeground(new Color(46, 94, 42));
+    }
 
-private void desactivarHover(JLabel imagen, JButton boton) {
-    imagen.setIcon(new ImageIcon(
-        getClass().getResource("/imagenes/Rectangle4.png")
-    ));
-    boton.setForeground(Color.WHITE);
-}
+    private void desactivarHover(JLabel imagen, JButton boton) {
+        imagen.setIcon(new ImageIcon(
+                getClass().getResource("/imagenes/Rectangle4.png")
+        ));
+        boton.setForeground(Color.WHITE);
+    }
 
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
