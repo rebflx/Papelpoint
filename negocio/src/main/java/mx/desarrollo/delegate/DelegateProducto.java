@@ -37,6 +37,10 @@ public class DelegateProducto {
     }
     */
 
+    public List<Producto> getProductosActualizados() {
+        return ServiceLocator.getInstanceProductoDAO().findAllFresh();
+    }
+
 
     //validar la unidad
     public boolean validarUnidad(Producto producto) {

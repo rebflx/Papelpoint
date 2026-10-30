@@ -17,6 +17,22 @@ import javax.swing.table.TableCellRenderer;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.table.DefaultTableModel;
+import java.awt.Rectangle;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.text.NumberFormat;
+import javax.swing.JOptionPane;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import mx.desarrollo.delegate.DelegateVenta;
+import mx.desarrollo.entity.DetalleVentaProducto;
+import mx.desarrollo.entity.Producto;
+import mx.desarrollo.entity.Usuario;
+import mx.desarrollo.entity.Venta;
+import mx.desarrollo.integration.ServiceFacadeLocator;
 
 /**
  *
@@ -27,30 +43,52 @@ public class Ventas extends javax.swing.JFrame {
     /**
      * Creates new form Ventas
      */
+
+    private static final double IVA = DelegateVenta.IVA;
+    private static final String tempBUSQUEDA = "Buscar Productos";
+    private static final String EFECTIVO = "EFECTIVO";
+    private static final String TARJETA = "TARJETA";
+
+    private final NumberFormat moneda = NumberFormat.getCurrencyInstance(Locale.forLanguageTag("es-MX"));
+    private final List<Producto> catalogo = new ArrayList<>();
+    private final List<Producto> visibles = new ArrayList<>();
+    private final Map<Integer, Producto> productosPorId = new LinkedHashMap<>();
+    private final Map<Integer, Integer> carrito = new LinkedHashMap<>();
+    private javax.swing.JButton[] botonesProducto;
+    private javax.swing.JButton[] botonesDinero;
+    private String metodoPago = null;
+    private Usuario usuarioActual;
+    private double totalVenta = 0;
+
     public Ventas() {
+        this(null);
+    }
+
+    public Ventas(Usuario usuario) {
+        this.usuarioActual = usuario;
         initComponents();
-        
-            tblArticulos.setRowHeight(36);
-            tblArticulos.getColumnModel().getColumn(2).setCellRenderer(new CantidadRenderer());
-            tblArticulos.getColumnModel().getColumn(4).setCellRenderer(new EliminarRenderer());
-                 
-             tblArticulos.setDefaultEditor(Object.class, null);
+        tblArticulos.setRowHeight(36);
+        tblArticulos.getColumnModel().getColumn(2).setCellRenderer(new CantidadRenderer());
+        tblArticulos.getColumnModel().getColumn(4).setCellRenderer(new EliminarRenderer());
+        tblArticulos.setDefaultEditor(Object.class, null);
 
-             tblArticulos.addMouseListener(new MouseAdapter() {
-        @Override
-        public void mouseClicked(MouseEvent e) {
-            int fila = tblArticulos.rowAtPoint(e.getPoint());
-            int col = tblArticulos.columnAtPoint(e.getPoint());
+        ((DefaultTableModel) tblArticulos.getModel()).setRowCount(0);
 
-            // solo si dio clic en la columna "Accion" y la fila no está vacía
-            if (fila < 0 || col != 4) return;
-            if (tblArticulos.getValueAt(fila, col) == null) return;
+        tblArticulos.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                clickEnCarrito(e);
+            }
+        });
 
-            DefaultTableModel modelo = (DefaultTableModel) tblArticulos.getModel();
-            modelo.removeRow(fila);
-        }
-    });
-             
+
+        configurarProductos();
+        configurarBusqueda();
+        configurarPago();
+
+        //cargarProductos();
+        cargarProductosPrueba(); //borrar
+        refrescarCarrito();
     }
 
     /**
@@ -964,22 +1002,27 @@ public class Ventas extends javax.swing.JFrame {
 
     private void btnTarjetaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTarjetaActionPerformed
         // TODO add your handling code here:
+        seleccionarMetodo(TARJETA);
     }//GEN-LAST:event_btnTarjetaActionPerformed
 
     private void btnEfectivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEfectivoActionPerformed
         // TODO add your handling code here:
+        seleccionarMetodo(EFECTIVO);
     }//GEN-LAST:event_btnEfectivoActionPerformed
 
     private void btnCobrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCobrarActionPerformed
         // TODO add your handling code here:
+        confirmarVenta();
     }//GEN-LAST:event_btnCobrarActionPerformed
 
     private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
         // TODO add your handling code here:
+        txtDineroRecibido.setText("");
     }//GEN-LAST:event_btnLimpiarActionPerformed
 
     private void btnCienPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCienPActionPerformed
         // TODO add your handling code here:
+        sumarDinero(100);
     }//GEN-LAST:event_btnCienPActionPerformed
 
     /**
@@ -1086,53 +1129,408 @@ public class Ventas extends javax.swing.JFrame {
     private javax.swing.JTextField txtDineroRecibido;
     // End of variables declaration//GEN-END:variables
 
-private static class CantidadRenderer extends JPanel implements TableCellRenderer {
-    private final JLabel lbl = new JLabel("1");
 
-    public CantidadRenderer() {
-        setLayout(new FlowLayout(FlowLayout.CENTER, 6, 4));
-        setOpaque(true);
-        add(crearBoton("-"));
-        add(lbl);
-        add(crearBoton("+"));
-    }
-    
-private JButton crearBoton(String texto) {
-        JButton b = new JButton(texto);
-        b.setPreferredSize(new Dimension(40, 28));
-        b.setMargin(new Insets(0, 0, 0, 0));
-        b.setFocusPainted(false);
-        return b;
-    }
-
-    @Override
-    public Component getTableCellRendererComponent(JTable t, Object v,
-            boolean sel, boolean foc, int row, int col) {
-        lbl.setText(v == null ? "" : String.valueOf(v));
-        lbl.setForeground(Color.BLACK);
-        setBackground(sel ? t.getSelectionBackground() : t.getBackground());
-        for (Component c : getComponents()) {
-            if (c instanceof JButton) c.setVisible(v != null);
+    private void configurarProductos() {
+        botonesProducto = new javax.swing.JButton[]{
+                jButton6, jButton5, jButton4, jButton7, jButton12, jButton17, jButton11, jButton19,
+                jButton25, jButton16, jButton22, jButton27, jButton18, jButton23, jButton26};
+        for (int i = 0; i < botonesProducto.length; i++) {
+            final int idx = i;
+            botonesProducto[i].addActionListener(e -> {
+                if (idx < visibles.size()) {
+                    agregarAlCarrito(visibles.get(idx));
+                }
+            });
         }
-        return this;
-    }
-}
-    
-
-private static class EliminarRenderer extends JButton implements TableCellRenderer {
-    public EliminarRenderer() {
-        setBorderPainted(false);
-        setContentAreaFilled(false);
-        setFocusPainted(false);
-        setForeground(new Color(220, 80, 80));
-         setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/eliminar.png")));
+        lblProducto.setText("Producto");
     }
 
-    @Override
-    public Component getTableCellRendererComponent(JTable t, Object v,
-            boolean sel, boolean foc, int row, int col) {
-        setVisible(v != null); 
-        return this;
+    private void cargarProductos() {
+        catalogo.clear();
+        productosPorId.clear();
+        try {
+            List<Producto> lista = ServiceFacadeLocator.getInstanceFacadeProducto().obtenerProductosActualizados();
+            for (Producto p : lista) {
+                if (Boolean.TRUE.equals(p.getActivo())) {
+                    catalogo.add(p);
+                    productosPorId.put(p.getIdProducto(), p);
+                }
+            }
+        } catch (Exception | ExceptionInInitializerError ex) {
+            mostrarError("No se pudieron cargar los productos: " + ex.getMessage());
+        }
+        ajustarCarrito();
+        filtrarProductos();
     }
-}
+
+    private void ajustarCarrito() {
+        List<Integer> ids = new ArrayList<>(carrito.keySet());
+        for (Integer id : ids) {
+            Producto p = productosPorId.get(id);
+            if (p == null || p.getExistencias() <= 0) {
+                carrito.remove(id);
+            } else if (carrito.get(id) > p.getExistencias()) {
+                carrito.put(id, p.getExistencias());
+            }
+        }
+        refrescarCarrito();
+    }
+
+    private void configurarBusqueda() {
+        txtBuscarProducto.setText(tempBUSQUEDA);
+        txtBuscarProducto.addFocusListener(new java.awt.event.FocusAdapter() {
+            @Override
+            public void focusGained(java.awt.event.FocusEvent e) {
+                if (tempBUSQUEDA.equals(txtBuscarProducto.getText())) {
+                    txtBuscarProducto.setText("");
+                }
+            }
+
+            @Override
+            public void focusLost(java.awt.event.FocusEvent e) {
+                if (txtBuscarProducto.getText().isBlank()) {
+                    txtBuscarProducto.setText(tempBUSQUEDA);
+                }
+            }
+        });
+        txtBuscarProducto.getDocument().addDocumentListener(new DocumentListener() {
+            public void insertUpdate(DocumentEvent e) { filtrarProductos(); }
+            public void removeUpdate(DocumentEvent e) { filtrarProductos(); }
+            public void changedUpdate(DocumentEvent e) { filtrarProductos(); }
+        });
+    }
+
+    private void filtrarProductos() {
+        String texto = txtBuscarProducto.getText().trim().toLowerCase();
+        if (tempBUSQUEDA.toLowerCase().equals(texto)) {
+            texto = "";
+        }
+        visibles.clear();
+        for (Producto p : catalogo) {
+            if (texto.isEmpty() || p.getNombre().toLowerCase().contains(texto)) {
+                visibles.add(p);
+            }
+        }
+        mostrarProductos();
+    }
+
+    private void mostrarProductos() {
+        for (int i = 0; i < botonesProducto.length; i++) {
+            javax.swing.JButton b = botonesProducto[i];
+            if (i < visibles.size()) {
+                Producto p = visibles.get(i);
+                boolean hay = p.getExistencias() != null && p.getExistencias() > 0;
+                b.setText("<html><center>" + escapar(p.getNombre()) + "<br>"
+                        + (hay ? moneda.format(p.getPrecio()) : "Agotado") + "</center></html>");
+                b.setEnabled(hay);
+            } else {
+                b.setText("");
+                b.setEnabled(false);
+            }
+        }
+    }
+        //esto es del carrito
+        private void agregarAlCarrito(Producto p) {
+            int actual = carrito.getOrDefault(p.getIdProducto(), 0);
+            if (actual + 1 > p.getExistencias()) {
+                mostrarError("No hay mas existencias de \"" + p.getNombre() + "\" (disponibles: " + p.getExistencias() + ").");
+                return;
+            }
+            carrito.put(p.getIdProducto(), actual + 1);
+            lblProducto.setText("<html><b>" + escapar(p.getNombre()) + "</b><br>"
+                    + moneda.format(p.getPrecio()) + " - existencias: " + p.getExistencias() + "</html>");
+            refrescarCarrito();
+        }
+
+        private void clickEnCarrito(MouseEvent e) {
+            int fila = tblArticulos.rowAtPoint(e.getPoint());
+            int col = tblArticulos.columnAtPoint(e.getPoint());
+            if (fila < 0 || fila >= carrito.size()) {
+                return;
+            }
+            Integer id = new ArrayList<>(carrito.keySet()).get(fila);
+            Producto p = productosPorId.get(id);
+            int cantidad = carrito.get(id);
+
+            if (col == 4) {
+                carrito.remove(id);
+            } else if (col == 2) {
+                Rectangle r = tblArticulos.getCellRect(fila, col, false);
+                double rel = (e.getX() - r.x) / (double) r.width;
+                if (rel < 0.4) {
+                    if (cantidad > 1) {
+                        carrito.put(id, cantidad - 1);
+                    }
+                } else if (rel > 0.6) {
+                    if (cantidad + 1 > p.getExistencias()) {
+                        mostrarError("No hay mas existencias de \"" + p.getNombre() + "\" (disponibles: " + p.getExistencias() + ").");
+                        return;
+                    }
+                    carrito.put(id, cantidad + 1);
+                } else {
+                    return;
+                }
+            } else {
+                return;
+            }
+            refrescarCarrito();
+        }
+
+        private void refrescarCarrito() {
+            DefaultTableModel modelo = (DefaultTableModel) tblArticulos.getModel();
+            modelo.setRowCount(0);
+            for (Map.Entry<Integer, Integer> en : carrito.entrySet()) {
+                Producto p = productosPorId.get(en.getKey());
+                int cant = en.getValue();
+                modelo.addRow(new Object[]{
+                        p.getNombre(),
+                        moneda.format(p.getPrecio()),
+                        String.valueOf(cant),
+                        moneda.format(p.getPrecio() * cant),
+                        "Eliminar"
+                });
+            }
+            calcularTotales();
+        }
+
+        private void calcularTotales() {
+            double subtotal = 0;
+            for (Map.Entry<Integer, Integer> en : carrito.entrySet()) {
+                subtotal += productosPorId.get(en.getKey()).getPrecio() * en.getValue();
+            }
+            double descuento = 0;
+            double base = subtotal - descuento;
+            double iva = base * IVA;
+            totalVenta = base + iva;
+
+            lblSubtotal.setText(moneda.format(subtotal));
+            lblDescuento.setText("-" + moneda.format(descuento));
+            lbl_Iva.setText(moneda.format(iva));
+            lblTotalAPagar1.setText(moneda.format(totalVenta));
+            lblTotalAPagar2.setText(moneda.format(totalVenta));
+            btnCobrar.setText("Cobrar " + moneda.format(totalVenta));
+            actualizarCambio();
+        }
+
+        private void configurarPago() {
+            botonesDinero = new javax.swing.JButton[]{
+                    btnUnPeso, btnDosPesos, btnCincoPesos, btnDiezPesos,
+                    btnVeinteP, btnCincuentaP, btnCienP, btnDoscientosP, btnQuinientosP};
+            double[] montos = {1, 2, 5, 10, 20, 50, 100, 200, 500};
+            for (int i = 0; i < botonesDinero.length; i++) {
+                if (botonesDinero[i] == btnCienP) {
+                    continue;
+                }
+                final double monto = montos[i];
+                botonesDinero[i].addActionListener(e -> sumarDinero(monto));
+            }
+            txtDineroRecibido.setText("");
+            txtDineroRecibido.getDocument().addDocumentListener(new DocumentListener() {
+                public void insertUpdate(DocumentEvent e) { actualizarCambio(); }
+                public void removeUpdate(DocumentEvent e) { actualizarCambio(); }
+                public void changedUpdate(DocumentEvent e) { actualizarCambio(); }
+            });
+            seleccionarMetodo(null);
+        }
+
+        private void seleccionarMetodo(String metodo) {
+            metodoPago = metodo;
+            resaltar(btnEfectivo, EFECTIVO.equals(metodo));
+            resaltar(btnTarjeta, TARJETA.equals(metodo));
+
+            boolean efectivo = EFECTIVO.equals(metodo);
+            txtDineroRecibido.setEnabled(efectivo);
+            btnLimpiar.setEnabled(efectivo);
+            for (javax.swing.JButton b : botonesDinero) {
+                b.setEnabled(efectivo);
+            }
+            if (!efectivo) {
+                txtDineroRecibido.setText("");
+            }
+            actualizarCambio();
+        }
+
+        private void resaltar(javax.swing.JButton b, boolean activo) {
+            b.setBackground(activo ? new Color(98, 147, 110) : new Color(204, 204, 204));
+            b.setForeground(activo ? Color.WHITE : new Color(51, 51, 51));
+        }
+
+        private void sumarDinero(double monto) {
+            txtDineroRecibido.setText(String.format(Locale.US, "%.2f", leerDineroRecibido() + monto));
+        }
+
+        private double leerDineroRecibido() {
+            String t = txtDineroRecibido.getText().replace("$", "").replace(",", "").trim();
+            try {
+                return t.isEmpty() ? 0 : Double.parseDouble(t);
+            } catch (NumberFormatException ex) {
+                return 0;
+            }
+        }
+
+        private void actualizarCambio() {
+            if (EFECTIVO.equals(metodoPago)) {
+                lblCambio.setText(moneda.format(Math.max(0, leerDineroRecibido() - totalVenta)));
+            } else {
+                lblCambio.setText(moneda.format(0));
+            }
+        }
+
+        private void confirmarVenta() {
+            if (carrito.isEmpty()) {
+                mostrarError("Agrega al menos un producto a la venta.");
+                return;
+            }
+            if (metodoPago == null) {
+                mostrarError("Selecciona un metodo de pago (Efectivo o Tarjeta).");
+                return;
+            }
+            long totalCent = Math.round(totalVenta * 100);
+            if (EFECTIVO.equals(metodoPago)) {
+                double recibido = leerDineroRecibido();
+                if (recibido <= 0) {
+                    mostrarError("Ingresa el dinero recibido.");
+                    return;
+                }
+                if (Math.round(recibido * 100) < totalCent) {
+                    mostrarError("El dinero recibido (" + moneda.format(recibido)
+                            + ") no cubre el total (" + moneda.format(totalVenta) + ").");
+                    return;
+                }
+            }
+
+            int op = JOptionPane.showConfirmDialog(this,
+                    "Total: " + moneda.format(totalVenta) + "Método de pago: "
+                            + (EFECTIVO.equals(metodoPago) ? "Efectivo" : "Tarjeta")
+                            + (EFECTIVO.equals(metodoPago) ? "Cambio: " + lblCambio.getText() : "")
+                            + "Confirmar la venta?",
+                    "Confirmar venta", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+            if (op != JOptionPane.YES_OPTION) {
+                return;
+            }
+
+            try {
+                List<DetalleVentaProducto> detalles = new ArrayList<>();
+                for (Map.Entry<Integer, Integer> en : carrito.entrySet()) {
+                    DetalleVentaProducto d = new DetalleVentaProducto();
+                    d.setProducto(productosPorId.get(en.getKey()));
+                    d.setCantidad(en.getValue());
+                    detalles.add(d);
+                }
+                Venta venta = ServiceFacadeLocator.getInstanceFacadeVenta()
+                        .registrarVenta(usuarioActual, metodoPago, detalles);
+                mostrarInfo("Venta #" + venta.getIdVenta() + " registrada correctamente.");
+                nuevaVenta();
+                cargarProductos(); // para ver las existencias ya descontadas
+            } catch (IllegalArgumentException ex) {
+                mostrarError(ex.getMessage());
+                cargarProductos(); // ajusta el carrito cuando cambia el stok
+            } catch (Exception | ExceptionInInitializerError ex) {
+                mostrarError("No se pudo guardar la venta: " + ex.getMessage());
+            }
+        }
+
+        private void nuevaVenta() {
+            carrito.clear();
+            seleccionarMetodo(null);
+            lblProducto.setText("Producto");
+            refrescarCarrito();
+        }
+
+        private void mostrarError(String msg) {
+            JOptionPane.showMessageDialog(this, msg, "Error", JOptionPane.ERROR_MESSAGE);
+        }
+
+        private void mostrarInfo(String msg) {
+            JOptionPane.showMessageDialog(this, msg, "Venta confirmada", JOptionPane.INFORMATION_MESSAGE);
+        }
+
+        private static String escapar(String t) {
+            return t == null ? "" : t.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;");
+        }
+
+    private static class CantidadRenderer extends JPanel implements TableCellRenderer {
+        private final JLabel lbl = new JLabel("1");
+
+        public CantidadRenderer() {
+            setLayout(new FlowLayout(FlowLayout.CENTER, 6, 4));
+            setOpaque(true);
+            add(crearBoton("-"));
+            add(lbl);
+            add(crearBoton("+"));
+        }
+
+        private JButton crearBoton(String texto) {
+            JButton b = new JButton(texto);
+            b.setPreferredSize(new Dimension(40, 28));
+            b.setMargin(new Insets(0, 0, 0, 0));
+            b.setFocusPainted(false);
+            return b;
+        }
+
+        @Override
+        public Component getTableCellRendererComponent(JTable t, Object v,
+                                                       boolean sel, boolean foc, int row, int col) {
+            lbl.setText(v == null ? "" : String.valueOf(v));
+            lbl.setForeground(Color.BLACK);
+            setBackground(sel ? t.getSelectionBackground() : t.getBackground());
+            for (Component c : getComponents()) {
+                if (c instanceof JButton) c.setVisible(v != null);
+            }
+            return this;
+        }
+    }
+
+    private static class EliminarRenderer extends JButton implements TableCellRenderer {
+        public EliminarRenderer() {
+            setBorderPainted(false);
+            setContentAreaFilled(false);
+            setFocusPainted(false);
+            setForeground(new Color(220, 80, 80));
+            setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/eliminar.png")));
+        }
+
+        @Override
+        public Component getTableCellRendererComponent(JTable t, Object v,
+                                                       boolean sel, boolean foc, int row, int col) {
+            setVisible(v != null);
+            return this;
+        }
+    }
+
+    private void cargarProductosPrueba() { //borrar
+        Object[][] datos = {
+                {"Cuaderno cuadriculado", 45.00, 30},
+                {"Cuaderno rayado", 42.00, 25},
+                {"Paquete de 20 lápices", 60.00, 15},
+                {"Lápiz color rojo", 8.50, 50},
+                {"Pluma azul", 7.00, 60},
+                {"Pluma negra", 7.00, 60},
+                {"Goma de borrar", 5.00, 40},
+                {"Sacapuntas", 6.00, 35},
+                {"Regla de 30 cm", 12.00, 20},
+                {"Tijeras escolares", 25.00, 12},
+                {"Pegamento en barra", 18.00, 22},
+                {"Marcadores (caja de 12)", 85.00, 10},
+                {"Hojas blancas (paquete 100)", 55.00, 18},
+                {"Folder tamaño carta", 4.00, 80},
+                {"Corrector líquido", 20.00, 0}
+        };
+        catalogo.clear();
+        productosPorId.clear();
+        for (int i = 0; i < datos.length; i++) {
+            Producto p = new Producto();
+            p.setIdProducto(i + 1);
+            p.setNombre((String) datos[i][0]);
+            p.setPrecio((Double) datos[i][1]);
+            p.setExistencias((Integer) datos[i][2]);
+            p.setActivo(true);
+            catalogo.add(p);
+            productosPorId.put(p.getIdProducto(), p);
+        }
+        filtrarProductos();
+    }
+
+
+
 }

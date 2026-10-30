@@ -11,6 +11,9 @@
 
         <class>mx.desarrollo.entity.Usuario</class>
         <class>mx.desarrollo.entity.Producto</class>
+        <class>mx.desarrollo.entity.CorteCaja</class>
+        <class>mx.desarrollo.entity.Venta</class>
+        <class>mx.desarrollo.entity.DetalleVentaProducto</class>
 
         <properties>
 
