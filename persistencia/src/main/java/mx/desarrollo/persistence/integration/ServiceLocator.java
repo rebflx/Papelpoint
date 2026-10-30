@@ -1,4 +1,5 @@
 package mx.desarrollo.persistence.integration;
+import mx.desarrollo.persistence.dao.VentaDAO;
 
 import jakarta.persistence.EntityManager;
 import mx.desarrollo.persistence.dao.ProductoDAO;
@@ -27,6 +28,15 @@ public class ServiceLocator {
         }
 
         return productoDAO;
+    }
+
+    private static VentaDAO ventaDAO;
+
+    public static VentaDAO getInstanceVentaDAO() {
+        if (ventaDAO == null) {
+            ventaDAO = new VentaDAO();
+        }
+        return ventaDAO;
     }
 
 }

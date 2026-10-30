@@ -1,4 +1,5 @@
 package mx.desarrollo.integration;
+import mx.desarrollo.facade.FacadeVenta;
 
 import mx.desarrollo.facade.FacadeProducto;
 import mx.desarrollo.facade.FacadeUsuario;
@@ -23,5 +24,14 @@ public class ServiceFacadeLocator {
             return facadeProducto;
         }
 
+    }
+
+    private static FacadeVenta facadeVenta;
+
+    public static FacadeVenta getInstanceFacadeVenta() {
+        if (facadeVenta == null) {
+            facadeVenta = new FacadeVenta();
+        }
+        return facadeVenta;
     }
 }
