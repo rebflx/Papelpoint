@@ -24,5 +24,11 @@ public class FacadeProducto {
     public List<Producto> obtenerProductosActualizados() {
         return delegateProducto.getProductosActualizados();
     }
+    public void modificarProducto(Producto prod) {
+        delegateProducto.modificarProducto(prod);
+    }
 
+    public void eliminarProducto(Producto prod) {
+        delegateProducto.eliminarProducto(prod);
+    }
 }
