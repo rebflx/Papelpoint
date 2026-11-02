@@ -38,7 +38,7 @@ import mx.desarrollo.integration.ServiceFacadeLocator;
  *
  * @author rebec
  */
-public class Ventas extends javax.swing.JFrame {
+public class Ventas extends javax.swing.JPanel {
 
     /**
      * Creates new form Ventas
@@ -67,6 +67,11 @@ public class Ventas extends javax.swing.JFrame {
     public Ventas(Usuario usuario) {
         this.usuarioActual = usuario;
         initComponents();
+        if(usuarioActual != null){
+            jLabel3.setText("Te atiende: "+ usuarioActual.getNombrePersona());
+        }else {
+            jLabel3.setText("Sin usuario");
+        }
         tblArticulos.setRowHeight(36);
         tblArticulos.getColumnModel().getColumn(2).setCellRenderer(new CantidadRenderer());
         tblArticulos.getColumnModel().getColumn(4).setCellRenderer(new EliminarRenderer());
@@ -86,8 +91,7 @@ public class Ventas extends javax.swing.JFrame {
         configurarBusqueda();
         configurarPago();
 
-        //cargarProductos();
-        cargarProductosPrueba(); //borrar
+        cargarProductos();
         refrescarCarrito();
     }
 
@@ -167,7 +171,7 @@ public class Ventas extends javax.swing.JFrame {
         jButton26 = new javax.swing.JButton();
         jButton27 = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
         setBackground(new java.awt.Color(255, 255, 255));
         setSize(new java.awt.Dimension(1440, 1024));
 
@@ -259,7 +263,6 @@ public class Ventas extends javax.swing.JFrame {
         jLabel3.setFont(new java.awt.Font("Instrument Sans", 1, 12)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(51, 51, 51));
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/user.png"))); // NOI18N
-        jLabel3.setText("Te atiende: Erick Gamboa");
         jLabel3.setPreferredSize(new java.awt.Dimension(298, 73));
 
         jLabel4.setFont(new java.awt.Font("Instrument Sans", 1, 12)); // NOI18N
@@ -979,8 +982,8 @@ public class Ventas extends javax.swing.JFrame {
                 .addContainerGap(22, Short.MAX_VALUE))
         );
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(pnlPrincipal, javax.swing.GroupLayout.DEFAULT_SIZE, 1455, Short.MAX_VALUE)
@@ -993,7 +996,7 @@ public class Ventas extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        pack();
+
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnServiciosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnServiciosActionPerformed
@@ -1032,7 +1035,7 @@ public class Ventas extends javax.swing.JFrame {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
@@ -1498,38 +1501,7 @@ public class Ventas extends javax.swing.JFrame {
         }
     }
 
-    private void cargarProductosPrueba() { //borrar
-        Object[][] datos = {
-                {"Cuaderno cuadriculado", 45.00, 30},
-                {"Cuaderno rayado", 42.00, 25},
-                {"Paquete de 20 lápices", 60.00, 15},
-                {"Lápiz color rojo", 8.50, 50},
-                {"Pluma azul", 7.00, 60},
-                {"Pluma negra", 7.00, 60},
-                {"Goma de borrar", 5.00, 40},
-                {"Sacapuntas", 6.00, 35},
-                {"Regla de 30 cm", 12.00, 20},
-                {"Tijeras escolares", 25.00, 12},
-                {"Pegamento en barra", 18.00, 22},
-                {"Marcadores (caja de 12)", 85.00, 10},
-                {"Hojas blancas (paquete 100)", 55.00, 18},
-                {"Folder tamaño carta", 4.00, 80},
-                {"Corrector líquido", 20.00, 0}
-        };
-        catalogo.clear();
-        productosPorId.clear();
-        for (int i = 0; i < datos.length; i++) {
-            Producto p = new Producto();
-            p.setIdProducto(i + 1);
-            p.setNombre((String) datos[i][0]);
-            p.setPrecio((Double) datos[i][1]);
-            p.setExistencias((Integer) datos[i][2]);
-            p.setActivo(true);
-            catalogo.add(p);
-            productosPorId.put(p.getIdProducto(), p);
-        }
-        filtrarProductos();
-    }
+
 
 
 
