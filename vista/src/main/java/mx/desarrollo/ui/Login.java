@@ -4,12 +4,14 @@
  */
 package mx.desarrollo.ui;
 
+import javax.swing.*;
+
 /**
  *
  * @author erick
  */
 public class Login extends javax.swing.JFrame {
-
+    
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Login.class.getName());
 
     /**
@@ -32,7 +34,6 @@ public class Login extends javax.swing.JFrame {
         btnIngresar = new javax.swing.JButton();
         txtUsuario = new javax.swing.JTextField();
         txtContrasena = new javax.swing.JPasswordField();
-        lblError = new javax.swing.JLabel();
         lblUsuario = new javax.swing.JLabel();
         lblPass = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
@@ -43,6 +44,7 @@ public class Login extends javax.swing.JFrame {
         setBounds(new java.awt.Rectangle(0, 0, 1920, 1080));
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel1.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         btnIngresar.setText("Ingresar");
@@ -55,9 +57,7 @@ public class Login extends javax.swing.JFrame {
         jPanel1.add(txtUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 220, 380, 40));
         jPanel1.add(txtContrasena, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 300, 380, 40));
 
-        lblError.setFont(new java.awt.Font("Dosis", 0, 12)); // NOI18N
-        lblError.setText("Bienvenido");
-        jPanel1.add(lblError, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 430, -1, -1));
+
 
         lblUsuario.setFont(new java.awt.Font("Dosis", 0, 14)); // NOI18N
         lblUsuario.setText("Usuario:");
@@ -113,9 +113,9 @@ public class Login extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(186, Short.MAX_VALUE)
+                .addContainerGap(234, Short.MAX_VALUE)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 504, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(279, 279, 279))
+                .addGap(231, 231, 231))
         );
 
         pack();
@@ -129,17 +129,20 @@ public class Login extends javax.swing.JFrame {
                 .login(txtUsuario.getText(), txtContrasena.getPassword());
 
         if (u == null) {
-            lblError.setText("Usuario o contraseña incorrectos");
+            JOptionPane.showMessageDialog(null, "Usuario o contraseña incorrectos",
+                    "Error", JOptionPane.ERROR_MESSAGE);
+
             txtContrasena.setText("");
             return;
         }
 
-        new MenuPrincipalFrame(u).setVisible(true);   // abre la pantalla en blanco
-        this.dispose();                     // cierra el login
+            new MenuPrincipalFrame(u).setVisible(true);
+            this.dispose();                    // cierra el login
 
     } catch (Throwable ex) {
         ex.printStackTrace();
-        lblError.setText("Error de conexión con la base de datos");
+            JOptionPane.showMessageDialog(null, "Error de conexión con la base de datos",
+                    "Error", JOptionPane.ERROR_MESSAGE);
     }
     }//GEN-LAST:event_btnIngresarActionPerformed
 
@@ -150,7 +153,7 @@ public class Login extends javax.swing.JFrame {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
@@ -173,7 +176,6 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JLabel lblError;
     private javax.swing.JLabel lblPass;
     private javax.swing.JLabel lblTitulo;
     private javax.swing.JLabel lblUsuario;
