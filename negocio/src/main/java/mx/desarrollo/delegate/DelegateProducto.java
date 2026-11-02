@@ -8,16 +8,10 @@ import java.util.List;
 public class DelegateProducto {
 
     public void saveProducto(Producto prod) {
-        System.out.println("1. Entró al Delegate");
-
-        //usar metodo
-        if (validarUnidad(prod) == true) {
-            ServiceLocator.getInstanceProductoDAO().save(prod);
-            System.out.println("delegate: save");
-        } else {
-            System.out.println("error validacion: delegateproducto");
+        if (!validarUnidad(prod)) {
+            throw new IllegalArgumentException("Los datos del producto no son válidos.");
         }
-
+        ServiceLocator.getInstanceProductoDAO().save(prod);
     }
 
     //consultar unidades existentes
@@ -25,18 +19,21 @@ public class DelegateProducto {
         return ServiceLocator.getInstanceProductoDAO().findAll();
     }
 
-    /*
-    //eliminar unidades
-    public void eliminarUnidad(Unidad_aprendizaje unidad){
-        ServiceLocator.getInstanceUnidadAprendizajeDAO().delete(unidad);
-    }
-
-
-     */
-    public void modificarUnidad(Producto prod) {
+    public void modificarProducto(Producto prod) {
+        if (prod.getIdProducto() == null || !validarUnidad(prod)) {
+            System.out.println("error validacion: modificarProducto");
+            return;
+        }
         ServiceLocator.getInstanceProductoDAO().update(prod);
     }
 
+    public void eliminarProducto(Producto prod) {
+        if (prod.getIdProducto() == null) {
+            return;
+        }
+        prod.setActivo(false);
+        ServiceLocator.getInstanceProductoDAO().update(prod);
+    }
 
     public List<Producto> getProductosActualizados() {
         return ServiceLocator.getInstanceProductoDAO().findAllFresh();

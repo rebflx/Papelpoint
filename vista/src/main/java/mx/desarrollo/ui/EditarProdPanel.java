@@ -3,6 +3,10 @@ package mx.desarrollo.ui;
 import java.awt.Color;
 import java.awt.Font;
 import java.util.List;
+import java.util.ArrayList;
+import javax.swing.ListSelectionModel;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import mx.desarrollo.entity.Producto;
@@ -15,22 +19,44 @@ import mx.desarrollo.integration.ServiceFacadeLocator;
  */
 public class EditarProdPanel extends javax.swing.JPanel {
 
-    /**
-     * Creates new form AgregarProdPanel
-     */
-    public EditarProdPanel() {
-        initComponents();
-        placeholder();
-        tablaFormato();
-        cargarProductos();
-    }
+private List<Producto> todos = new ArrayList<>();
+private final List<Producto> visibles = new ArrayList<>();
+private Producto seleccionado;
 
+   public EditarProdPanel() {
+    initComponents();
+    placeholder();
+    tablaFormato();
+    iniciarEventos();
+    cargarProductos();
+    soloPrecio(precioTxt);
+
+}
+
+private void iniciarEventos() {
+    buscarNom.getDocument().addDocumentListener(new DocumentListener() {
+        public void insertUpdate(DocumentEvent e) { aplicarFiltro(); }
+        public void removeUpdate(DocumentEvent e) { aplicarFiltro(); }
+        public void changedUpdate(DocumentEvent e) { aplicarFiltro(); }
+    });
+
+    tablaProductos.getSelectionModel().addListSelectionListener(e -> {
+        if (!e.getValueIsAdjusting()) {
+            productoSeleccionadoEnTabla();
+        }
+    });
+}
   
     
     public void tablaFormato(){
 tablaProductos.setShowVerticalLines(false);
 tablaProductos.setShowHorizontalLines(true);
 tablaProductos.setGridColor(new Color(220, 220, 220));
+tablaProductos.setColumnSelectionAllowed(false);
+tablaProductos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+tablaProductos.setRowHeight(30);
+tablaProductos.setSelectionBackground(new Color(232, 240, 229));
+tablaProductos.setSelectionForeground(Color.BLACK);
     }
     public void placeholder(){
 TextPrompt placeholder = new TextPrompt("Buscar Producto", buscarNom);
@@ -145,7 +171,7 @@ placeholder.changeStyle(Font.BOLD); // Estilo de fuente (ej. Itálica)
         guardarBoton1.setBackground(new java.awt.Color(136, 180, 123));
         guardarBoton1.setFont(new java.awt.Font("Instrument Sans", 0, 12)); // NOI18N
         guardarBoton1.setForeground(new java.awt.Color(255, 255, 255));
-        guardarBoton1.setText("Guardar");
+        guardarBoton1.setText("Modificar");
         guardarBoton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 guardarBoton1ActionPerformed(evt);
@@ -165,80 +191,198 @@ placeholder.changeStyle(Font.BOLD); // Estilo de fuente (ej. Itálica)
     }// </editor-fold>//GEN-END:initComponents
 
     private void guardarBotonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guardarBotonActionPerformed
-        Producto prod = new Producto();
-        
-        String nombre = nombreTxt.getText();
-        if(nombre!=null || !(nombre.isBlank()) || !(nombre.matches("\\d+"))){
-            prod.setNombre(nombre);
-        }else{
-        JOptionPane.showMessageDialog(null, "Ocurrió un error en nombre", "Error", JOptionPane.ERROR_MESSAGE);
-        }
-        
-        double precio=0;
-        try{
-        precio = Double.parseDouble(precioTxt.getText());
-        }catch(NumberFormatException e){
-        JOptionPane.showMessageDialog(null, "Ocurrió un error en precio", "Error", JOptionPane.ERROR_MESSAGE);
-        }
-        if(precio> 0.0 || !(precioTxt.getText().isBlank())){
-            prod.setPrecio(precio);   
-        }
-        
-        int existencias=0;
-        try{
-         existencias = (Integer) existenciasTxt.getValue();
-        }catch(NumberFormatException e){
-        JOptionPane.showMessageDialog(null, "Ocurrió un error en existencias", "Error", JOptionPane.ERROR_MESSAGE);
-        }
-        if(existencias>-1 || !(precioTxt.getText().isBlank())){
-            prod.setExistencias(existencias);   
-        }
-        
-        int stock=0;
-        try{
-         stock = (Integer) stockTxt.getValue();
-        }catch(NumberFormatException e){
-        JOptionPane.showMessageDialog(null, "Ocurrió un error en stock", "Error", JOptionPane.ERROR_MESSAGE);
-        }
-        if(existencias>-1 || !(precioTxt.getText().isBlank())){
-            prod.setStockMinimo(stock);   
-        }
-        
-        FacadeProducto facade = ServiceFacadeLocator.getInstanceFacadeProducto();
-    //llamar a facade
-    facade.guardarProducto(prod);
+     if (seleccionado == null) {
+        aviso("Selecciona un producto de la tabla para eliminarlo.");
+        return;
+    }
+    int r = JOptionPane.showConfirmDialog(this,
+            "¿Eliminar el producto \"" + seleccionado.getNombre() + "\"?",
+            "Confirmar", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+    if (r != JOptionPane.YES_OPTION) {
+        return;
+    }
+    try {
+        ServiceFacadeLocator.getInstanceFacadeProducto().eliminarProducto(copiar(seleccionado));
+    } catch (Throwable ex) {
+        errorBD(ex);
+        return;
+    }
+    limpiarFormulario();
     cargarProductos();
     
     }//GEN-LAST:event_guardarBotonActionPerformed
 
     private void guardarBoton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guardarBoton1ActionPerformed
-        // TODO add your handling code here:
+if (seleccionado == null) {
+        aviso("Selecciona un producto de la tabla para modificarlo.");
+        return;
+    }
+    Producto p = copiar(seleccionado);
+
+    String nombre = nombreTxt.getText().trim();
+if (nombre.isEmpty() || nombre.matches("\\d+")) {
+    aviso("El nombre no es válido.");
+    return;
+}
+if (nombreRepetido(nombre, seleccionado)) {
+    aviso("Ya existe otro producto con ese nombre.");
+    nombreTxt.requestFocus();
+    return;
+}
+p.setNombre(nombre);
+
+    try {
+        double precio = Double.parseDouble(precioTxt.getText().trim());
+        if (precio <= 0) {
+            aviso("El precio debe ser mayor que 0.");
+            return;
+        }
+        p.setPrecio(precio);
+    } catch (NumberFormatException e) {
+        aviso("El precio debe ser un número.");
+        return;
+    }
+
+    p.setExistencias((Integer) existenciasTxt.getValue());
+    p.setStockMinimo((Integer) stockTxt.getValue());
+
+    try {
+        ServiceFacadeLocator.getInstanceFacadeProducto().modificarProducto(p);
+    } catch (Throwable ex) {
+        errorBD(ex);
+        return;
+    }
+    limpiarFormulario();
+    cargarProductos();
+    JOptionPane.showMessageDialog(this, "Producto modificado correctamente.",
+            "Listo", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_guardarBoton1ActionPerformed
 
   
 private void cargarProductos() {
-    FacadeProducto facade = ServiceFacadeLocator.getInstanceFacadeProducto();
+    try {
+        List<Producto> lista = ServiceFacadeLocator.getInstanceFacadeProducto().obtenerProductosActualizados();
+        todos = new ArrayList<>();
+        for (Producto p : lista) {
+            if (Boolean.TRUE.equals(p.getActivo())) {
+                todos.add(p);
+            }
+        }
+    } catch (Throwable ex) {
+        errorBD(ex);
+        todos = new ArrayList<>();
+    }
+    aplicarFiltro();
+}
 
-    List<Producto> productos = facade.obtenerProductos();
-
-    DefaultTableModel modelo =
-        (DefaultTableModel) tablaProductos.getModel();
+private void aplicarFiltro() {
+    String q = buscarNom.getText() == null ? "" : buscarNom.getText().trim().toLowerCase();
+    DefaultTableModel modelo = (DefaultTableModel) tablaProductos.getModel();
 
     modelo.setRowCount(0);
-
-    for (Producto producto : productos) {
-        modelo.addRow(new Object[]{
-            producto.getImagen(),
-            producto.getNombre(),
-            producto.getPrecio(),
-            producto.getExistencias(),
-            producto.getStockMinimo()
-        });
+    visibles.clear();
+    for (Producto p : todos) {
+        boolean coincide = q.isEmpty()
+                || (p.getNombre() != null && p.getNombre().toLowerCase().contains(q));
+        if (coincide) {
+            visibles.add(p);
+            modelo.addRow(new Object[]{
+                p.getImagen(),
+                p.getNombre(),
+                p.getPrecio(),
+                p.getExistencias(),
+                p.getStockMinimo()
+            });
+        }
     }
-} 
+    seleccionado = null;
+}
+
+private void productoSeleccionadoEnTabla() {
+    int fila = tablaProductos.getSelectedRow();
+    if (fila < 0 || fila >= visibles.size()) {
+        seleccionado = null;
+        return;
+    }
+    seleccionado = visibles.get(fila);
+    nombreTxt.setText(seleccionado.getNombre());
+    precioTxt.setText(String.valueOf(seleccionado.getPrecio()));
+    existenciasTxt.setValue(seleccionado.getExistencias());
+    stockTxt.setValue(seleccionado.getStockMinimo());
+}
+
+private void limpiarFormulario() {
+    nombreTxt.setText("");
+    precioTxt.setText("");
+    existenciasTxt.setValue(0);
+    stockTxt.setValue(0);
+    tablaProductos.clearSelection();
+    seleccionado = null;
+}
+
+private Producto copiar(Producto o) {
+    Producto c = new Producto();
+    c.setIdProducto(o.getIdProducto());
+    c.setNombre(o.getNombre());
+    c.setPrecio(o.getPrecio());
+    c.setExistencias(o.getExistencias());
+    c.setStockMinimo(o.getStockMinimo());
+    c.setImagen(o.getImagen());
+    c.setActivo(o.getActivo());
+    return c;
+}
+
+private void aviso(String mensaje) {
+    JOptionPane.showMessageDialog(this, mensaje, "Revisa los datos", JOptionPane.WARNING_MESSAGE);
+}
+
+private void errorBD(Throwable ex) {
+    ex.printStackTrace();
+    JOptionPane.showMessageDialog(this,
+            "No se pudo completar la operación con la base de datos.",
+            "Error", JOptionPane.ERROR_MESSAGE);
+}
+
+private boolean nombreRepetido(String nombre, Producto actual) {
+    for (Producto p : todos) {
+        boolean esElMismo = java.util.Objects.equals(p.getIdProducto(), actual.getIdProducto());
+        if (!esElMismo && p.getNombre() != null
+                && p.getNombre().trim().equalsIgnoreCase(nombre)) {
+            return true;
+        }
+    }
+    return false;
+}
 
 
+private void soloPrecio(javax.swing.JTextField campo) {
+    ((javax.swing.text.AbstractDocument) campo.getDocument()).setDocumentFilter(
+        new javax.swing.text.DocumentFilter() {
+            private final java.util.regex.Pattern patron =
+                    java.util.regex.Pattern.compile("\\d{0,7}(\\.\\d{0,2})?");
 
+            @Override
+            public void insertString(FilterBypass fb, int offset, String text,
+                    javax.swing.text.AttributeSet attr)
+                    throws javax.swing.text.BadLocationException {
+                replace(fb, offset, 0, text, attr);
+            }
+
+            @Override
+            public void replace(FilterBypass fb, int offset, int length, String text,
+                    javax.swing.text.AttributeSet attrs)
+                    throws javax.swing.text.BadLocationException {
+                String actual = fb.getDocument().getText(0, fb.getDocument().getLength());
+                String nuevo = new StringBuilder(actual)
+                        .replace(offset, offset + length, text == null ? "" : text)
+                        .toString();
+                if (patron.matcher(nuevo).matches()) {
+                    super.replace(fb, offset, length, text, attrs);
+                }
+            }
+        });
+    campo.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+}
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField buscarNom;
     private javax.swing.JSpinner existenciasTxt;
