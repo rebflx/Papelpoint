@@ -447,11 +447,9 @@ public class MenuPrincipalFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_botonSegActionPerformed
 
     private void botonVentasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonVentasActionPerformed
-        panelCambiante.add(new Ventas(usuarioActual), "Ventas");
-        CardLayout cl = (CardLayout) panelCambiante.getLayout();
-        cl.show(panelCambiante, "Ventas");
-        panelCambiante.repaint();
-        panelCambiante.revalidate();
+        Ventas ventanaVentas = new Ventas(usuarioActual);
+        ventanaVentas.setLocationRelativeTo(this);
+        ventanaVentas.setVisible(true);
     }//GEN-LAST:event_botonVentasActionPerformed
 
     private void botonEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonEditarActionPerformed

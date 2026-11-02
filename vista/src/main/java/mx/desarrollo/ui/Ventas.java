@@ -38,7 +38,7 @@ import mx.desarrollo.integration.ServiceFacadeLocator;
  *
  * @author rebec
  */
-public class Ventas extends javax.swing.JPanel {
+public class Ventas extends javax.swing.JFrame {
 
     /**
      * Creates new form Ventas
@@ -67,6 +67,10 @@ public class Ventas extends javax.swing.JPanel {
     public Ventas(Usuario usuario) {
         this.usuarioActual = usuario;
         initComponents();
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+
+
         if(usuarioActual != null){
             jLabel3.setText("Te atiende: "+ usuarioActual.getNombrePersona());
         }else {
@@ -982,8 +986,8 @@ public class Ventas extends javax.swing.JPanel {
                 .addContainerGap(22, Short.MAX_VALUE))
         );
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(pnlPrincipal, javax.swing.GroupLayout.DEFAULT_SIZE, 1455, Short.MAX_VALUE)
@@ -995,6 +999,7 @@ public class Ventas extends javax.swing.JPanel {
                 .addComponent(pnlPrincipal, javax.swing.GroupLayout.PREFERRED_SIZE, 840, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
+    pack();
 
 
     }// </editor-fold>//GEN-END:initComponents
