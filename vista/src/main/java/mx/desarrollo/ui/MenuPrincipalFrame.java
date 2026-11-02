@@ -37,6 +37,9 @@ public class MenuPrincipalFrame extends javax.swing.JFrame {
         this.usuarioActual = usuario;
     }
 
+    private HistorialModificacionesPanel historialPanel;
+
+
     private boolean esAdmin() {
         return usuarioActual != null && DelegateUsuario.ROL_ADMIN.equalsIgnoreCase(usuarioActual.getRol());
     }
@@ -57,27 +60,27 @@ public class MenuPrincipalFrame extends javax.swing.JFrame {
     private void initComponents() {
 
         panelIzquierda = new javax.swing.JPanel();
-        jLabel2 = new javax.swing.JLabel();
+        jLabel2 = new JLabel();
         jSeparator1 = new javax.swing.JSeparator();
-        botonSeg = new javax.swing.JButton();
-        botonConsultas = new javax.swing.JButton();
-        botonTickets = new javax.swing.JButton();
-        botonInventario = new javax.swing.JButton();
-        jLabel3 = new javax.swing.JLabel();
+        botonSeg = new JButton();
+        botonConsultas = new JButton();
+        botonTickets = new JButton();
+        botonInventario = new JButton();
+        jLabel3 = new JLabel();
         jSeparator2 = new javax.swing.JSeparator();
-        botonVentas = new javax.swing.JButton();
-        botonCortes = new javax.swing.JButton();
-        botonUsuarios = new javax.swing.JButton();
-        botonEditar = new javax.swing.JButton();
-        imgTicket = new javax.swing.JLabel();
-        imgSeg = new javax.swing.JLabel();
-        imgTickets = new javax.swing.JLabel();
-        imgVenta = new javax.swing.JLabel();
-        imgInventario = new javax.swing.JLabel();
-        imgConsulta = new javax.swing.JLabel();
-        imgCortes = new javax.swing.JLabel();
-        imgUsuario = new javax.swing.JLabel();
-        imgEditar = new javax.swing.JLabel();
+        botonVentas = new JButton();
+        botonCortes = new JButton();
+        botonUsuarios = new JButton();
+        botonEditar = new JButton();
+        imgTicket = new JLabel();
+        imgSeg = new JLabel();
+        imgTickets = new JLabel();
+        imgVenta = new JLabel();
+        imgInventario = new JLabel();
+        imgConsulta = new JLabel();
+        imgCortes = new JLabel();
+        imgUsuario = new JLabel();
+        imgEditar = new JLabel();
         panelCambiante = new javax.swing.JPanel();
         SEGURIDAD = new javax.swing.JPanel();
         EDITAR = new javax.swing.JPanel();
@@ -86,20 +89,21 @@ public class MenuPrincipalFrame extends javax.swing.JFrame {
         CONSULTAS = new javax.swing.JPanel();
         INVENTARIO = new javax.swing.JPanel();
         jSeparator3 = new javax.swing.JSeparator();
-        jLabel4 = new javax.swing.JLabel();
-        jButton10 = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
+        jLabel4 = new JLabel();
+        jButton10 = new JButton();
+        btnHistorial = new JButton();
+        jLabel1 = new JLabel();
         TICKETS = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        panelIzquierda.setBackground(new java.awt.Color(136, 180, 123));
-        panelIzquierda.setForeground(new java.awt.Color(136, 180, 123));
+        panelIzquierda.setBackground(new Color(136, 180, 123));
+        panelIzquierda.setForeground(new Color(136, 180, 123));
         panelIzquierda.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel2.setBackground(new java.awt.Color(136, 180, 123));
+        jLabel2.setBackground(new Color(136, 180, 123));
         jLabel2.setFont(new java.awt.Font("Instrument Sans", 0, 28)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel2.setForeground(new Color(255, 255, 255));
         jLabel2.setText("Admin");
         panelIzquierda.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 310, -1, -1));
 
@@ -107,7 +111,7 @@ public class MenuPrincipalFrame extends javax.swing.JFrame {
         panelIzquierda.add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 360, 180, 20));
 
         botonSeg.setFont(new java.awt.Font("Instrument Sans", 1, 16)); // NOI18N
-        botonSeg.setForeground(new java.awt.Color(255, 255, 255));
+        botonSeg.setForeground(new Color(255, 255, 255));
         botonSeg.setText("Seguridad");
         botonSeg.setBorderPainted(false);
         botonSeg.setContentAreaFilled(false);
@@ -128,7 +132,7 @@ public class MenuPrincipalFrame extends javax.swing.JFrame {
         panelIzquierda.add(botonSeg, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 510, 140, 60));
 
         botonConsultas.setFont(new java.awt.Font("Instrument Sans", 1, 16)); // NOI18N
-        botonConsultas.setForeground(new java.awt.Color(255, 255, 255));
+        botonConsultas.setForeground(new Color(255, 255, 255));
         botonConsultas.setText("Consultas");
         botonConsultas.setBorderPainted(false);
         botonConsultas.setContentAreaFilled(false);
@@ -149,7 +153,7 @@ public class MenuPrincipalFrame extends javax.swing.JFrame {
         panelIzquierda.add(botonConsultas, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 240, 140, 40));
 
         botonTickets.setFont(new java.awt.Font("Instrument Sans", 1, 16)); // NOI18N
-        botonTickets.setForeground(new java.awt.Color(255, 255, 255));
+        botonTickets.setForeground(new Color(255, 255, 255));
         botonTickets.setText("Tickets");
         botonTickets.setBorderPainted(false);
         botonTickets.setContentAreaFilled(false);
@@ -170,7 +174,7 @@ public class MenuPrincipalFrame extends javax.swing.JFrame {
         panelIzquierda.add(botonTickets, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 140, 130, 40));
 
         botonInventario.setFont(new java.awt.Font("Instrument Sans", 1, 16)); // NOI18N
-        botonInventario.setForeground(new java.awt.Color(255, 255, 255));
+        botonInventario.setForeground(new Color(255, 255, 255));
         botonInventario.setText("Inventario");
         botonInventario.setBorderPainted(false);
         botonInventario.setContentAreaFilled(false);
@@ -190,9 +194,9 @@ public class MenuPrincipalFrame extends javax.swing.JFrame {
         });
         panelIzquierda.add(botonInventario, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 190, -1, 40));
 
-        jLabel3.setBackground(new java.awt.Color(136, 180, 123));
+        jLabel3.setBackground(new Color(136, 180, 123));
         jLabel3.setFont(new java.awt.Font("Instrument Sans", 0, 28)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel3.setForeground(new Color(255, 255, 255));
         jLabel3.setText("PapelPoint");
         panelIzquierda.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, -1, -1));
 
@@ -200,7 +204,7 @@ public class MenuPrincipalFrame extends javax.swing.JFrame {
         panelIzquierda.add(jSeparator2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 60, 180, 20));
 
         botonVentas.setFont(new java.awt.Font("Instrument Sans", 1, 16)); // NOI18N
-        botonVentas.setForeground(new java.awt.Color(255, 255, 255));
+        botonVentas.setForeground(new Color(255, 255, 255));
         botonVentas.setText("Ventas");
         botonVentas.setContentAreaFilled(false);
         botonVentas.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -220,7 +224,7 @@ public class MenuPrincipalFrame extends javax.swing.JFrame {
         panelIzquierda.add(botonVentas, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 90, 100, 40));
 
         botonCortes.setFont(new java.awt.Font("Instrument Sans", 1, 16)); // NOI18N
-        botonCortes.setForeground(new java.awt.Color(255, 255, 255));
+        botonCortes.setForeground(new Color(255, 255, 255));
         botonCortes.setText("Cortes");
         botonCortes.setBorderPainted(false);
         botonCortes.setContentAreaFilled(false);
@@ -241,7 +245,7 @@ public class MenuPrincipalFrame extends javax.swing.JFrame {
         panelIzquierda.add(botonCortes, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 370, 120, 40));
 
         botonUsuarios.setFont(new java.awt.Font("Instrument Sans", 1, 16)); // NOI18N
-        botonUsuarios.setForeground(new java.awt.Color(255, 255, 255));
+        botonUsuarios.setForeground(new Color(255, 255, 255));
         botonUsuarios.setText("Usuarios");
         botonUsuarios.setBorderPainted(false);
         botonUsuarios.setContentAreaFilled(false);
@@ -262,7 +266,7 @@ public class MenuPrincipalFrame extends javax.swing.JFrame {
         panelIzquierda.add(botonUsuarios, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 420, 140, 40));
 
         botonEditar.setFont(new java.awt.Font("Instrument Sans", 1, 16)); // NOI18N
-        botonEditar.setForeground(new java.awt.Color(255, 255, 255));
+        botonEditar.setForeground(new Color(255, 255, 255));
         botonEditar.setText("Editar");
         botonEditar.setAutoscrolls(true);
         botonEditar.setBorderPainted(false);
@@ -283,35 +287,35 @@ public class MenuPrincipalFrame extends javax.swing.JFrame {
         });
         panelIzquierda.add(botonEditar, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 470, 140, 40));
 
-        imgTicket.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/Rectangle4.png"))); // NOI18N
+        imgTicket.setIcon(new ImageIcon(getClass().getResource("/imagenes/Rectangle4.png"))); // NOI18N
         panelIzquierda.add(imgTicket, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 140, -1, -1));
 
-        imgSeg.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/Rectangle4.png"))); // NOI18N
+        imgSeg.setIcon(new ImageIcon(getClass().getResource("/imagenes/Rectangle4.png"))); // NOI18N
         panelIzquierda.add(imgSeg, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 520, -1, 40));
 
-        imgTickets.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/Rectangle4.png"))); // NOI18N
+        imgTickets.setIcon(new ImageIcon(getClass().getResource("/imagenes/Rectangle4.png"))); // NOI18N
         panelIzquierda.add(imgTickets, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 140, -1, -1));
 
-        imgVenta.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/Rectangle4.png"))); // NOI18N
+        imgVenta.setIcon(new ImageIcon(getClass().getResource("/imagenes/Rectangle4.png"))); // NOI18N
         panelIzquierda.add(imgVenta, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 90, -1, -1));
 
-        imgInventario.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/Rectangle4.png"))); // NOI18N
+        imgInventario.setIcon(new ImageIcon(getClass().getResource("/imagenes/Rectangle4.png"))); // NOI18N
         panelIzquierda.add(imgInventario, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 190, -1, -1));
 
-        imgConsulta.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/Rectangle4.png"))); // NOI18N
+        imgConsulta.setIcon(new ImageIcon(getClass().getResource("/imagenes/Rectangle4.png"))); // NOI18N
         panelIzquierda.add(imgConsulta, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 240, -1, -1));
 
-        imgCortes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/Rectangle4.png"))); // NOI18N
+        imgCortes.setIcon(new ImageIcon(getClass().getResource("/imagenes/Rectangle4.png"))); // NOI18N
         panelIzquierda.add(imgCortes, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 370, -1, -1));
 
-        imgUsuario.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/Rectangle4.png"))); // NOI18N
+        imgUsuario.setIcon(new ImageIcon(getClass().getResource("/imagenes/Rectangle4.png"))); // NOI18N
         panelIzquierda.add(imgUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 420, -1, -1));
 
-        imgEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/Rectangle4.png"))); // NOI18N
+        imgEditar.setIcon(new ImageIcon(getClass().getResource("/imagenes/Rectangle4.png"))); // NOI18N
         panelIzquierda.add(imgEditar, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 470, -1, -1));
 
-        panelCambiante.setBackground(new java.awt.Color(255, 102, 102));
-        panelCambiante.setLayout(new java.awt.CardLayout());
+        panelCambiante.setBackground(new Color(255, 102, 102));
+        panelCambiante.setLayout(new CardLayout());
 
         javax.swing.GroupLayout SEGURIDADLayout = new javax.swing.GroupLayout(SEGURIDAD);
         SEGURIDAD.setLayout(SEGURIDADLayout);
@@ -378,17 +382,17 @@ public class MenuPrincipalFrame extends javax.swing.JFrame {
 
         panelCambiante.add(CONSULTAS, "card4");
 
-        INVENTARIO.setBackground(new java.awt.Color(255, 255, 255));
+        INVENTARIO.setBackground(new Color(255, 255, 255));
         INVENTARIO.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jSeparator3.setBackground(new java.awt.Color(136, 180, 123));
-        jSeparator3.setForeground(new java.awt.Color(136, 180, 123));
+        jSeparator3.setBackground(new Color(136, 180, 123));
+        jSeparator3.setForeground(new Color(136, 180, 123));
         jSeparator3.setAutoscrolls(true);
         INVENTARIO.add(jSeparator3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 60, 1280, 60));
 
-        jLabel4.setBackground(new java.awt.Color(136, 180, 123));
+        jLabel4.setBackground(new Color(136, 180, 123));
         jLabel4.setFont(new java.awt.Font("Instrument Sans", 0, 28)); // NOI18N
-        jLabel4.setForeground(new java.awt.Color(136, 180, 123));
+        jLabel4.setForeground(new Color(136, 180, 123));
         jLabel4.setText("Inventario");
         INVENTARIO.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, -1, -1));
 
@@ -400,12 +404,20 @@ public class MenuPrincipalFrame extends javax.swing.JFrame {
         });
         INVENTARIO.add(jButton10, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 290, 167, 99));
 
+        btnHistorial.setText("<html><center>HISTORIAL DE<br>MODIFICACIONES</center></html>");
+        btnHistorial.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHistorialActionPerformed(evt);
+            }
+        });
+        INVENTARIO.add(btnHistorial, new org.netbeans.lib.awtextra.AbsoluteConstraints(605, 510, 167, 99));
+
         jLabel1.setText(".");
         INVENTARIO.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(1143, 672, 137, 90));
 
         panelCambiante.add(INVENTARIO, "card3");
 
-        TICKETS.setBackground(new java.awt.Color(204, 0, 0));
+        TICKETS.setBackground(new Color(204, 0, 0));
 
         javax.swing.GroupLayout TICKETSLayout = new javax.swing.GroupLayout(TICKETS);
         TICKETS.setLayout(TICKETSLayout);
@@ -456,7 +468,7 @@ public class MenuPrincipalFrame extends javax.swing.JFrame {
         if (!validarAdmin()) return;
         panelCambiante.remove(INVENTARIO);
 
-        panelCambiante.add(new EditarProdPanel(), "EDITAR_PRODUCTO");
+        panelCambiante.add(new EditarProdPanel(usuarioActual), "EDITAR_PRODUCTO");
 
         CardLayout cl = (CardLayout) panelCambiante.getLayout();
         cl.show(panelCambiante, "EDITAR_PRODUCTO");
@@ -498,7 +510,7 @@ public class MenuPrincipalFrame extends javax.swing.JFrame {
     private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
         panelCambiante.remove(INVENTARIO);
 
-        panelCambiante.add(new AgregarProdPanel(), "AGREGAR_PRODUCTO");
+        panelCambiante.add(new AgregarProdPanel(usuarioActual), "AGREGAR_PRODUCTO");
 
         CardLayout cl = (CardLayout) panelCambiante.getLayout();
         cl.show(panelCambiante, "AGREGAR_PRODUCTO");
@@ -506,6 +518,18 @@ public class MenuPrincipalFrame extends javax.swing.JFrame {
         panelCambiante.revalidate();
         panelCambiante.repaint();
     }//GEN-LAST:event_jButton10ActionPerformed
+
+    private void btnHistorialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHistorialActionPerformed
+        if (historialPanel != null) {
+            panelCambiante.remove(historialPanel);
+        }
+        historialPanel = new HistorialModificacionesPanel();
+        panelCambiante.add(historialPanel, "HISTORIAL_MODIFICACIONES");
+        CardLayout cl = (CardLayout) panelCambiante.getLayout();
+        cl.show(panelCambiante, "HISTORIAL_MODIFICACIONES");
+        panelCambiante.revalidate();
+        panelCambiante.repaint();
+    }//GEN-LAST:event_btnHistorialActionPerformed
 
     private void botonVentasMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botonVentasMouseEntered
         activarHover(imgVenta, botonVentas);
@@ -629,28 +653,29 @@ public class MenuPrincipalFrame extends javax.swing.JFrame {
     private javax.swing.JPanel SEGURIDAD;
     private javax.swing.JPanel TICKETS;
     private javax.swing.JPanel USUARIOS;
-    private javax.swing.JButton botonConsultas;
-    private javax.swing.JButton botonCortes;
-    private javax.swing.JButton botonEditar;
-    private javax.swing.JButton botonInventario;
-    private javax.swing.JButton botonSeg;
-    private javax.swing.JButton botonTickets;
-    private javax.swing.JButton botonUsuarios;
-    private javax.swing.JButton botonVentas;
-    private javax.swing.JLabel imgConsulta;
-    private javax.swing.JLabel imgCortes;
-    private javax.swing.JLabel imgEditar;
-    private javax.swing.JLabel imgInventario;
-    private javax.swing.JLabel imgSeg;
-    private javax.swing.JLabel imgTicket;
-    private javax.swing.JLabel imgTickets;
-    private javax.swing.JLabel imgUsuario;
-    private javax.swing.JLabel imgVenta;
-    private javax.swing.JButton jButton10;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
+    private JButton botonConsultas;
+    private JButton botonCortes;
+    private JButton botonEditar;
+    private JButton botonInventario;
+    private JButton botonSeg;
+    private JButton botonTickets;
+    private JButton botonUsuarios;
+    private JButton botonVentas;
+    private JButton btnHistorial;
+    private JLabel imgConsulta;
+    private JLabel imgCortes;
+    private JLabel imgEditar;
+    private JLabel imgInventario;
+    private JLabel imgSeg;
+    private JLabel imgTicket;
+    private JLabel imgTickets;
+    private JLabel imgUsuario;
+    private JLabel imgVenta;
+    private JButton jButton10;
+    private JLabel jLabel1;
+    private JLabel jLabel2;
+    private JLabel jLabel3;
+    private JLabel jLabel4;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator3;

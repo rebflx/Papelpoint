@@ -14,6 +14,7 @@
         <class>mx.desarrollo.entity.CorteCaja</class>
         <class>mx.desarrollo.entity.Venta</class>
         <class>mx.desarrollo.entity.DetalleVentaProducto</class>
+        <class>mx.desarrollo.entity.HistorialModificacionProducto</class>
 
         <properties>
 
@@ -22,7 +23,7 @@
                       value="com.mysql.cj.jdbc.Driver"/>
 
             <property name="jakarta.persistence.jdbc.url"
-                      value="jdbc:mysql://localhost:3306/papelpoint?useSSL=false&amp;allowPublicKeyRetrieval=true&amp;serverTimezone=UTC"/>
+                      value="jdbc:mysql://localhost:3307/papelpoint?useSSL=false&amp;allowPublicKeyRetrieval=true&amp;serverTimezone=UTC"/>
 
             <property name="jakarta.persistence.jdbc.user"
                       value="root"/>

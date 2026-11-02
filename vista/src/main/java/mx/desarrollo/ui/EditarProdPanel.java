@@ -33,6 +33,21 @@ private Producto seleccionado;
 
 }
 
+    private mx.desarrollo.entity.Usuario usuarioActual;
+
+    public EditarProdPanel(mx.desarrollo.entity.Usuario usuario) {
+        this();
+        this.usuarioActual = usuario;
+    }
+
+    private void registrarHistorial(Producto p, String detalles) {
+        try {
+            ServiceFacadeLocator.getInstanceFacadeHistorial().registrar(usuarioActual, p, detalles);
+        } catch (Throwable ex) {
+            ex.printStackTrace();
+        }
+    }
+
 private void iniciarEventos() {
     buscarNom.getDocument().addDocumentListener(new DocumentListener() {
         public void insertUpdate(DocumentEvent e) { aplicarFiltro(); }
@@ -203,6 +218,7 @@ placeholder.changeStyle(Font.BOLD); // Estilo de fuente (ej. Itálica)
     }
     try {
         ServiceFacadeLocator.getInstanceFacadeProducto().eliminarProducto(copiar(seleccionado));
+        registrarHistorial(seleccionado, "Producto eliminado");
     } catch (Throwable ex) {
         errorBD(ex);
         return;
@@ -247,7 +263,11 @@ p.setNombre(nombre);
     p.setStockMinimo((Integer) stockTxt.getValue());
 
     try {
+        String cambios = ServiceFacadeLocator.getInstanceFacadeHistorial().describirCambios(seleccionado, p);
         ServiceFacadeLocator.getInstanceFacadeProducto().modificarProducto(p);
+        if (!cambios.isEmpty()) {
+            registrarHistorial(p, cambios);
+        }
     } catch (Throwable ex) {
         errorBD(ex);
         return;

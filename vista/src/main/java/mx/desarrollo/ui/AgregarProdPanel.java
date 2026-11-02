@@ -30,6 +30,20 @@ public class AgregarProdPanel extends javax.swing.JPanel {
 
     }
 
+    private mx.desarrollo.entity.Usuario usuarioActual;
+
+    public AgregarProdPanel(mx.desarrollo.entity.Usuario usuario) {
+        this();
+        this.usuarioActual = usuario;
+    }
+
+    private void registrarHistorial(Producto p, String detalles) {
+        try {
+            ServiceFacadeLocator.getInstanceFacadeHistorial().registrar(usuarioActual, p, detalles);
+        } catch (Throwable ex) {
+            ex.printStackTrace();
+        }
+    }
   
     
     public void tablaFormato(){
@@ -238,6 +252,7 @@ placeholder.changeStyle(Font.BOLD); // Estilo de fuente (ej. Itálica)
 
     try {
         ServiceFacadeLocator.getInstanceFacadeProducto().guardarProducto(prod);
+        registrarHistorial(prod, "Alta de producto");
     } catch (IllegalArgumentException ex) {
         aviso(ex.getMessage());
         return;

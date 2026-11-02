@@ -1,4 +1,5 @@
 package mx.desarrollo.integration;
+import mx.desarrollo.facade.FacadeHistorial;
 import mx.desarrollo.facade.FacadeVenta;
 
 import mx.desarrollo.facade.FacadeProducto;
@@ -33,5 +34,14 @@ public class ServiceFacadeLocator {
             facadeVenta = new FacadeVenta();
         }
         return facadeVenta;
+    }
+
+    private static FacadeHistorial facadeHistorial;
+
+    public static FacadeHistorial getInstanceFacadeHistorial() {
+        if (facadeHistorial == null) {
+            facadeHistorial = new FacadeHistorial();
+        }
+        return facadeHistorial;
     }
 }

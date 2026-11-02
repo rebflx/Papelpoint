@@ -1,0 +1,240 @@
+package mx.desarrollo.ui;
+
+import java.awt.Color;
+import java.awt.Font;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.TreeSet;
+import javax.swing.JOptionPane;
+import javax.swing.ListSelectionModel;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.table.DefaultTableModel;
+import mx.desarrollo.entity.HistorialModificacionProducto;
+import mx.desarrollo.integration.ServiceFacadeLocator;
+
+
+public class HistorialModificacionesPanel extends javax.swing.JPanel {
+
+    private static final String TODOS = "Todos";
+    private static final DateTimeFormatter FMT_TABLA = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+    private static final DateTimeFormatter FMT_FILTRO = DateTimeFormatter.ofPattern("dd/MM/uuuu");
+
+    private List<HistorialModificacionProducto> todos = new ArrayList<>();
+    private boolean cargando = false;
+
+    /**
+     * Creates new form HistorialModificacionesPanel
+     */
+    public HistorialModificacionesPanel() {
+        initComponents();
+        placeholder();
+        tablaFormato();
+        iniciarEventos();
+        cargarHistorial();
+    }
+
+    public void placeholder() {
+        TextPrompt placeholder = new TextPrompt("Ej. 23/10/2026", txtFecha);
+        placeholder.changeAlpha(0.75f);
+        placeholder.changeStyle(Font.BOLD);
+    }
+
+    public void tablaFormato() {
+        tablaHistorial.setShowVerticalLines(false);
+        tablaHistorial.setShowHorizontalLines(true);
+        tablaHistorial.setGridColor(new Color(220, 220, 220));
+        tablaHistorial.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        tablaHistorial.setRowHeight(30);
+        tablaHistorial.setSelectionBackground(new Color(232, 240, 229));
+        tablaHistorial.setSelectionForeground(Color.BLACK);
+        tablaHistorial.getTableHeader().setReorderingAllowed(false);
+        tablaHistorial.getColumnModel().getColumn(0).setPreferredWidth(140);
+        tablaHistorial.getColumnModel().getColumn(1).setPreferredWidth(200);
+        tablaHistorial.getColumnModel().getColumn(2).setPreferredWidth(240);
+        tablaHistorial.getColumnModel().getColumn(3).setPreferredWidth(500);
+    }
+
+    private void iniciarEventos() {
+        txtFecha.getDocument().addDocumentListener(new DocumentListener() {
+            public void insertUpdate(DocumentEvent e) { aplicarFiltro(); }
+            public void removeUpdate(DocumentEvent e) { aplicarFiltro(); }
+            public void changedUpdate(DocumentEvent e) { aplicarFiltro(); }
+        });
+    }
+
+    private void cargarHistorial() {
+        try {
+            todos = ServiceFacadeLocator.getInstanceFacadeHistorial().obtenerHistorial();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
+            todos = new ArrayList<>();
+            JOptionPane.showMessageDialog(this, "No se pudo cargar el historial.",
+                    "Error", JOptionPane.ERROR_MESSAGE);
+        }
+
+        cargando = true;
+        cmbUsuario.removeAllItems();
+        cmbUsuario.addItem(TODOS);
+        TreeSet<String> usuarios = new TreeSet<>();
+        for (HistorialModificacionProducto h : todos) {
+            usuarios.add(h.getUsuario().getNombrePersona());
+        }
+        for (String u : usuarios) {
+            cmbUsuario.addItem(u);
+        }
+        cmbUsuario.setSelectedItem(TODOS);
+        cargando = false;
+
+        aplicarFiltro();
+    }
+
+    private void aplicarFiltro() {
+        String usuario = (String) cmbUsuario.getSelectedItem();
+        boolean filtrarUsuario = usuario != null && !TODOS.equals(usuario);
+
+        LocalDate fecha = null;
+        String texto = txtFecha.getText().trim();
+        txtFecha.setForeground(Color.BLACK);
+        if (!texto.isEmpty()) {
+            try {
+                fecha = LocalDate.parse(texto, FMT_FILTRO);
+            } catch (DateTimeParseException ex) {
+                txtFecha.setForeground(Color.RED); // fecha incompleta o inválida: sin filtro por fecha
+            }
+        }
+
+        DefaultTableModel modelo = (DefaultTableModel) tablaHistorial.getModel();
+        modelo.setRowCount(0);
+        for (HistorialModificacionProducto h : todos) {
+            if (filtrarUsuario && !usuario.equals(h.getUsuario().getNombrePersona())) continue;
+            if (fecha != null && !fecha.equals(h.getFecha().toLocalDate())) continue;
+            modelo.addRow(new Object[]{
+                h.getFecha().format(FMT_TABLA),
+                h.getUsuario().getNombrePersona(),
+                h.getProducto().getNombre(),
+                h.getDetalles()
+            });
+        }
+    }
+
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+        jSeparator1 = new javax.swing.JSeparator();
+        lblTitulo = new javax.swing.JLabel();
+        lblSubtitulo = new javax.swing.JLabel();
+        lblUsuario = new javax.swing.JLabel();
+        cmbUsuario = new javax.swing.JComboBox<>();
+        lblFecha = new javax.swing.JLabel();
+        txtFecha = new javax.swing.JTextField();
+        btnLimpiar = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tablaHistorial = new javax.swing.JTable();
+
+        setBackground(new Color(255, 255, 255));
+        setMaximumSize(new java.awt.Dimension(1280, 770));
+        setMinimumSize(new java.awt.Dimension(1280, 770));
+        setPreferredSize(new java.awt.Dimension(1280, 770));
+        setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jSeparator1.setBackground(new Color(136, 180, 123));
+        jSeparator1.setForeground(new Color(136, 180, 123));
+        add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 50, 1280, 20));
+
+        lblTitulo.setBackground(new Color(136, 180, 123));
+        lblTitulo.setFont(new Font("Instrument Sans", 0, 24)); // NOI18N
+        lblTitulo.setForeground(new Color(136, 180, 123));
+        lblTitulo.setText("Historial");
+        add(lblTitulo, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, -1, -1));
+
+        lblSubtitulo.setFont(new Font("Instrument Sans", 0, 24)); // NOI18N
+        lblSubtitulo.setText("Historial de cambios");
+        add(lblSubtitulo, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 80, -1, -1));
+
+        lblUsuario.setFont(new Font("Instrument Sans", 0, 14)); // NOI18N
+        lblUsuario.setText("Usuario");
+        add(lblUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 135, -1, -1));
+
+        cmbUsuario.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Todos" }));
+        cmbUsuario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbUsuarioActionPerformed(evt);
+            }
+        });
+        add(cmbUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 160, 220, 30));
+
+        lblFecha.setFont(new Font("Instrument Sans", 0, 14)); // NOI18N
+        lblFecha.setText("Fecha (dd/mm/aaaa)");
+        add(lblFecha, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 135, -1, -1));
+
+        txtFecha.setToolTipText("Formato dd/mm/aaaa, por ejemplo 23/10/2026");
+        add(txtFecha, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 160, 180, 30));
+
+        btnLimpiar.setBackground(new Color(136, 180, 123));
+        btnLimpiar.setFont(new Font("Instrument Sans", 0, 12)); // NOI18N
+        btnLimpiar.setForeground(new Color(255, 255, 255));
+        btnLimpiar.setText("Limpiar filtros");
+        btnLimpiar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLimpiarActionPerformed(evt);
+            }
+        });
+        add(btnLimpiar, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 160, 150, 30));
+
+        tablaHistorial.setModel(new DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Fecha", "Usuario", "Producto", "Detalles"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane1.setViewportView(tablaHistorial);
+
+        add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 220, 1180, 490));
+    }// </editor-fold>//GEN-END:initComponents
+
+    private void cmbUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbUsuarioActionPerformed
+        if (!cargando) {
+            aplicarFiltro();
+        }
+    }//GEN-LAST:event_cmbUsuarioActionPerformed
+
+    private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
+        cmbUsuario.setSelectedItem(TODOS);
+        txtFecha.setText("");
+    }//GEN-LAST:event_btnLimpiarActionPerformed
+
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnLimpiar;
+    private javax.swing.JComboBox<String> cmbUsuario;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JLabel lblFecha;
+    private javax.swing.JLabel lblSubtitulo;
+    private javax.swing.JLabel lblTitulo;
+    private javax.swing.JLabel lblUsuario;
+    private javax.swing.JTable tablaHistorial;
+    private javax.swing.JTextField txtFecha;
+    // End of variables declaration//GEN-END:variables
+
+}
