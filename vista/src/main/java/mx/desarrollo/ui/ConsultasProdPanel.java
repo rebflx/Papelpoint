@@ -204,12 +204,18 @@ public class ConsultasProdPanel extends javax.swing.JPanel {
 
 private void cargarProductos() {
     FacadeProducto facade = ServiceFacadeLocator.getInstanceFacadeProducto();
-    listaProductos= new ArrayList<>(facade.obtenerProductos());
+
+    listaProductos = new ArrayList<>();
+    for (Producto p : facade.obtenerProductosActualizados()) {
+        if (Boolean.TRUE.equals(p.getActivo())) {
+            listaProductos.add(p);
+        }
+    }
 
     int poco = 0;
     for (Producto p : listaProductos) {
-            if(!calcularEstado(p).equals("Disponible")){
-                poco++;
+        if (!calcularEstado(p).equals("Disponible")) {
+            poco++;
         }
     }
     jLabel1.setText(poco == 1 ? "1 producto con pocas existencias que necesita reabastecimiento." : poco + " productos con pocas existencias que necesitan reabastecimiento.");

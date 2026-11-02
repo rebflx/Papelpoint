@@ -141,27 +141,27 @@ public class HistorialModificacionesPanel extends javax.swing.JPanel {
         jScrollPane1 = new javax.swing.JScrollPane();
         tablaHistorial = new javax.swing.JTable();
 
-        setBackground(new Color(255, 255, 255));
+        setBackground(new java.awt.Color(255, 255, 255));
         setMaximumSize(new java.awt.Dimension(1280, 770));
         setMinimumSize(new java.awt.Dimension(1280, 770));
         setPreferredSize(new java.awt.Dimension(1280, 770));
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jSeparator1.setBackground(new Color(136, 180, 123));
-        jSeparator1.setForeground(new Color(136, 180, 123));
+        jSeparator1.setBackground(new java.awt.Color(136, 180, 123));
+        jSeparator1.setForeground(new java.awt.Color(136, 180, 123));
         add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 50, 1280, 20));
 
-        lblTitulo.setBackground(new Color(136, 180, 123));
-        lblTitulo.setFont(new Font("Instrument Sans", 0, 24)); // NOI18N
-        lblTitulo.setForeground(new Color(136, 180, 123));
+        lblTitulo.setBackground(new java.awt.Color(136, 180, 123));
+        lblTitulo.setFont(new java.awt.Font("Instrument Sans", 0, 24)); // NOI18N
+        lblTitulo.setForeground(new java.awt.Color(136, 180, 123));
         lblTitulo.setText("Historial");
         add(lblTitulo, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, -1, -1));
 
-        lblSubtitulo.setFont(new Font("Instrument Sans", 0, 24)); // NOI18N
+        lblSubtitulo.setFont(new java.awt.Font("Instrument Sans", 0, 24)); // NOI18N
         lblSubtitulo.setText("Historial de cambios");
         add(lblSubtitulo, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 80, -1, -1));
 
-        lblUsuario.setFont(new Font("Instrument Sans", 0, 14)); // NOI18N
+        lblUsuario.setFont(new java.awt.Font("Instrument Sans", 0, 14)); // NOI18N
         lblUsuario.setText("Usuario");
         add(lblUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 135, -1, -1));
 
@@ -173,16 +173,16 @@ public class HistorialModificacionesPanel extends javax.swing.JPanel {
         });
         add(cmbUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 160, 220, 30));
 
-        lblFecha.setFont(new Font("Instrument Sans", 0, 14)); // NOI18N
+        lblFecha.setFont(new java.awt.Font("Instrument Sans", 0, 14)); // NOI18N
         lblFecha.setText("Fecha (dd/mm/aaaa)");
         add(lblFecha, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 135, -1, -1));
 
         txtFecha.setToolTipText("Formato dd/mm/aaaa, por ejemplo 23/10/2026");
         add(txtFecha, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 160, 180, 30));
 
-        btnLimpiar.setBackground(new Color(136, 180, 123));
-        btnLimpiar.setFont(new Font("Instrument Sans", 0, 12)); // NOI18N
-        btnLimpiar.setForeground(new Color(255, 255, 255));
+        btnLimpiar.setBackground(new java.awt.Color(136, 180, 123));
+        btnLimpiar.setFont(new java.awt.Font("Instrument Sans", 0, 12)); // NOI18N
+        btnLimpiar.setForeground(new java.awt.Color(255, 255, 255));
         btnLimpiar.setText("Limpiar filtros");
         btnLimpiar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -191,7 +191,7 @@ public class HistorialModificacionesPanel extends javax.swing.JPanel {
         });
         add(btnLimpiar, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 160, 150, 30));
 
-        tablaHistorial.setModel(new DefaultTableModel(
+        tablaHistorial.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
