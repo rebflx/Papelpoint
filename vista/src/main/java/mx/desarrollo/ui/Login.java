@@ -136,7 +136,7 @@ public class Login extends javax.swing.JFrame {
             return;
         }
 
-            new MenuPrincipalFrame(u).setVisible(true);
+            new Ventas(u).setVisible(true);
             this.dispose();                    // cierra el login
 
     } catch (Throwable ex) {

@@ -463,6 +463,7 @@ public class MenuPrincipalFrame extends javax.swing.JFrame {
         Ventas ventanaVentas = new Ventas(usuarioActual);
         ventanaVentas.setLocationRelativeTo(this);
         ventanaVentas.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_botonVentasActionPerformed
 
     private void botonEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonEditarActionPerformed
