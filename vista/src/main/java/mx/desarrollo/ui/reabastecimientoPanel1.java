@@ -42,6 +42,21 @@ public class reabastecimientoPanel1 extends javax.swing.JPanel {
         jButton1.addActionListener(e -> guardarReabastecimiento());
     }
 
+    private mx.desarrollo.entity.Usuario usuarioActual;
+
+    public reabastecimientoPanel1(mx.desarrollo.entity.Usuario usuario) {
+        this();
+        this.usuarioActual = usuario;
+    }
+
+    private void registrarHistorial(Producto p, String detalles) {
+        try {
+            ServiceFacadeLocator.getInstanceFacadeHistorial().registrar(usuarioActual, p, detalles);
+        } catch (Throwable ex) {
+            ex.printStackTrace();
+        }
+    }
+
     private void configurarBusqueda() {
         TextPrompt prompt = new TextPrompt("Buscar productos...", jTextField1);
         prompt.changeAlpha(0.75f);
@@ -291,12 +306,17 @@ public class reabastecimientoPanel1 extends javax.swing.JPanel {
 
                 if (cantidad > 0) {
 
+                    int existenciasAntes = producto.getExistencias();
+
                     int nuevasExistencias = Math.addExact(
                             producto.getExistencias(), cantidad);
 
                     producto.setExistencias(nuevasExistencias);
 
                     facade.modificarProducto(producto);
+
+                    registrarHistorial(producto,
+                            "Existencias: " + existenciasAntes + " → " + nuevasExistencias + " (reabastecimiento)");
 
                     actualizados++;
                 }

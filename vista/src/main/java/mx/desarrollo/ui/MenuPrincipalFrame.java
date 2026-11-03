@@ -524,7 +524,7 @@ public class MenuPrincipalFrame extends javax.swing.JFrame {
     private void btnReabastecimientoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReabastecimientoActionPerformed
         
     panelCambiante.add(
-        new reabastecimientoPanel1(),
+            new reabastecimientoPanel1(usuarioActual),
         "REABASTECIMIENTO"
     );
 
