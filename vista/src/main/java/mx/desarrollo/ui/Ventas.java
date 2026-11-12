@@ -1274,7 +1274,7 @@ public class Ventas extends javax.swing.JFrame {
             }
         }
 
-        private void confirmarVenta() {
+     private void confirmarVenta() {
             if (carrito.isEmpty()) {
                 mostrarError("Agrega al menos un producto a la venta.");
                 return;
@@ -1298,10 +1298,10 @@ public class Ventas extends javax.swing.JFrame {
             }
 
             int op = JOptionPane.showConfirmDialog(this,
-                    "Total: " + moneda.format(totalVenta) + "Método de pago: "
-                            + (EFECTIVO.equals(metodoPago) ? "Efectivo" : "Tarjeta")
-                            + (EFECTIVO.equals(metodoPago) ? "Cambio: " + lblCambio.getText() : "")
-                            + "Confirmar la venta?",
+                    "Total: " + moneda.format(totalVenta) + "\n"
+                    + "Método de pago: " + (EFECTIVO.equals(metodoPago) ? "Efectivo" : "Tarjeta") + "\n"
+                    + (EFECTIVO.equals(metodoPago) ? "Cambio: " + lblCambio.getText() + "\n" : "")
+                    + "¿Confirmar la venta?",
                     "Confirmar venta", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
             if (op != JOptionPane.YES_OPTION) {
                 return;
@@ -1315,14 +1315,30 @@ public class Ventas extends javax.swing.JFrame {
                     d.setCantidad(en.getValue());
                     detalles.add(d);
                 }
+                boolean ef = EFECTIVO.equals(metodoPago);
+                double recibido = ef ? leerDineroRecibido() : 0;
+
                 Venta venta = ServiceFacadeLocator.getInstanceFacadeVenta()
                         .registrarVenta(usuarioActual, metodoPago, detalles);
-                mostrarInfo("Venta #" + venta.getIdVenta() + " registrada correctamente.");
+
+                List<TicketDialog.Linea> lineas = new ArrayList<>();
+                for (DetalleVentaProducto d : detalles) {
+                    lineas.add(new TicketDialog.Linea(d.getProducto().getNombre(), d.getCantidad(),
+                            d.getPrecioUnitario() * d.getCantidad()));
+                }
+                double total = venta.getTotal();   
+                double iva = Math.round((total - venta.getSubtotal()) * 100) / 100.0;
+                double cambio = ef ? Math.max(0, recibido - total) : 0;
+
                 nuevaVenta();
-                cargarProductos(); // para ver las existencias ya descontadas
+                cargarProductos(); 
+
+                new TicketDialog(this, DelegateVenta.folio(venta.getIdVenta()), venta.getFecha(),
+                        usuarioActual.getNombrePersona(), ef ? "Efectivo" : "Tarjeta",
+                        lineas, iva, total, ef ? recibido : total, cambio).setVisible(true);
             } catch (IllegalArgumentException ex) {
                 mostrarError(ex.getMessage());
-                cargarProductos(); // ajusta el carrito cuando cambia el stok
+                cargarProductos(); 
             } catch (Exception | ExceptionInInitializerError ex) {
                 mostrarError("No se pudo guardar la venta: " + ex.getMessage());
             }

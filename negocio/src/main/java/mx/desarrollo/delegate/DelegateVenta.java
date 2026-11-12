@@ -3,6 +3,7 @@ package mx.desarrollo.delegate;
 import mx.desarrollo.entity.DetalleVentaProducto;
 import mx.desarrollo.entity.Usuario;
 import mx.desarrollo.entity.Venta;
+import mx.desarrollo.persistence.dao.VentaDAO;
 import mx.desarrollo.persistence.integration.ServiceLocator;
 
 import java.util.List;
@@ -34,6 +35,15 @@ public class DelegateVenta {
 
         return ServiceLocator.getInstanceVentaDAO().registrarVenta(venta, detalles, IVA);
     }
+
+    public int numeroClienteDelDia(Venta venta){
+        return ServiceLocator.getInstanceVentaDAO().numeroClienteDelDia(venta);
+    }
+
+    public static String folio(Integer idVenta){
+        return VentaDAO.generarFolio(idVenta);
+    }
+
     public List<Venta> listarVentas(){
         return ServiceLocator.getInstanceVentaDAO().findAll();
     }

@@ -14,6 +14,9 @@
         <class>mx.desarrollo.entity.CorteCaja</class>
         <class>mx.desarrollo.entity.Venta</class>
         <class>mx.desarrollo.entity.DetalleVentaProducto</class>
+        <class>mx.desarrollo.entity.DetalleVentaProducto</class>
+        <class>mx.desarrollo.entity.Ticket</class>
+        <class>mx.desarrollo.entity.HistorialModificacionProducto</class>
         <class>mx.desarrollo.entity.HistorialModificacionProducto</class>
 
         <properties>
