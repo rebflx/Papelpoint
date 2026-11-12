@@ -418,7 +418,7 @@ public class MenuPrincipalFrame extends javax.swing.JFrame {
 
         panelCambiante.add(INVENTARIO, "card3");
 
-        TICKETS.setBackground(new java.awt.Color(204, 0, 0));
+        TICKETS.setBackground(new java.awt.Color(255, 255, 255));
 
         javax.swing.GroupLayout TICKETSLayout = new javax.swing.GroupLayout(TICKETS);
         TICKETS.setLayout(TICKETSLayout);
@@ -503,10 +503,17 @@ public class MenuPrincipalFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_botonInventarioActionPerformed
 
     private void botonTicketsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonTicketsActionPerformed
-        panelCambiante.removeAll();
-        panelCambiante.add(TICKETS);
-        panelCambiante.repaint();
-        panelCambiante.revalidate();
+
+       panelCambiante.add(
+            new TicketsPanel(),
+        "TICKETS"
+    );
+
+    CardLayout cl = (CardLayout) panelCambiante.getLayout();
+    cl.show(panelCambiante, "TICKETS");
+
+    panelCambiante.revalidate();
+    panelCambiante.repaint();
     }//GEN-LAST:event_botonTicketsActionPerformed
 
     private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed

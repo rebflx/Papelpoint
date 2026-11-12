@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JDialog.java to edit this template
  */
 package mx.desarrollo.ui;import java.awt.BorderLayout;
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
@@ -316,7 +317,7 @@ public class TicketDialog extends javax.swing.JDialog {
     private javax.swing.JTable tblProductos;
     // End of variables declaration//GEN-END:variables
 
-      public static class Linea {
+         public static class Linea {
         final String nombre;
         final int cantidad;
         final double importe;
@@ -328,7 +329,6 @@ public class TicketDialog extends javax.swing.JDialog {
         }
     }
 
-   
     private static final int BORDE_DER = 230;
     private static final int HOLGURA_DER = 8;
     private static final int ANCHO_MAX_DATO = 140;
@@ -341,11 +341,24 @@ public class TicketDialog extends javax.swing.JDialog {
     public TicketDialog(java.awt.Frame parent, String folio, LocalDateTime fecha, String cajero,
                         String tipoPago, List<Linea> lineas, double iva, double total,
                         double recibido, double cambio) {
+        this(parent, folio, fecha, cajero, tipoPago, lineas, iva, total, recibido, cambio, false);
+    }
+
+
+    public TicketDialog(java.awt.Frame parent, String folio, LocalDateTime fecha, String cajero,
+                        String tipoPago, List<Linea> lineas, double iva, double total) {
+        this(parent, folio, fecha, cajero, tipoPago, lineas, iva, total, total, 0, true);
+    }
+
+    private TicketDialog(java.awt.Frame parent, String folio, LocalDateTime fecha, String cajero,
+                         String tipoPago, List<Linea> lineas, double iva, double total,
+                         double recibido, double cambio, boolean reimpresion) {
         this(parent, true);
         this.folio = folio;
         setTitle("Ticket de venta");
         setResizable(false);
 
+        // --- datos ---
         lblFolio.setText(folio);
         lblFecha.setText(fecha.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")));
         lblCajero.setText(cajero == null || cajero.isBlank() ? "-" : cajero);
@@ -356,7 +369,12 @@ public class TicketDialog extends javax.swing.JDialog {
         lblCambio.setText(moneda.format(cambio));
 
         montarLista(lineas);
+        if (reimpresion) {
+            quitarRecibidoCambio();
+            agregarLeyendaReimpresion();
+        }
 
+        // --- datos pegados al borde derecho (las etiquetas del diseno son muy angostas) ---
         recortarTexto(lblCajero, ANCHO_MAX_DATO);
         recortarTexto(lblTipoPago, ANCHO_MAX_DATO);
         alinearDerecha(lblFolio);
@@ -365,9 +383,12 @@ public class TicketDialog extends javax.swing.JDialog {
         alinearDerecha(lblTipoPago);
         alinearDerecha(lblIva);
         alinearDerecha(lblTotal);
-        alinearDerecha(lblRecibido);
-        alinearDerecha(lblCambio);
+        if (!reimpresion) {
+            alinearDerecha(lblRecibido);
+            alinearDerecha(lblCambio);
+        }
 
+        // --- botones ---
         btnImprimir.addActionListener(e -> imprimir());
         btnCerrar.addActionListener(e -> dispose());
 
@@ -375,6 +396,7 @@ public class TicketDialog extends javax.swing.JDialog {
         setLocationRelativeTo(parent);
     }
 
+ 
     private void montarLista(List<Linea> lineas) {
         Rectangle area = jScrollPane1.getBounds();
         ListaProductos lista = new ListaProductos(lineas, tblProductos.getFont(), area.width, moneda);
@@ -404,7 +426,7 @@ public class TicketDialog extends javax.swing.JDialog {
         cp.add(barra, BorderLayout.SOUTH);
     }
 
-
+ 
     private static class ListaProductos extends JPanel {
         private static final int ANCHO_CANT = 32;
         private static final int ANCHO_IMPORTE = 68;
@@ -430,7 +452,7 @@ public class TicketDialog extends javax.swing.JDialog {
             FontMetrics fm = getFontMetrics(fuente);
             altoLinea = fm.getHeight();
             ascenso = fm.getAscent();
-            int anchoNombre = ancho - ANCHO_CANT - ANCHO_IMPORTE - 4; 
+            int anchoNombre = ancho - ANCHO_CANT - ANCHO_IMPORTE - 4; // 4 px de aire para no rozar CANT
 
             int total = altoLinea + ESPACIO_ENCABEZADO;
             for (Linea l : lineas) {
@@ -485,8 +507,8 @@ public class TicketDialog extends javax.swing.JDialog {
             g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
             g2.setColor(Color.BLACK);
 
-            int xCant = ancho - ANCHO_IMPORTE - ANCHO_CANT / 2;   
-            int xImporte = ancho - 1;                              
+            int xCant = ancho - ANCHO_IMPORTE - ANCHO_CANT / 2;   // centro de la columna CANT
+            int xImporte = ancho - 1;                              // borde derecho de IMPORTE
             int y = ascenso;
 
             g2.setFont(negrita);
@@ -523,10 +545,10 @@ public class TicketDialog extends javax.swing.JDialog {
     }
 
     private void alinearDerecha(JLabel l) {
- 
+   
         l.setHorizontalAlignment(SwingConstants.RIGHT);
         l.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, HOLGURA_DER));
-        Dimension d = l.getPreferredSize();           
+        Dimension d = l.getPreferredSize();           // ya incluye el borde
         int ancho = d.width + 4;
         mover(l, BORDE_DER + HOLGURA_DER - ancho, l.getY(), ancho, d.height);
     }
@@ -543,7 +565,51 @@ public class TicketDialog extends javax.swing.JDialog {
         l.setText(t + "...");
     }
 
+  
+    private void quitarRecibidoCambio() {
+        int arriba = Math.min(lblRecibido.getY(), lblCambio.getY());
+        int abajo = Math.max(lblRecibido.getY() + lblRecibido.getHeight(),
+                lblCambio.getY() + lblCambio.getHeight());
+        int paso = Math.abs(lblCambio.getY() - lblRecibido.getY());   // distancia entre una fila y la siguiente
+        int salto = paso > 0 ? 2 * paso : abajo - arriba;
 
+        for (Component c : pnlTicket.getComponents()) {
+            boolean enFila = c.getY() + c.getHeight() / 2 >= arriba && c.getY() + c.getHeight() / 2 <= abajo;
+            if (c == lblRecibido || c == lblCambio) {
+                c.setVisible(false);
+            } else if (enFila && c instanceof JLabel) {
+                String t = ((JLabel) c).getText() == null ? "" : ((JLabel) c).getText().toLowerCase();
+                if (t.contains("recib") || t.contains("cambio")) {
+                    c.setVisible(false);    // los titulos "Recibido:" y "Cambio:"
+                }
+            }
+        }
+        for (Component c : pnlTicket.getComponents()) {
+            if (c.isVisible() && c.getY() >= abajo) {
+                mover(c, c.getX(), c.getY() - salto, c.getWidth(), c.getHeight());
+            }
+        }
+        pnlTicket.setPreferredSize(new Dimension(pnlTicket.getPreferredSize().width,
+                pnlTicket.getPreferredSize().height - salto));
+    }
+
+    private void agregarLeyendaReimpresion() {
+        int fondo = 0;
+        for (Component c : pnlTicket.getComponents()) {
+            if (c.isVisible()) {
+                fondo = Math.max(fondo, c.getY() + c.getHeight());
+            }
+        }
+        int ancho = pnlTicket.getPreferredSize().width;
+        JLabel leyenda = new JLabel("*** REIMPRESION ***", SwingConstants.CENTER);
+        leyenda.setFont(new Font(Font.MONOSPACED, Font.BOLD, 12));
+        mover(leyenda, 0, fondo + 6, ancho, 18);
+        pnlTicket.setPreferredSize(new Dimension(ancho,
+                Math.max(pnlTicket.getPreferredSize().height, fondo) + 24));
+    }
+
+ 
+  
     private Printable crearPrintable() {
         return (Graphics g, PageFormat pf, int page) -> {
             if (page > 0) {
@@ -559,16 +625,39 @@ public class TicketDialog extends javax.swing.JDialog {
             Graphics2D g2 = (Graphics2D) g;
             g2.translate(x, y);
             g2.scale(escala, escala);
-            pnlTicket.printAll(g2); 
+            pnlTicket.printAll(g2); // solo el ticket; los botones quedan fuera de pnlTicket
             return Printable.PAGE_EXISTS;
         };
     }
 
     private void imprimir() {
+        imprimir(null);
+    }
+
+
+    public void imprimirPdf() {
+        javax.print.PrintService pdf = null;
+        for (javax.print.PrintService s : PrinterJob.lookupPrintServices()) {
+            if (s.getName().toLowerCase().contains("pdf")) {
+                pdf = s;
+                break;
+            }
+        }
+        if (pdf == null) {
+            JOptionPane.showMessageDialog(getOwner(),
+                    "No se encontro una impresora PDF en este equipo.\n"
+                    + "Usa el boton Imprimir y elige \"Guardar como PDF\" o \"Microsoft Print to PDF\".",
+                    "PDF", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+        imprimir(pdf);
+    }
+
+    private void imprimir(javax.print.PrintService servicio) {
         PrinterJob job = PrinterJob.getPrinterJob();
         job.setJobName("Ticket " + folio);
 
-   
+      
         Paper papel = new Paper();
         double ancho = pnlTicket.getWidth() + 16;
         double alto = pnlTicket.getHeight() + 16;
@@ -578,13 +667,16 @@ public class TicketDialog extends javax.swing.JDialog {
         formato.setPaper(papel);
 
         job.setPrintable(crearPrintable(), formato);
-        if (job.printDialog()) {
-            try {
-                job.print();
-            } catch (PrinterException ex) {
-                JOptionPane.showMessageDialog(this, "No se pudo imprimir: " + ex.getMessage(),
-                        "Error", JOptionPane.ERROR_MESSAGE);
+        try {
+            if (servicio != null) {
+                job.setPrintService(servicio);
+            } else if (!job.printDialog()) {
+                return;     // el usuario cancelo
             }
+            job.print();
+        } catch (PrinterException ex) {
+            JOptionPane.showMessageDialog(this, "No se pudo imprimir: " + ex.getMessage(),
+                    "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 } 

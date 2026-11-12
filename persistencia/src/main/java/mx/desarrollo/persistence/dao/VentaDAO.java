@@ -11,6 +11,8 @@ import mx.desarrollo.entity.Venta;
 import mx.desarrollo.entity.Usuario;
 import mx.desarrollo.persistence.persistence.AbstractDAO;
 import mx.desarrollo.persistence.persistence.HibernateUtil;
+import jakarta.persistence.TypedQuery;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -25,15 +27,11 @@ public class VentaDAO extends AbstractDAO<Venta> {
         return HibernateUtil.getEntityManager();
     }
 
-    /** Formato unico del folio: NV-14 */
     public static String generarFolio(Integer idVenta){
         return "NV-" + idVenta;
     }
 
-    /**
-     * Registra venta + detalles + ticket y descuenta existencias,
-     * todo en UNA sola transaccion (si algo falla, nada se guarda).
-     */
+
     public Venta registrarVenta(Venta venta, List<DetalleVentaProducto> detalles, double tasaIva){
         EntityManager em = getEntityManager();
         EntityTransaction tx = em.getTransaction();
@@ -91,10 +89,7 @@ public class VentaDAO extends AbstractDAO<Venta> {
         }
     }
 
-    /**
-     * Numero de cliente del dia: cuantas ventas hay hoy hasta esta (inclusive).
-     * Funciona igual al reimprimir un ticket viejo.
-     */
+
     public int numeroClienteDelDia(Venta venta){
         LocalDateTime inicio = venta.getFecha().toLocalDate().atStartOfDay();
         LocalDateTime fin = inicio.plusDays(1);
@@ -105,6 +100,51 @@ public class VentaDAO extends AbstractDAO<Venta> {
                 .setParameter("fin", fin)
                 .setParameter("id", venta.getIdVenta())
                 .getSingleResult()));
+    }
+
+
+    public List<Ticket> buscarTickets(String folio, LocalDate dia, int limite){
+        String texto = folio == null ? "" : folio.replaceAll("[%_\\\\]", "").trim().toLowerCase();
+
+        StringBuilder jpql = new StringBuilder(
+                "SELECT t FROM Ticket t JOIN FETCH t.venta v JOIN FETCH v.usuario WHERE 1 = 1");
+        if(!texto.isEmpty()){
+            jpql.append(" AND LOWER(t.folio) LIKE :folio");
+        }
+        if(dia != null){
+            jpql.append(" AND t.fechaExpedicion >= :ini AND t.fechaExpedicion < :fin");
+        }
+        jpql.append(" ORDER BY t.fechaExpedicion DESC, t.idTicket DESC");
+
+        EntityManager em = getEntityManager();
+        try{
+            TypedQuery<Ticket> q = em.createQuery(jpql.toString(), Ticket.class);
+            if(!texto.isEmpty()){
+                q.setParameter("folio", "%" + texto + "%");
+            }
+            if(dia != null){
+                q.setParameter("ini", dia.atStartOfDay());
+                q.setParameter("fin", dia.plusDays(1).atStartOfDay());
+            }
+            q.setMaxResults(limite);
+            return q.getResultList();
+        }finally {
+            em.close();
+        }
+    }
+
+    public List<DetalleVentaProducto> detallesDeVenta(Integer idVenta){
+        EntityManager em = getEntityManager();
+        try{
+            return em.createQuery(
+                            "SELECT d FROM DetalleVentaProducto d JOIN FETCH d.producto "
+                                    + "WHERE d.venta.idVenta = :id ORDER BY d.idDetalleProducto",
+                            DetalleVentaProducto.class)
+                    .setParameter("id", idVenta)
+                    .getResultList();
+        }finally {
+            em.close();
+        }
     }
 
     private static double redondear(double valor){

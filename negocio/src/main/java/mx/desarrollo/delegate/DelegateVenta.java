@@ -1,23 +1,27 @@
 package mx.desarrollo.delegate;
 
 import mx.desarrollo.entity.DetalleVentaProducto;
+import mx.desarrollo.entity.Ticket;
 import mx.desarrollo.entity.Usuario;
 import mx.desarrollo.entity.Venta;
 import mx.desarrollo.persistence.dao.VentaDAO;
 import mx.desarrollo.persistence.integration.ServiceLocator;
 
-import java.util.List;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 public class DelegateVenta {
     public static final String METODO_EFECTIVO = "EFECTIVO";
     public static final String METODO_TARJETA = "TARJETA";
     public static final String ESTADO_COMPLETADA = "COMPLETADA";
     public static final double IVA = 0.16;
+    public static final int LIMITE_TICKETS = 200;
 
     public Venta registrarVenta(Usuario usuario, String metodoPago, List<DetalleVentaProducto> detalles){
         if(usuario == null || usuario.getIdUsuario() == null){
-            throw new IllegalArgumentException("No hay un usuario en sesion"); //le cambian el mensaje si quieren
+            throw new IllegalArgumentException("No hay un usuario en sesion");
         }
         if(detalles == null || detalles.isEmpty()){
             throw new IllegalArgumentException("El carrito esta vacio");
@@ -46,5 +50,41 @@ public class DelegateVenta {
 
     public List<Venta> listarVentas(){
         return ServiceLocator.getInstanceVentaDAO().findAll();
+    }
+
+
+    public List<Ticket> buscarTickets(String texto){
+        String t = texto == null ? "" : texto.trim();
+        LocalDate dia = leerDia(t);
+        return ServiceLocator.getInstanceVentaDAO()
+                .buscarTickets(dia == null ? t : null, dia, LIMITE_TICKETS);
+    }
+
+    public List<DetalleVentaProducto> detallesDeVenta(Integer idVenta){
+        if(idVenta == null){
+            throw new IllegalArgumentException("Venta no valida");
+        }
+        return ServiceLocator.getInstanceVentaDAO().detallesDeVenta(idVenta);
+    }
+
+    public static double iva(Venta venta){
+        return Math.round((venta.getTotal() - venta.getSubtotal()) * 100) / 100.0;
+    }
+
+    private static final DateTimeFormatter[] FORMATOS_DIA = {
+            DateTimeFormatter.ofPattern("dd/MM/yyyy"),
+            DateTimeFormatter.ofPattern("dd-MM-yyyy"),
+            DateTimeFormatter.ofPattern("yyyy-MM-dd")
+    };
+
+    private static LocalDate leerDia(String texto){
+        for(DateTimeFormatter f : FORMATOS_DIA){
+            try{
+                return LocalDate.parse(texto, f);
+            }catch (Exception ignorar){
+
+            }
+        }
+        return null;
     }
 }
