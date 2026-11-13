@@ -1,9 +1,5 @@
 package mx.desarrollo.integration;
-import mx.desarrollo.facade.FacadeHistorial;
-import mx.desarrollo.facade.FacadeVenta;
-
-import mx.desarrollo.facade.FacadeProducto;
-import mx.desarrollo.facade.FacadeUsuario;
+import mx.desarrollo.facade.*;
 
 public class ServiceFacadeLocator {
 
@@ -44,4 +40,17 @@ public class ServiceFacadeLocator {
         }
         return facadeHistorial;
     }
+
+
+    private static FacadeServicio facadeServicio;
+
+    public static FacadeServicio getInstanceFacadeServicio() {
+        if (facadeServicio == null) {
+            facadeServicio = new FacadeServicio();
+        }
+
+        return facadeServicio;
+    }
+
+
 }

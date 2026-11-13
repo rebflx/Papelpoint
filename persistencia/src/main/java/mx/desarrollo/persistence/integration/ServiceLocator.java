@@ -1,7 +1,7 @@
 package mx.desarrollo.persistence.integration;
 import mx.desarrollo.persistence.dao.HistorialDAO;
 import mx.desarrollo.persistence.dao.VentaDAO;
-
+import mx.desarrollo.persistence.dao.servicioDAO;
 import jakarta.persistence.EntityManager;
 import mx.desarrollo.persistence.dao.ProductoDAO;
 import mx.desarrollo.persistence.dao.UsuarioDAO;
@@ -48,5 +48,17 @@ public class ServiceLocator {
         }
         return historialDAO;
     }
+
+
+    private static servicioDAO servicioDAO;
+
+    public static servicioDAO getInstanceServicioDAO() {
+        if (servicioDAO == null) {
+            servicioDAO = new servicioDAO(getEntityManager());
+        }
+
+        return servicioDAO;
+    }
+
 
 }

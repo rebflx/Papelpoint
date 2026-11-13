@@ -73,7 +73,7 @@
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Component id="pnlResumen" min="-2" pref="463" max="-2" attributes="0"/>
                               </Group>
-                              <Component id="pnlArticulos" pref="923" max="32767" attributes="0"/>
+                              <Component id="pnlArticulos" pref="927" max="32767" attributes="0"/>
                           </Group>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Component id="pnlProductos" min="-2" max="-2" attributes="0"/>

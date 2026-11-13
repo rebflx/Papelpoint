@@ -18,6 +18,9 @@
         <class>mx.desarrollo.entity.Ticket</class>
         <class>mx.desarrollo.entity.HistorialModificacionProducto</class>
         <class>mx.desarrollo.entity.HistorialModificacionProducto</class>
+        <class>mx.desarrollo.entity.Servicio</class>
+        <class>mx.desarrollo.entity.DetalleVentaServicio</class>
+
 
         <properties>
 

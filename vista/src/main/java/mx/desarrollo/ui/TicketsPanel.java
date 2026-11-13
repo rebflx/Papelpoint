@@ -33,6 +33,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import mx.desarrollo.delegate.DelegateVenta;
 import mx.desarrollo.entity.DetalleVentaProducto;
+import mx.desarrollo.entity.DetalleVentaServicio;
 import mx.desarrollo.entity.Ticket;
 import mx.desarrollo.entity.Venta;
 
@@ -105,15 +106,15 @@ public class TicketsPanel extends javax.swing.JPanel {
         jScrollPane1.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(170, 170, 170), 1, true));
 
         tablaProductos.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
+                new Object [][] {
 
-            },
-            new String [] {
-                "ID", "Producto", "Precio", "Existencias", "Descuento", "Estado"
-            }
+                },
+                new String [] {
+                        "ID", "Producto", "Precio", "Existencias", "Descuento", "Estado"
+                }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
+                    false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -263,15 +264,15 @@ public class TicketsPanel extends javax.swing.JPanel {
 
         tblProductos.setFont(new java.awt.Font("Lucida Console", 0, 10)); // NOI18N
         tblProductos.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
-            },
-            new String [] {
-                "PRODUCTO", "CANT", "IMPORTE"
-            }
+                new Object [][] {
+                        {null, null, null},
+                        {null, null, null},
+                        {null, null, null},
+                        {null, null, null}
+                },
+                new String [] {
+                        "PRODUCTO", "CANT", "IMPORTE"
+                }
         ));
         tblProductos.setSelectionBackground(new java.awt.Color(255, 255, 255));
         tblProductos.setShowGrid(false);
@@ -327,22 +328,22 @@ public class TicketsPanel extends javax.swing.JPanel {
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1280, Short.MAX_VALUE)
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 1280, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 0, Short.MAX_VALUE)))
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(0, 1280, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(layout.createSequentialGroup()
+                                        .addGap(0, 0, Short.MAX_VALUE)
+                                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 1280, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(0, 0, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 770, Short.MAX_VALUE)
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 770, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 0, Short.MAX_VALUE)))
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(0, 770, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(layout.createSequentialGroup()
+                                        .addGap(0, 0, Short.MAX_VALUE)
+                                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 770, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(0, 0, Short.MAX_VALUE)))
         );
 
         jPanel1.getAccessibleContext().setAccessibleName("");
@@ -364,7 +365,7 @@ public class TicketsPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_txtBuscarKeyReleased
 
     private void btnPdfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPdfActionPerformed
-        
+
     }//GEN-LAST:event_btnPdfActionPerformed
 
     private void btnImprimirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImprimirActionPerformed
@@ -427,15 +428,16 @@ public class TicketsPanel extends javax.swing.JPanel {
     private final javax.swing.Timer temporizadorBusqueda = new javax.swing.Timer(250, e -> recargar());
     private List<Ticket> cargados = new ArrayList<>();
     private List<DetalleVentaProducto> detalleActual = new ArrayList<>();
+    private List<DetalleVentaServicio> serviciosActuales = new ArrayList<>();
     private Component[] grupoDetalle;
 
     private void configurarConsulta() {
         jPanel1.doLayout();   // aplica las posiciones del diseno para poder leerlas
 
         grupoDetalle = new Component[]{
-            lblRegistrados, lblFolio, lblFecha, jScrollPane2, jSeparator4,
-            LBLsubtotal1, lblSubtotal, LBLIVA1, lblIva, jSeparator2,
-            LBLsubtotal2, lblTotal1, LBLIVA, lblMetodoPago, btnImprimir, btnPdf};
+                lblRegistrados, lblFolio, lblFecha, jScrollPane2, jSeparator4,
+                LBLsubtotal1, lblSubtotal, LBLIVA1, lblIva, jSeparator2,
+                LBLsubtotal2, lblTotal1, LBLIVA, lblMetodoPago, btnImprimir, btnPdf};
 
         configurarBuscador();
         configurarOrden();
@@ -506,7 +508,7 @@ public class TicketsPanel extends javax.swing.JPanel {
 
     private void configurarOrden() {
         jComboBox5.setModel(new DefaultComboBoxModel<>(new String[]{
-            "Más recientes", "Más antiguos", "Total (mayor a menor)", "Total (menor a mayor)"}));
+                "Más recientes", "Más antiguos", "Total (mayor a menor)", "Total (menor a mayor)"}));
         jComboBox5.addActionListener(e -> mostrarLista(idSeleccionado()));
     }
 
@@ -590,7 +592,7 @@ public class TicketsPanel extends javax.swing.JPanel {
         etiqueta.setBounds(x, etiqueta.getY(), ancho, alto);
     }
 
- 
+
     public void recargar() {
         Integer id = idSeleccionado();
         try {
@@ -647,8 +649,10 @@ public class TicketsPanel extends javax.swing.JPanel {
         }
         try {
             detalleActual = negocio.detallesDeVenta(t.getVenta().getIdVenta());
+            serviciosActuales = negocio.detallesServicioDeVenta(t.getVenta().getIdVenta());
         } catch (Exception | ExceptionInInitializerError ex) {
             detalleActual = new ArrayList<>();
+            serviciosActuales = new ArrayList<>();
             JOptionPane.showMessageDialog(this, "No se pudo cargar el ticket: " + ex.getMessage(),
                     "Error", JOptionPane.ERROR_MESSAGE);
             ocultarDetalle();
@@ -664,7 +668,16 @@ public class TicketsPanel extends javax.swing.JPanel {
         for (DetalleVentaProducto d : detalleActual) {
             double precio = d.getPrecioUnitario();
             modelo.addRow(new Object[]{d.getProducto().getNombre(), d.getCantidad(),
-                moneda.format(precio), moneda.format(precio * d.getCantidad())});
+                    moneda.format(precio), moneda.format(precio * d.getCantidad())});
+        }
+
+        for (DetalleVentaServicio d : serviciosActuales) {
+            double precio = d.getPrecioUnitario();
+            modelo.addRow(new Object[]{
+                    d.getServicio().getNombre() + " - " + d.getNombreCliente(),
+                    d.getCantidad(), moneda.format(precio),
+                    moneda.format(precio * d.getCantidad())
+            });
         }
 
         lblSubtotal.setText(moneda.format(v.getSubtotal()));
@@ -701,6 +714,11 @@ public class TicketsPanel extends javax.swing.JPanel {
             lineas.add(new TicketDialog.Linea(d.getProducto().getNombre(), d.getCantidad(),
                     d.getPrecioUnitario() * d.getCantidad()));
         }
+        for (DetalleVentaServicio d : serviciosActuales) {
+            lineas.add(new TicketDialog.Linea(
+                    d.getServicio().getNombre() + " - " + d.getNombreCliente(),
+                    d.getCantidad(), d.getPrecioUnitario() * d.getCantidad()));
+        }
         java.awt.Window ventana = SwingUtilities.getWindowAncestor(this);
         java.awt.Frame dueno = ventana instanceof java.awt.Frame ? (java.awt.Frame) ventana : null;
 
@@ -731,7 +749,7 @@ public class TicketsPanel extends javax.swing.JPanel {
     //  Como se dibuja cada cosa
     // ---------------------------------------------------------------------
 
- 
+
     private static class TicketRenderer extends JPanel implements ListCellRenderer<Ticket> {
 
         private final NumberFormat dinero = NumberFormat.getCurrencyInstance(Locale.forLanguageTag("es-MX"));
@@ -740,7 +758,7 @@ public class TicketsPanel extends javax.swing.JPanel {
 
         @Override
         public Component getListCellRendererComponent(JList<? extends Ticket> lista, Ticket valor,
-                int indice, boolean seleccion, boolean foco) {
+                                                      int indice, boolean seleccion, boolean foco) {
             this.ticket = valor;
             this.seleccionado = seleccion;
             return this;
@@ -790,7 +808,7 @@ public class TicketsPanel extends javax.swing.JPanel {
 
         @Override
         public Component getTableCellRendererComponent(JTable tabla, Object valor, boolean seleccion,
-                boolean foco, int fila, int columna) {
+                                                       boolean foco, int fila, int columna) {
             super.getTableCellRendererComponent(tabla, valor, false, false, fila, columna);
             setHorizontalAlignment(alineacion);
             setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 10));
@@ -802,7 +820,7 @@ public class TicketsPanel extends javax.swing.JPanel {
 
         @Override
         public Component getTableCellRendererComponent(JTable tabla, Object valor, boolean seleccion,
-                boolean foco, int fila, int columna) {
+                                                       boolean foco, int fila, int columna) {
             super.getTableCellRendererComponent(tabla, valor, false, false, fila, columna);
             setFont(FUENTE.deriveFont(13f));
             setForeground(new Color(130, 130, 130));

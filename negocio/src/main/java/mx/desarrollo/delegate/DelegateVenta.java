@@ -1,6 +1,7 @@
 package mx.desarrollo.delegate;
 
 import mx.desarrollo.entity.DetalleVentaProducto;
+import mx.desarrollo.entity.DetalleVentaServicio;
 import mx.desarrollo.entity.Ticket;
 import mx.desarrollo.entity.Usuario;
 import mx.desarrollo.entity.Venta;
@@ -20,10 +21,16 @@ public class DelegateVenta {
     public static final int LIMITE_TICKETS = 200;
 
     public Venta registrarVenta(Usuario usuario, String metodoPago, List<DetalleVentaProducto> detalles){
+        return registrarVenta(usuario, metodoPago, detalles, List.of());
+    }
+
+    public Venta registrarVenta(Usuario usuario, String metodoPago,
+                                List<DetalleVentaProducto> detalles,
+                                List<DetalleVentaServicio> servicios){
         if(usuario == null || usuario.getIdUsuario() == null){
             throw new IllegalArgumentException("No hay un usuario en sesion");
         }
-        if(detalles == null || detalles.isEmpty()){
+        if((detalles == null || detalles.isEmpty()) && (servicios == null || servicios.isEmpty())){
             throw new IllegalArgumentException("El carrito esta vacio");
 
         }
@@ -37,7 +44,9 @@ public class DelegateVenta {
         venta.setEstado(ESTADO_COMPLETADA);
         venta.setFecha(LocalDateTime.now());
 
-        return ServiceLocator.getInstanceVentaDAO().registrarVenta(venta, detalles, IVA);
+        return ServiceLocator.getInstanceVentaDAO().registrarVenta(
+                venta, detalles == null ? List.of() : detalles,
+                servicios == null ? List.of() : servicios, IVA);
     }
 
     public int numeroClienteDelDia(Venta venta){
@@ -65,6 +74,21 @@ public class DelegateVenta {
             throw new IllegalArgumentException("Venta no valida");
         }
         return ServiceLocator.getInstanceVentaDAO().detallesDeVenta(idVenta);
+    }
+
+    public List<DetalleVentaServicio> detallesServicioDeVenta(Integer idVenta) {
+        if (idVenta == null) {
+            throw new IllegalArgumentException("Venta no valida");
+        }
+        return ServiceLocator.getInstanceVentaDAO().detallesServicioDeVenta(idVenta);
+    }
+
+    public List<DetalleVentaServicio> listarTrabajosServicio() {
+        return ServiceLocator.getInstanceVentaDAO().listarTrabajosServicio();
+    }
+
+    public void marcarTrabajoRealizado(Integer idDetalle) {
+        ServiceLocator.getInstanceVentaDAO().actualizarEstadoTrabajo(idDetalle, "Realizado");
     }
 
     public static double iva(Venta venta){

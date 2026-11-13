@@ -37,15 +37,52 @@ public class MenuPrincipalFrame extends javax.swing.JFrame {
         this.usuarioActual = usuario;
     }
 
-    private HistorialModificacionesPanel historialPanel;
 
+
+    private Ventas ventasOrigen;
+
+    public void mostrarServicios() {
+        mostrarServicios(null);
+    }
+
+    public void mostrarServicios(Ventas ventas) {
+        this.ventasOrigen = ventas;
+        Servicios panelServicios = new Servicios(usuarioActual);
+        if (ventas != null) {
+            panelServicios.configurarCarrito(detalle -> {
+                ventas.agregarServicioAlCarrito(detalle);
+                ventas.setVisible(true);
+                this.dispose();
+            });
+            // Si se cierra el menu con la X, recuperar la venta sin perderla.
+            setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+            addWindowListener(new java.awt.event.WindowAdapter() {
+                @Override
+                public void windowClosed(java.awt.event.WindowEvent e) {
+                    if (!ventas.isVisible() && ventas.isDisplayable()) {
+                        ventas.setVisible(true);
+                    }
+                }
+            });
+        }
+        panelCambiante.add(panelServicios, "SERVICIOS");
+        CardLayout cl = (CardLayout) panelCambiante.getLayout();
+        cl.show(panelCambiante, "SERVICIOS");
+        panelCambiante.revalidate();
+        panelCambiante.repaint();
+    }
+
+
+    private HistorialModificacionesPanel historialPanel;
 
     private boolean esAdmin() {
         return usuarioActual != null && DelegateUsuario.ROL_ADMIN.equalsIgnoreCase(usuarioActual.getRol());
     }
 
     private boolean validarAdmin() {
-        if (esAdmin()) return true;
+        if (esAdmin()) {
+            return true;
+        }
         JOptionPane.showMessageDialog(this, "Esta seccion es solo para los administradores", "Acceso Denegado", JOptionPane.WARNING_MESSAGE);
         return false;
     }
@@ -94,6 +131,8 @@ public class MenuPrincipalFrame extends javax.swing.JFrame {
         btnReabastecimiento = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         btnHistorial = new javax.swing.JButton();
+        jButton11 = new javax.swing.JButton();
+        btnConsultaServicios = new javax.swing.JButton();
         TICKETS = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -313,12 +352,12 @@ public class MenuPrincipalFrame extends javax.swing.JFrame {
         javax.swing.GroupLayout SEGURIDADLayout = new javax.swing.GroupLayout(SEGURIDAD);
         SEGURIDAD.setLayout(SEGURIDADLayout);
         SEGURIDADLayout.setHorizontalGroup(
-            SEGURIDADLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1280, Short.MAX_VALUE)
+                SEGURIDADLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(0, 1280, Short.MAX_VALUE)
         );
         SEGURIDADLayout.setVerticalGroup(
-            SEGURIDADLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 770, Short.MAX_VALUE)
+                SEGURIDADLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(0, 770, Short.MAX_VALUE)
         );
 
         panelCambiante.add(SEGURIDAD, "card8");
@@ -326,12 +365,12 @@ public class MenuPrincipalFrame extends javax.swing.JFrame {
         javax.swing.GroupLayout EDITARLayout = new javax.swing.GroupLayout(EDITAR);
         EDITAR.setLayout(EDITARLayout);
         EDITARLayout.setHorizontalGroup(
-            EDITARLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1280, Short.MAX_VALUE)
+                EDITARLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(0, 1280, Short.MAX_VALUE)
         );
         EDITARLayout.setVerticalGroup(
-            EDITARLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 770, Short.MAX_VALUE)
+                EDITARLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(0, 770, Short.MAX_VALUE)
         );
 
         panelCambiante.add(EDITAR, "card7");
@@ -339,12 +378,12 @@ public class MenuPrincipalFrame extends javax.swing.JFrame {
         javax.swing.GroupLayout USUARIOSLayout = new javax.swing.GroupLayout(USUARIOS);
         USUARIOS.setLayout(USUARIOSLayout);
         USUARIOSLayout.setHorizontalGroup(
-            USUARIOSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1280, Short.MAX_VALUE)
+                USUARIOSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(0, 1280, Short.MAX_VALUE)
         );
         USUARIOSLayout.setVerticalGroup(
-            USUARIOSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 770, Short.MAX_VALUE)
+                USUARIOSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(0, 770, Short.MAX_VALUE)
         );
 
         panelCambiante.add(USUARIOS, "card6");
@@ -352,12 +391,12 @@ public class MenuPrincipalFrame extends javax.swing.JFrame {
         javax.swing.GroupLayout CORTESLayout = new javax.swing.GroupLayout(CORTES);
         CORTES.setLayout(CORTESLayout);
         CORTESLayout.setHorizontalGroup(
-            CORTESLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1280, Short.MAX_VALUE)
+                CORTESLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(0, 1280, Short.MAX_VALUE)
         );
         CORTESLayout.setVerticalGroup(
-            CORTESLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 770, Short.MAX_VALUE)
+                CORTESLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(0, 770, Short.MAX_VALUE)
         );
 
         panelCambiante.add(CORTES, "card5");
@@ -365,12 +404,12 @@ public class MenuPrincipalFrame extends javax.swing.JFrame {
         javax.swing.GroupLayout CONSULTASLayout = new javax.swing.GroupLayout(CONSULTAS);
         CONSULTAS.setLayout(CONSULTASLayout);
         CONSULTASLayout.setHorizontalGroup(
-            CONSULTASLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1280, Short.MAX_VALUE)
+                CONSULTASLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(0, 1280, Short.MAX_VALUE)
         );
         CONSULTASLayout.setVerticalGroup(
-            CONSULTASLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 770, Short.MAX_VALUE)
+                CONSULTASLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(0, 770, Short.MAX_VALUE)
         );
 
         panelCambiante.add(CONSULTAS, "card4");
@@ -389,32 +428,53 @@ public class MenuPrincipalFrame extends javax.swing.JFrame {
         jLabel4.setText("Inventario");
         INVENTARIO.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, -1, -1));
 
-        jButton10.setText("AGREGAR PRODUCTO");
+        jButton10.setBackground(new java.awt.Color(195, 217, 189));
+        jButton10.setText("PAQUETES");
         jButton10.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton10ActionPerformed(evt);
             }
         });
-        INVENTARIO.add(jButton10, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 290, 167, 99));
+        INVENTARIO.add(jButton10, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 290, 220, 110));
 
-        btnReabastecimiento.setText("<html><center>Reabastecimiento</center></html>");
+        btnReabastecimiento.setBackground(new java.awt.Color(195, 217, 189));
+        btnReabastecimiento.setText("<html><center>REABASTECIMIENTO</center></html>");
         btnReabastecimiento.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnReabastecimientoActionPerformed(evt);
             }
         });
-        INVENTARIO.add(btnReabastecimiento, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 470, 167, 99));
+        INVENTARIO.add(btnReabastecimiento, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 160, 220, 110));
 
         jLabel1.setText(".");
         INVENTARIO.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(1143, 672, 137, 90));
 
+        btnHistorial.setBackground(new java.awt.Color(195, 217, 189));
         btnHistorial.setText("<html><center>HISTORIAL DE<br>MODIFICACIONES</center></html>");
         btnHistorial.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnHistorialActionPerformed(evt);
             }
         });
-        INVENTARIO.add(btnHistorial, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 290, 167, 99));
+        INVENTARIO.add(btnHistorial, new org.netbeans.lib.awtextra.AbsoluteConstraints(395, 420, 220, 110));
+
+        jButton11.setBackground(new java.awt.Color(195, 217, 189));
+        jButton11.setText("AGREGAR PRODUCTO");
+        jButton11.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton11ActionPerformed(evt);
+            }
+        });
+        INVENTARIO.add(jButton11, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 160, 220, 110));
+
+        btnConsultaServicios.setBackground(new java.awt.Color(195, 217, 189));
+        btnConsultaServicios.setText("<html><center>CONSULTA SERVICIOS</center></html>");
+        btnConsultaServicios.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnConsultaServiciosActionPerformed(evt);
+            }
+        });
+        INVENTARIO.add(btnConsultaServicios, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 290, 220, 110));
 
         panelCambiante.add(INVENTARIO, "card3");
 
@@ -423,12 +483,12 @@ public class MenuPrincipalFrame extends javax.swing.JFrame {
         javax.swing.GroupLayout TICKETSLayout = new javax.swing.GroupLayout(TICKETS);
         TICKETS.setLayout(TICKETSLayout);
         TICKETSLayout.setHorizontalGroup(
-            TICKETSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1280, Short.MAX_VALUE)
+                TICKETSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(0, 1280, Short.MAX_VALUE)
         );
         TICKETSLayout.setVerticalGroup(
-            TICKETSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 770, Short.MAX_VALUE)
+                TICKETSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(0, 770, Short.MAX_VALUE)
         );
 
         panelCambiante.add(TICKETS, "card2");
@@ -436,23 +496,25 @@ public class MenuPrincipalFrame extends javax.swing.JFrame {
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(panelIzquierda, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0)
-                .addComponent(panelCambiante, javax.swing.GroupLayout.PREFERRED_SIZE, 1280, javax.swing.GroupLayout.PREFERRED_SIZE))
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                                .addComponent(panelIzquierda, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, 0)
+                                .addComponent(panelCambiante, javax.swing.GroupLayout.PREFERRED_SIZE, 1280, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(panelIzquierda, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(panelCambiante, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(panelIzquierda, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(panelCambiante, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void botonSegActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonSegActionPerformed
-        if (!validarAdmin()) return;
+        if (!validarAdmin()) {
+            return;
+        }
         panelCambiante.removeAll();
         panelCambiante.add(SEGURIDAD);
         panelCambiante.repaint();
@@ -460,14 +522,20 @@ public class MenuPrincipalFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_botonSegActionPerformed
 
     private void botonVentasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonVentasActionPerformed
-        Ventas ventanaVentas = new Ventas(usuarioActual);
-        ventanaVentas.setLocationRelativeTo(this);
-        ventanaVentas.setVisible(true);
+        if (ventasOrigen != null && ventasOrigen.isDisplayable()) {
+            ventasOrigen.setVisible(true);
+        } else {
+            Ventas ventanaVentas = new Ventas(usuarioActual);
+            ventanaVentas.setLocationRelativeTo(this);
+            ventanaVentas.setVisible(true);
+        }
         this.dispose();
     }//GEN-LAST:event_botonVentasActionPerformed
 
     private void botonEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonEditarActionPerformed
-        if (!validarAdmin()) return;
+        if (!validarAdmin()) {
+            return;
+        }
         panelCambiante.remove(INVENTARIO);
 
         panelCambiante.add(new EditarProdPanel(usuarioActual), "EDITAR_PRODUCTO");
@@ -480,7 +548,9 @@ public class MenuPrincipalFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_botonEditarActionPerformed
 
     private void botonCortesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonCortesActionPerformed
-        if (!validarAdmin()) return;
+        if (!validarAdmin()) {
+            return;
+        }
         panelCambiante.removeAll();
         panelCambiante.add(CORTES);
         panelCambiante.repaint();
@@ -504,16 +574,16 @@ public class MenuPrincipalFrame extends javax.swing.JFrame {
 
     private void botonTicketsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonTicketsActionPerformed
 
-       panelCambiante.add(
-            new TicketsPanel(),
-        "TICKETS"
-    );
+        panelCambiante.add(
+                new TicketsPanel(),
+                "TICKETS"
+        );
 
-    CardLayout cl = (CardLayout) panelCambiante.getLayout();
-    cl.show(panelCambiante, "TICKETS");
+        CardLayout cl = (CardLayout) panelCambiante.getLayout();
+        cl.show(panelCambiante, "TICKETS");
 
-    panelCambiante.revalidate();
-    panelCambiante.repaint();
+        panelCambiante.revalidate();
+        panelCambiante.repaint();
     }//GEN-LAST:event_botonTicketsActionPerformed
 
     private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
@@ -529,17 +599,17 @@ public class MenuPrincipalFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton10ActionPerformed
 
     private void btnReabastecimientoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReabastecimientoActionPerformed
-        
-    panelCambiante.add(
-            new reabastecimientoPanel1(usuarioActual),
-        "REABASTECIMIENTO"
-    );
 
-    CardLayout cl = (CardLayout) panelCambiante.getLayout();
-    cl.show(panelCambiante, "REABASTECIMIENTO");
+        panelCambiante.add(
+                new reabastecimientoPanel1(usuarioActual),
+                "REABASTECIMIENTO"
+        );
 
-    panelCambiante.revalidate();
-    panelCambiante.repaint();
+        CardLayout cl = (CardLayout) panelCambiante.getLayout();
+        cl.show(panelCambiante, "REABASTECIMIENTO");
+
+        panelCambiante.revalidate();
+        panelCambiante.repaint();
     }//GEN-LAST:event_btnReabastecimientoActionPerformed
 
     private void botonVentasMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botonVentasMouseEntered
@@ -607,7 +677,9 @@ public class MenuPrincipalFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_botonEditarMouseExited
 
     private void botonUsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonUsuariosActionPerformed
-        if (!validarAdmin()) return;
+        if (!validarAdmin()) {
+            return;
+        }
         panelCambiante.remove(USUARIOS);
 
         panelCambiante.add(new UsuariosPanel(), "EDITAR_USUARIOS");
@@ -632,6 +704,25 @@ public class MenuPrincipalFrame extends javax.swing.JFrame {
         panelCambiante.repaint();
     }//GEN-LAST:event_btnHistorialActionPerformed
 
+    private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton11ActionPerformed
+
+    private void btnConsultaServiciosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultaServiciosActionPerformed
+        // TODO add your handling code here:
+
+        panelCambiante.add(
+                new ConsultasServicios(), "Servicios"
+        );
+
+        CardLayout cl = (CardLayout) panelCambiante.getLayout();
+        cl.show(panelCambiante, "Servicios");
+
+        panelCambiante.revalidate();
+        panelCambiante.repaint();
+
+    }//GEN-LAST:event_btnConsultaServiciosActionPerformed
+
     private void activarHover(JLabel imagen, JButton boton) {
         imagen.setIcon(new ImageIcon(
                 getClass().getResource("/imagenes/Rectangle3.png")
@@ -645,7 +736,6 @@ public class MenuPrincipalFrame extends javax.swing.JFrame {
         ));
         boton.setForeground(Color.WHITE);
     }
-
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -685,6 +775,7 @@ public class MenuPrincipalFrame extends javax.swing.JFrame {
     private javax.swing.JButton botonTickets;
     private javax.swing.JButton botonUsuarios;
     private javax.swing.JButton botonVentas;
+    private javax.swing.JButton btnConsultaServicios;
     private javax.swing.JButton btnHistorial;
     private javax.swing.JButton btnReabastecimiento;
     private javax.swing.JLabel imgConsulta;
@@ -697,6 +788,7 @@ public class MenuPrincipalFrame extends javax.swing.JFrame {
     private javax.swing.JLabel imgUsuario;
     private javax.swing.JLabel imgVenta;
     private javax.swing.JButton jButton10;
+    private javax.swing.JButton jButton11;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

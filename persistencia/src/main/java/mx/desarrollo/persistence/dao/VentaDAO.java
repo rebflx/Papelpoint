@@ -5,6 +5,8 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.LockModeType;
 import mx.desarrollo.entity.DetalleVentaProducto;
+import mx.desarrollo.entity.DetalleVentaServicio;
+import mx.desarrollo.entity.Servicio;
 import mx.desarrollo.entity.Producto;
 import mx.desarrollo.entity.Ticket;
 import mx.desarrollo.entity.Venta;
@@ -33,6 +35,11 @@ public class VentaDAO extends AbstractDAO<Venta> {
 
 
     public Venta registrarVenta(Venta venta, List<DetalleVentaProducto> detalles, double tasaIva){
+        return registrarVenta(venta, detalles, List.of(), tasaIva);
+    }
+
+    public Venta registrarVenta(Venta venta, List<DetalleVentaProducto> detalles,
+                                List<DetalleVentaServicio> servicios, double tasaIva){
         EntityManager em = getEntityManager();
         EntityTransaction tx = em.getTransaction();
         try{
@@ -62,12 +69,39 @@ public class VentaDAO extends AbstractDAO<Venta> {
                 subtotal += p.getPrecio() * d.getCantidad();
             }
 
+            // Se valida y guarda cada servicio dentro de la MISMA transaccion.
+            for (DetalleVentaServicio d : servicios) {
+                if (d.getCantidad() == null || d.getCantidad() < 1) {
+                    throw new IllegalArgumentException("La cantidad del servicio debe ser mayor que cero.");
+                }
+                String cliente = d.getNombreCliente() == null ? "" : d.getNombreCliente().trim();
+                if (cliente.isEmpty() || cliente.length() > 100) {
+                    throw new IllegalArgumentException("El nombre del cliente no es valido.");
+                }
+                if (d.getServicio() == null || d.getServicio().getIdServicio() == null) {
+                    throw new IllegalArgumentException("No se selecciono un servicio valido.");
+                }
+                Servicio servicio = em.find(Servicio.class, d.getServicio().getIdServicio());
+                if (servicio == null || !Boolean.TRUE.equals(servicio.getDisponible())) {
+                    throw new IllegalArgumentException("Un servicio del carrito ya no esta disponible.");
+                }
+                d.setServicio(servicio);
+                d.setVenta(venta);
+                d.setNombreCliente(cliente);
+                d.setEstadoTrabajo("Pendiente");
+                d.setPrecioUnitario(servicio.getPrecio());
+                subtotal += servicio.getPrecio() * d.getCantidad();
+            }
+
             venta.setUsuario(em.getReference(Usuario.class, venta.getUsuario().getIdUsuario()));
             venta.setSubtotal(redondear(subtotal));
             venta.setTotal(redondear(subtotal * (1 + tasaIva)));
 
             em.persist(venta);          // con IDENTITY aqui ya se asigna idVenta
             for(DetalleVentaProducto d: detalles){
+                em.persist(d);
+            }
+            for(DetalleVentaServicio d: servicios){
                 em.persist(d);
             }
 
@@ -143,6 +177,61 @@ public class VentaDAO extends AbstractDAO<Venta> {
                     .setParameter("id", idVenta)
                     .getResultList();
         }finally {
+            em.close();
+        }
+    }
+
+    public List<DetalleVentaServicio> detallesServicioDeVenta(Integer idVenta) {
+        EntityManager em = getEntityManager();
+        try {
+            return em.createQuery(
+                            "SELECT d FROM DetalleVentaServicio d JOIN FETCH d.servicio "
+                                    + "WHERE d.venta.idVenta = :id ORDER BY d.idDetalleServicio",
+                            DetalleVentaServicio.class)
+                    .setParameter("id", idVenta)
+                    .getResultList();
+        } finally {
+            em.close();
+        }
+    }
+
+    /** Trabajos cobrados: se incluyen los datos del catalogo para mostrarlos en Consultas. */
+    public List<DetalleVentaServicio> listarTrabajosServicio() {
+        EntityManager em = getEntityManager();
+        try {
+            return em.createQuery(
+                            "SELECT d FROM DetalleVentaServicio d JOIN FETCH d.servicio "
+                                    + "ORDER BY d.idDetalleServicio DESC",
+                            DetalleVentaServicio.class)
+                    .getResultList();
+        } finally {
+            em.close();
+        }
+    }
+
+    /** Cambia el estado de un trabajo ya cobrado, sin modificar la venta. */
+    public void actualizarEstadoTrabajo(Integer idDetalle, String nuevoEstado) {
+        if (idDetalle == null || !"Realizado".equals(nuevoEstado)) {
+            throw new IllegalArgumentException("ID o estado del trabajo no valido.");
+        }
+        EntityManager em = getEntityManager();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            DetalleVentaServicio detalle = em.find(
+                    DetalleVentaServicio.class, idDetalle, LockModeType.PESSIMISTIC_WRITE);
+            if (detalle == null) {
+                throw new IllegalArgumentException("El trabajo ya no existe.");
+            }
+            if (!"Pendiente".equalsIgnoreCase(detalle.getEstadoTrabajo())) {
+                throw new IllegalArgumentException("El trabajo ya no esta pendiente.");
+            }
+            detalle.setEstadoTrabajo("Realizado");
+            tx.commit();
+        } catch (RuntimeException ex) {
+            if (tx.isActive()) tx.rollback();
+            throw ex;
+        } finally {
             em.close();
         }
     }

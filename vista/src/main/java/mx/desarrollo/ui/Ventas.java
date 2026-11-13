@@ -3,7 +3,8 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package mx.desarrollo.ui;
-
+import java.awt.CardLayout;
+import mx.desarrollo.ui.Servicios;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -29,6 +30,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import mx.desarrollo.delegate.DelegateVenta;
 import mx.desarrollo.entity.DetalleVentaProducto;
+import mx.desarrollo.entity.DetalleVentaServicio;
 import mx.desarrollo.entity.Producto;
 import mx.desarrollo.entity.Usuario;
 import mx.desarrollo.entity.Venta;
@@ -54,6 +56,7 @@ public class Ventas extends javax.swing.JFrame {
     private final List<Producto> visibles = new ArrayList<>();
     private final Map<Integer, Producto> productosPorId = new LinkedHashMap<>();
     private final Map<Integer, Integer> carrito = new LinkedHashMap<>();
+    private final List<DetalleVentaServicio> carritoServicios = new ArrayList<>();
     private javax.swing.JButton[] botonesProducto;
     private javax.swing.JButton[] botonesDinero;
     private String metodoPago = null;
@@ -310,12 +313,12 @@ public class Ventas extends javax.swing.JFrame {
         jScrollPaneArticulos.setFont(new java.awt.Font("Instrument Sans", 0, 12)); // NOI18N
 
         tblArticulos.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
+                new Object [][] {
 
-            },
-            new String [] {
-                "Nombre", "Precio Unit.", "Cantidad", "Importe", "Accion"
-            }
+                },
+                new String [] {
+                        "Nombre", "Precio Unit.", "Cantidad", "Importe", "Accion"
+                }
         ));
         jScrollPaneArticulos.setViewportView(tblArticulos);
         if (tblArticulos.getColumnModel().getColumnCount() > 0) {
@@ -329,24 +332,24 @@ public class Ventas extends javax.swing.JFrame {
         javax.swing.GroupLayout pnlArticulosLayout = new javax.swing.GroupLayout(pnlArticulos);
         pnlArticulos.setLayout(pnlArticulosLayout);
         pnlArticulosLayout.setHorizontalGroup(
-            pnlArticulosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlArticulosLayout.createSequentialGroup()
-                .addGap(20, 20, 20)
-                .addComponent(jLabel5)
-                .addGap(795, 795, 795))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlArticulosLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPaneArticulos, javax.swing.GroupLayout.PREFERRED_SIZE, 915, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                pnlArticulosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(pnlArticulosLayout.createSequentialGroup()
+                                .addGap(20, 20, 20)
+                                .addComponent(jLabel5)
+                                .addGap(795, 795, 795))
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlArticulosLayout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(jScrollPaneArticulos, javax.swing.GroupLayout.PREFERRED_SIZE, 915, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap())
         );
         pnlArticulosLayout.setVerticalGroup(
-            pnlArticulosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlArticulosLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel5)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPaneArticulos, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                pnlArticulosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(pnlArticulosLayout.createSequentialGroup()
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel5)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jScrollPaneArticulos, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap())
         );
 
         pnlPago.setBackground(new java.awt.Color(255, 255, 255));
@@ -471,109 +474,109 @@ public class Ventas extends javax.swing.JFrame {
         javax.swing.GroupLayout pnlPagoLayout = new javax.swing.GroupLayout(pnlPago);
         pnlPago.setLayout(pnlPagoLayout);
         pnlPagoLayout.setHorizontalGroup(
-            pnlPagoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlPagoLayout.createSequentialGroup()
-                .addGroup(pnlPagoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(pnlPagoLayout.createSequentialGroup()
-                        .addGap(47, 47, 47)
-                        .addComponent(jLabel7))
-                    .addGroup(pnlPagoLayout.createSequentialGroup()
-                        .addGap(39, 39, 39)
-                        .addGroup(pnlPagoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(pnlPagoLayout.createSequentialGroup()
-                                .addComponent(btnVeinteP, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnCincuentaP, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnCienP, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnDoscientosP, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnQuinientosP, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(pnlPagoLayout.createSequentialGroup()
-                                .addGap(6, 6, 6)
+                pnlPagoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(pnlPagoLayout.createSequentialGroup()
                                 .addGroup(pnlPagoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(pnlPagoLayout.createSequentialGroup()
-                                        .addComponent(jLabel8)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(btnTarjeta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(btnEfectivo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(pnlPagoLayout.createSequentialGroup()
-                                        .addComponent(txtDineroRecibido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(btnLimpiar))
-                                    .addComponent(jLabel10)))
-                            .addGroup(pnlPagoLayout.createSequentialGroup()
-                                .addGroup(pnlPagoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(pnlPagoLayout.createSequentialGroup()
-                                        .addComponent(btnUnPeso, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(btnDosPesos, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(pnlPagoLayout.createSequentialGroup()
-                                        .addGap(6, 6, 6)
-                                        .addGroup(pnlPagoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jLabel22)
-                                            .addComponent(jLabel11))))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(pnlPagoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(pnlPagoLayout.createSequentialGroup()
-                                        .addComponent(btnCincoPesos, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(btnDiezPesos, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(pnlPagoLayout.createSequentialGroup()
-                                        .addGap(6, 6, 6)
-                                        .addGroup(pnlPagoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                            .addComponent(lblCambio)
-                                            .addComponent(lblTotalAPagar1))))))))
-                .addContainerGap(78, Short.MAX_VALUE))
+                                        .addGroup(pnlPagoLayout.createSequentialGroup()
+                                                .addGap(47, 47, 47)
+                                                .addComponent(jLabel7))
+                                        .addGroup(pnlPagoLayout.createSequentialGroup()
+                                                .addGap(39, 39, 39)
+                                                .addGroup(pnlPagoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                        .addGroup(pnlPagoLayout.createSequentialGroup()
+                                                                .addComponent(btnVeinteP, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                                .addComponent(btnCincuentaP, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                                .addComponent(btnCienP, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                                .addComponent(btnDoscientosP, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                                .addComponent(btnQuinientosP, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                        .addGroup(pnlPagoLayout.createSequentialGroup()
+                                                                .addGap(6, 6, 6)
+                                                                .addGroup(pnlPagoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                                        .addGroup(pnlPagoLayout.createSequentialGroup()
+                                                                                .addComponent(jLabel8)
+                                                                                .addGap(18, 18, 18)
+                                                                                .addComponent(btnTarjeta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                                                .addComponent(btnEfectivo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                                        .addGroup(pnlPagoLayout.createSequentialGroup()
+                                                                                .addComponent(txtDineroRecibido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                                                .addComponent(btnLimpiar))
+                                                                        .addComponent(jLabel10)))
+                                                        .addGroup(pnlPagoLayout.createSequentialGroup()
+                                                                .addGroup(pnlPagoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                                        .addGroup(pnlPagoLayout.createSequentialGroup()
+                                                                                .addComponent(btnUnPeso, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                                                .addComponent(btnDosPesos, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                                        .addGroup(pnlPagoLayout.createSequentialGroup()
+                                                                                .addGap(6, 6, 6)
+                                                                                .addGroup(pnlPagoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                                                        .addComponent(jLabel22)
+                                                                                        .addComponent(jLabel11))))
+                                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                                .addGroup(pnlPagoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                                        .addGroup(pnlPagoLayout.createSequentialGroup()
+                                                                                .addComponent(btnCincoPesos, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                                                .addComponent(btnDiezPesos, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                                        .addGroup(pnlPagoLayout.createSequentialGroup()
+                                                                                .addGap(6, 6, 6)
+                                                                                .addGroup(pnlPagoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                                                                        .addComponent(lblCambio)
+                                                                                        .addComponent(lblTotalAPagar1))))))))
+                                .addContainerGap(78, Short.MAX_VALUE))
         );
         pnlPagoLayout.setVerticalGroup(
-            pnlPagoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlPagoLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel7)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(pnlPagoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel8)
-                    .addComponent(btnTarjeta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnEfectivo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(jLabel10)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(pnlPagoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnLimpiar, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtDineroRecibido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(pnlPagoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(pnlPagoLayout.createSequentialGroup()
-                        .addGroup(pnlPagoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(pnlPagoLayout.createSequentialGroup()
-                                .addGroup(pnlPagoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(btnDoscientosP)
-                                    .addComponent(btnCienP))
+                pnlPagoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(pnlPagoLayout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(jLabel7)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(pnlPagoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(btnCincoPesos)
-                                    .addComponent(btnDiezPesos)))
-                            .addGroup(pnlPagoLayout.createSequentialGroup()
-                                .addGroup(pnlPagoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(btnVeinteP)
-                                    .addComponent(btnCincuentaP))
+                                .addGroup(pnlPagoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(jLabel8)
+                                        .addComponent(btnTarjeta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(btnEfectivo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addComponent(jLabel10)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(pnlPagoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(btnUnPeso)
-                                    .addComponent(btnDosPesos))))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(pnlPagoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel11)
-                            .addComponent(lblTotalAPagar1))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(pnlPagoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel22)
-                            .addComponent(lblCambio)))
-                    .addComponent(btnQuinientosP))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                        .addComponent(btnLimpiar, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(txtDineroRecibido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addGroup(pnlPagoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(pnlPagoLayout.createSequentialGroup()
+                                                .addGroup(pnlPagoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                        .addGroup(pnlPagoLayout.createSequentialGroup()
+                                                                .addGroup(pnlPagoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                                        .addComponent(btnDoscientosP)
+                                                                        .addComponent(btnCienP))
+                                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                                .addGroup(pnlPagoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                                                        .addComponent(btnCincoPesos)
+                                                                        .addComponent(btnDiezPesos)))
+                                                        .addGroup(pnlPagoLayout.createSequentialGroup()
+                                                                .addGroup(pnlPagoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                                        .addComponent(btnVeinteP)
+                                                                        .addComponent(btnCincuentaP))
+                                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                                .addGroup(pnlPagoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                                        .addComponent(btnUnPeso)
+                                                                        .addComponent(btnDosPesos))))
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                .addGroup(pnlPagoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                                        .addComponent(jLabel11)
+                                                        .addComponent(lblTotalAPagar1))
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                .addGroup(pnlPagoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                                        .addComponent(jLabel22)
+                                                        .addComponent(lblCambio)))
+                                        .addComponent(btnQuinientosP))
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pnlResumen.setBackground(new java.awt.Color(255, 255, 255));
@@ -749,135 +752,135 @@ public class Ventas extends javax.swing.JFrame {
         javax.swing.GroupLayout pnlProductosLayout = new javax.swing.GroupLayout(pnlProductos);
         pnlProductos.setLayout(pnlProductosLayout);
         pnlProductosLayout.setHorizontalGroup(
-            pnlProductosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlProductosLayout.createSequentialGroup()
-                .addGroup(pnlProductosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(pnlProductosLayout.createSequentialGroup()
-                        .addGap(16, 16, 16)
-                        .addComponent(txtBuscarProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 412, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(pnlProductosLayout.createSequentialGroup()
-                        .addGap(36, 36, 36)
-                        .addGroup(pnlProductosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(lblProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 363, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(pnlProductosLayout.createSequentialGroup()
+                pnlProductosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(pnlProductosLayout.createSequentialGroup()
                                 .addGroup(pnlProductosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(pnlProductosLayout.createSequentialGroup()
-                                        .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(pnlProductosLayout.createSequentialGroup()
-                                        .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(jButton12, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(pnlProductosLayout.createSequentialGroup()
-                                        .addComponent(jButton11, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(jButton19, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(pnlProductosLayout.createSequentialGroup()
-                                        .addComponent(jButton16, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(jButton22, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(pnlProductosLayout.createSequentialGroup()
-                                        .addComponent(jButton18, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(jButton23, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(pnlProductosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jButton17, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jButton25, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jButton26, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jButton27, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))))
-                .addContainerGap(21, Short.MAX_VALUE))
+                                        .addGroup(pnlProductosLayout.createSequentialGroup()
+                                                .addGap(16, 16, 16)
+                                                .addComponent(txtBuscarProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 412, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGroup(pnlProductosLayout.createSequentialGroup()
+                                                .addGap(36, 36, 36)
+                                                .addGroup(pnlProductosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                                        .addComponent(lblProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 363, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addGroup(pnlProductosLayout.createSequentialGroup()
+                                                                .addGroup(pnlProductosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                                        .addGroup(pnlProductosLayout.createSequentialGroup()
+                                                                                .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                .addGap(18, 18, 18)
+                                                                                .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                                        .addGroup(pnlProductosLayout.createSequentialGroup()
+                                                                                .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                .addGap(18, 18, 18)
+                                                                                .addComponent(jButton12, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                                        .addGroup(pnlProductosLayout.createSequentialGroup()
+                                                                                .addComponent(jButton11, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                .addGap(18, 18, 18)
+                                                                                .addComponent(jButton19, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                                        .addGroup(pnlProductosLayout.createSequentialGroup()
+                                                                                .addComponent(jButton16, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                .addGap(18, 18, 18)
+                                                                                .addComponent(jButton22, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                                        .addGroup(pnlProductosLayout.createSequentialGroup()
+                                                                                .addComponent(jButton18, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                .addGap(18, 18, 18)
+                                                                                .addComponent(jButton23, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                                .addGroup(pnlProductosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                        .addComponent(jButton17, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                        .addComponent(jButton25, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                        .addComponent(jButton26, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                        .addComponent(jButton27, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                                .addContainerGap(21, Short.MAX_VALUE))
         );
         pnlProductosLayout.setVerticalGroup(
-            pnlProductosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlProductosLayout.createSequentialGroup()
-                .addGap(20, 20, 20)
-                .addComponent(txtBuscarProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lblProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addGroup(pnlProductosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(pnlProductosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(pnlProductosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jButton12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jButton17, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(18, 18, 18)
-                .addGroup(pnlProductosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton25, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton19, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(pnlProductosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton16, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton22, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton27, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(pnlProductosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton26, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton23, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton18, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 17, Short.MAX_VALUE))
+                pnlProductosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(pnlProductosLayout.createSequentialGroup()
+                                .addGap(20, 20, 20)
+                                .addComponent(txtBuscarProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(lblProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addGroup(pnlProductosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addGroup(pnlProductosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGroup(pnlProductosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                                .addComponent(jButton12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addComponent(jButton17, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(18, 18, 18)
+                                .addGroup(pnlProductosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(jButton25, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jButton19, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jButton11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addGroup(pnlProductosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(jButton16, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jButton22, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jButton27, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(pnlProductosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(jButton26, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jButton23, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jButton18, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(0, 17, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout pnlPrincipalLayout = new javax.swing.GroupLayout(pnlPrincipal);
         pnlPrincipal.setLayout(pnlPrincipalLayout);
         pnlPrincipalLayout.setHorizontalGroup(
-            pnlPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlPrincipalLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(pnlPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(pnlEncabezado, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(pnlPrincipalLayout.createSequentialGroup()
-                        .addGroup(pnlPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(pnlPrincipalLayout.createSequentialGroup()
-                                .addComponent(pnlPago, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(pnlResumen, javax.swing.GroupLayout.PREFERRED_SIZE, 463, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(pnlArticulos, javax.swing.GroupLayout.DEFAULT_SIZE, 923, Short.MAX_VALUE))
-                        .addGap(18, 18, 18)
-                        .addComponent(pnlProductos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap())
+                pnlPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(pnlPrincipalLayout.createSequentialGroup()
+                                .addContainerGap()
+                                .addGroup(pnlPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(pnlEncabezado, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addGroup(pnlPrincipalLayout.createSequentialGroup()
+                                                .addGroup(pnlPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                                        .addGroup(pnlPrincipalLayout.createSequentialGroup()
+                                                                .addComponent(pnlPago, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                                .addComponent(pnlResumen, javax.swing.GroupLayout.PREFERRED_SIZE, 463, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                        .addComponent(pnlArticulos, javax.swing.GroupLayout.DEFAULT_SIZE, 927, Short.MAX_VALUE))
+                                                .addGap(18, 18, 18)
+                                                .addComponent(pnlProductos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addContainerGap())
         );
         pnlPrincipalLayout.setVerticalGroup(
-            pnlPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlPrincipalLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(pnlEncabezado, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(pnlPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(pnlPrincipalLayout.createSequentialGroup()
-                        .addComponent(pnlArticulos, javax.swing.GroupLayout.PREFERRED_SIZE, 282, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addGroup(pnlPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(pnlPago, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(pnlResumen, javax.swing.GroupLayout.PREFERRED_SIZE, 320, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addContainerGap())
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlPrincipalLayout.createSequentialGroup()
-                        .addGap(0, 6, Short.MAX_VALUE)
-                        .addComponent(pnlProductos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                pnlPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(pnlPrincipalLayout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(pnlEncabezado, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(pnlPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(pnlPrincipalLayout.createSequentialGroup()
+                                                .addComponent(pnlArticulos, javax.swing.GroupLayout.PREFERRED_SIZE, 282, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(18, 18, 18)
+                                                .addGroup(pnlPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                        .addComponent(pnlPago, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addComponent(pnlResumen, javax.swing.GroupLayout.PREFERRED_SIZE, 320, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                .addContainerGap())
+                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlPrincipalLayout.createSequentialGroup()
+                                                .addGap(0, 6, Short.MAX_VALUE)
+                                                .addComponent(pnlProductos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(pnlPrincipal, javax.swing.GroupLayout.PREFERRED_SIZE, 1402, Short.MAX_VALUE)
-                .addContainerGap())
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                                .addComponent(pnlPrincipal, javax.swing.GroupLayout.PREFERRED_SIZE, 1402, Short.MAX_VALUE)
+                                .addContainerGap())
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(pnlPrincipal, javax.swing.GroupLayout.PREFERRED_SIZE, 790, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(25, 25, 25))
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(pnlPrincipal, javax.swing.GroupLayout.PREFERRED_SIZE, 790, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(25, 25, 25))
         );
 
         pack();
@@ -885,6 +888,13 @@ public class Ventas extends javax.swing.JFrame {
 
     private void btnServiciosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnServiciosActionPerformed
         // TODO add your handling code here:
+
+        MenuPrincipalFrame menu = new MenuPrincipalFrame(usuarioActual);
+        menu.mostrarServicios(this);
+        menu.setLocationRelativeTo(this);
+        menu.setVisible(true);
+        this.setVisible(false); // Ocultar, NO destruir el carrito original.
+
     }//GEN-LAST:event_btnServiciosActionPerformed
 
     private void btnTarjetaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTarjetaActionPerformed
@@ -917,8 +927,8 @@ public class Ventas extends javax.swing.JFrame {
     }//GEN-LAST:event_txtDineroRecibidoActionPerformed
 
     private void btnMenuprincipalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuprincipalActionPerformed
- new MenuPrincipalFrame(usuarioActual).setVisible(true);
-            this.dispose();           
+        new MenuPrincipalFrame(usuarioActual).setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_btnMenuprincipalActionPerformed
 
     /**
@@ -1127,44 +1137,50 @@ public class Ventas extends javax.swing.JFrame {
             }
         }
     }
-        //esto es del carrito
-        private void agregarAlCarrito(Producto p) {
-            int actual = carrito.getOrDefault(p.getIdProducto(), 0);
-            if (actual + 1 > p.getExistencias()) {
-                mostrarError("No hay mas existencias de \"" + p.getNombre() + "\" (disponibles: " + p.getExistencias() + ").");
-                return;
-            }
-            carrito.put(p.getIdProducto(), actual + 1);
-            lblProducto.setText("<html><b>" + escapar(p.getNombre()) + "</b><br>"
-                    + moneda.format(p.getPrecio()) + " - existencias: " + p.getExistencias() + "</html>");
-            refrescarCarrito();
+    //esto es del carrito
+    private void agregarAlCarrito(Producto p) {
+        int actual = carrito.getOrDefault(p.getIdProducto(), 0);
+        if (actual + 1 > p.getExistencias()) {
+            mostrarError("No hay mas existencias de \"" + p.getNombre() + "\" (disponibles: " + p.getExistencias() + ").");
+            return;
         }
+        carrito.put(p.getIdProducto(), actual + 1);
+        lblProducto.setText("<html><b>" + escapar(p.getNombre()) + "</b><br>"
+                + moneda.format(p.getPrecio()) + " - existencias: " + p.getExistencias() + "</html>");
+        refrescarCarrito();
+    }
 
-        private void clickEnCarrito(MouseEvent e) {
-            int fila = tblArticulos.rowAtPoint(e.getPoint());
-            int col = tblArticulos.columnAtPoint(e.getPoint());
-            if (fila < 0 || fila >= carrito.size()) {
-                return;
-            }
-            Integer id = new ArrayList<>(carrito.keySet()).get(fila);
-            Producto p = productosPorId.get(id);
-            int cantidad = carrito.get(id);
+    // Recibe el servicio desde Servicios.java. Todavia no guarda en MySQL:
+    // eso sucede solo cuando se confirma el cobro.
+    public void agregarServicioAlCarrito(DetalleVentaServicio detalle) {
+        if (detalle == null || detalle.getServicio() == null ||
+                detalle.getServicio().getIdServicio() == null ||
+                detalle.getCantidad() == null || detalle.getCantidad() < 1 ||
+                detalle.getNombreCliente() == null || detalle.getNombreCliente().isBlank()) {
+            throw new IllegalArgumentException("Los datos del servicio no son validos.");
+        }
+        carritoServicios.add(detalle);
+        refrescarCarrito();
+    }
 
+    private void clickEnCarrito(MouseEvent e) {
+        int fila = tblArticulos.rowAtPoint(e.getPoint());
+        int col = tblArticulos.columnAtPoint(e.getPoint());
+        if (fila < 0) return;
+
+        if (fila >= carrito.size()) {
+            int indiceServicio = fila - carrito.size();
+            if (indiceServicio < 0 || indiceServicio >= carritoServicios.size()) return;
+            DetalleVentaServicio d = carritoServicios.get(indiceServicio);
             if (col == 4) {
-                carrito.remove(id);
+                carritoServicios.remove(indiceServicio);
             } else if (col == 2) {
                 Rectangle r = tblArticulos.getCellRect(fila, col, false);
                 double rel = (e.getX() - r.x) / (double) r.width;
-                if (rel < 0.4) {
-                    if (cantidad > 1) {
-                        carrito.put(id, cantidad - 1);
-                    }
+                if (rel < 0.4 && d.getCantidad() > 1) {
+                    d.setCantidad(d.getCantidad() - 1);
                 } else if (rel > 0.6) {
-                    if (cantidad + 1 > p.getExistencias()) {
-                        mostrarError("No hay mas existencias de \"" + p.getNombre() + "\" (disponibles: " + p.getExistencias() + ").");
-                        return;
-                    }
-                    carrito.put(id, cantidad + 1);
+                    d.setCantidad(d.getCantidad() + 1);
                 } else {
                     return;
                 }
@@ -1172,196 +1188,239 @@ public class Ventas extends javax.swing.JFrame {
                 return;
             }
             refrescarCarrito();
+            return;
         }
 
-        private void refrescarCarrito() {
-            DefaultTableModel modelo = (DefaultTableModel) tblArticulos.getModel();
-            modelo.setRowCount(0);
-            for (Map.Entry<Integer, Integer> en : carrito.entrySet()) {
-                Producto p = productosPorId.get(en.getKey());
-                int cant = en.getValue();
-                modelo.addRow(new Object[]{
-                        p.getNombre(),
-                        moneda.format(p.getPrecio()),
-                        String.valueOf(cant),
-                        moneda.format(p.getPrecio() * cant),
-                        "Eliminar"
-                });
-            }
-            calcularTotales();
-        }
-
-        private void calcularTotales() {
-            double subtotal = 0;
-            for (Map.Entry<Integer, Integer> en : carrito.entrySet()) {
-                subtotal += productosPorId.get(en.getKey()).getPrecio() * en.getValue();
-            }
-            double descuento = 0;
-            double base = subtotal - descuento;
-            double iva = base * IVA;
-            totalVenta = base + iva;
-
-            lblSubtotal.setText(moneda.format(subtotal));
-            lblDescuento.setText("-" + moneda.format(descuento));
-            lbl_Iva.setText(moneda.format(iva));
-            lblTotalAPagar1.setText(moneda.format(totalVenta));
-            lblTotalAPagar2.setText(moneda.format(totalVenta));
-            btnCobrar.setText("Cobrar " + moneda.format(totalVenta));
-            actualizarCambio();
-        }
-
-        private void configurarPago() {
-            botonesDinero = new javax.swing.JButton[]{
-                    btnUnPeso, btnDosPesos, btnCincoPesos, btnDiezPesos,
-                    btnVeinteP, btnCincuentaP, btnCienP, btnDoscientosP, btnQuinientosP};
-            double[] montos = {1, 2, 5, 10, 20, 50, 100, 200, 500};
-            for (int i = 0; i < botonesDinero.length; i++) {
-                if (botonesDinero[i] == btnCienP) {
-                    continue;
+        Integer id = new ArrayList<>(carrito.keySet()).get(fila);
+        Producto p = productosPorId.get(id);
+        if (p == null) return;
+        int cantidad = carrito.get(id);
+        if (col == 4) {
+            carrito.remove(id);
+        } else if (col == 2) {
+            Rectangle r = tblArticulos.getCellRect(fila, col, false);
+            double rel = (e.getX() - r.x) / (double) r.width;
+            if (rel < 0.4) {
+                if (cantidad > 1) carrito.put(id, cantidad - 1);
+            } else if (rel > 0.6) {
+                if (cantidad + 1 > p.getExistencias()) {
+                    mostrarError("No hay mas existencias de \"" + p.getNombre() +
+                            "\" (disponibles: " + p.getExistencias() + ").");
+                    return;
                 }
-                final double monto = montos[i];
-                botonesDinero[i].addActionListener(e -> sumarDinero(monto));
-            }
-            txtDineroRecibido.setText("");
-            txtDineroRecibido.getDocument().addDocumentListener(new DocumentListener() {
-                public void insertUpdate(DocumentEvent e) { actualizarCambio(); }
-                public void removeUpdate(DocumentEvent e) { actualizarCambio(); }
-                public void changedUpdate(DocumentEvent e) { actualizarCambio(); }
-            });
-            seleccionarMetodo(null);
-        }
-
-        private void seleccionarMetodo(String metodo) {
-            metodoPago = metodo;
-            resaltar(btnEfectivo, EFECTIVO.equals(metodo));
-            resaltar(btnTarjeta, TARJETA.equals(metodo));
-
-            boolean efectivo = EFECTIVO.equals(metodo);
-            txtDineroRecibido.setEnabled(efectivo);
-            btnLimpiar.setEnabled(efectivo);
-            for (javax.swing.JButton b : botonesDinero) {
-                b.setEnabled(efectivo);
-            }
-            if (!efectivo) {
-                txtDineroRecibido.setText("");
-            }
-            actualizarCambio();
-        }
-
-        private void resaltar(javax.swing.JButton b, boolean activo) {
-            b.setBackground(activo ? new Color(98, 147, 110) : new Color(204, 204, 204));
-            b.setForeground(activo ? Color.WHITE : new Color(51, 51, 51));
-        }
-
-        private void sumarDinero(double monto) {
-            txtDineroRecibido.setText(String.format(Locale.US, "%.2f", leerDineroRecibido() + monto));
-        }
-
-        private double leerDineroRecibido() {
-            String t = txtDineroRecibido.getText().replace("$", "").replace(",", "").trim();
-            try {
-                return t.isEmpty() ? 0 : Double.parseDouble(t);
-            } catch (NumberFormatException ex) {
-                return 0;
-            }
-        }
-
-        private void actualizarCambio() {
-            if (EFECTIVO.equals(metodoPago)) {
-                lblCambio.setText(moneda.format(Math.max(0, leerDineroRecibido() - totalVenta)));
+                carrito.put(id, cantidad + 1);
             } else {
-                lblCambio.setText(moneda.format(0));
-            }
-        }
-
-     private void confirmarVenta() {
-            if (carrito.isEmpty()) {
-                mostrarError("Agrega al menos un producto a la venta.");
                 return;
             }
-            if (metodoPago == null) {
-                mostrarError("Selecciona un metodo de pago (Efectivo o Tarjeta).");
+        } else {
+            return;
+        }
+        refrescarCarrito();
+    }
+
+    private void refrescarCarrito() {
+        DefaultTableModel modelo = (DefaultTableModel) tblArticulos.getModel();
+        modelo.setRowCount(0);
+        for (Map.Entry<Integer, Integer> en : carrito.entrySet()) {
+            Producto p = productosPorId.get(en.getKey());
+            int cant = en.getValue();
+            modelo.addRow(new Object[]{
+                    p.getNombre(), moneda.format(p.getPrecio()), String.valueOf(cant),
+                    moneda.format(p.getPrecio() * cant), "Eliminar"
+            });
+        }
+        for (DetalleVentaServicio d : carritoServicios) {
+            modelo.addRow(new Object[]{
+                    d.getServicio().getNombre(),
+                    moneda.format(d.getServicio().getPrecio()),
+                    String.valueOf(d.getCantidad()),
+                    moneda.format(d.getServicio().getPrecio() * d.getCantidad()),
+                    "Eliminar"
+            });
+        }
+        calcularTotales();
+    }
+
+    private void calcularTotales() {
+        double subtotal = 0;
+        for (Map.Entry<Integer, Integer> en : carrito.entrySet()) {
+            subtotal += productosPorId.get(en.getKey()).getPrecio() * en.getValue();
+        }
+        for (DetalleVentaServicio d : carritoServicios) {
+            subtotal += d.getServicio().getPrecio() * d.getCantidad();
+        }
+        double descuento = 0;
+        double base = subtotal - descuento;
+        double iva = base * IVA;
+        totalVenta = base + iva;
+
+        lblSubtotal.setText(moneda.format(subtotal));
+        lblDescuento.setText("-" + moneda.format(descuento));
+        lbl_Iva.setText(moneda.format(iva));
+        lblTotalAPagar1.setText(moneda.format(totalVenta));
+        lblTotalAPagar2.setText(moneda.format(totalVenta));
+        btnCobrar.setText("Cobrar " + moneda.format(totalVenta));
+        actualizarCambio();
+    }
+
+    private void configurarPago() {
+        botonesDinero = new javax.swing.JButton[]{
+                btnUnPeso, btnDosPesos, btnCincoPesos, btnDiezPesos,
+                btnVeinteP, btnCincuentaP, btnCienP, btnDoscientosP, btnQuinientosP};
+        double[] montos = {1, 2, 5, 10, 20, 50, 100, 200, 500};
+        for (int i = 0; i < botonesDinero.length; i++) {
+            if (botonesDinero[i] == btnCienP) {
+                continue;
+            }
+            final double monto = montos[i];
+            botonesDinero[i].addActionListener(e -> sumarDinero(monto));
+        }
+        txtDineroRecibido.setText("");
+        txtDineroRecibido.getDocument().addDocumentListener(new DocumentListener() {
+            public void insertUpdate(DocumentEvent e) { actualizarCambio(); }
+            public void removeUpdate(DocumentEvent e) { actualizarCambio(); }
+            public void changedUpdate(DocumentEvent e) { actualizarCambio(); }
+        });
+        seleccionarMetodo(null);
+    }
+
+    private void seleccionarMetodo(String metodo) {
+        metodoPago = metodo;
+        resaltar(btnEfectivo, EFECTIVO.equals(metodo));
+        resaltar(btnTarjeta, TARJETA.equals(metodo));
+
+        boolean efectivo = EFECTIVO.equals(metodo);
+        txtDineroRecibido.setEnabled(efectivo);
+        btnLimpiar.setEnabled(efectivo);
+        for (javax.swing.JButton b : botonesDinero) {
+            b.setEnabled(efectivo);
+        }
+        if (!efectivo) {
+            txtDineroRecibido.setText("");
+        }
+        actualizarCambio();
+    }
+
+    private void resaltar(javax.swing.JButton b, boolean activo) {
+        b.setBackground(activo ? new Color(98, 147, 110) : new Color(204, 204, 204));
+        b.setForeground(activo ? Color.WHITE : new Color(51, 51, 51));
+    }
+
+    private void sumarDinero(double monto) {
+        txtDineroRecibido.setText(String.format(Locale.US, "%.2f", leerDineroRecibido() + monto));
+    }
+
+    private double leerDineroRecibido() {
+        String t = txtDineroRecibido.getText().replace("$", "").replace(",", "").trim();
+        try {
+            return t.isEmpty() ? 0 : Double.parseDouble(t);
+        } catch (NumberFormatException ex) {
+            return 0;
+        }
+    }
+
+    private void actualizarCambio() {
+        if (EFECTIVO.equals(metodoPago)) {
+            lblCambio.setText(moneda.format(Math.max(0, leerDineroRecibido() - totalVenta)));
+        } else {
+            lblCambio.setText(moneda.format(0));
+        }
+    }
+
+    private void confirmarVenta() {
+        if (carrito.isEmpty() && carritoServicios.isEmpty()) {
+            mostrarError("Agrega al menos un producto o servicio a la venta.");
+            return;
+        }
+        if (metodoPago == null) {
+            mostrarError("Selecciona un metodo de pago (Efectivo o Tarjeta).");
+            return;
+        }
+        long totalCent = Math.round(totalVenta * 100);
+        if (EFECTIVO.equals(metodoPago)) {
+            double recibido = leerDineroRecibido();
+            if (recibido <= 0) {
+                mostrarError("Ingresa el dinero recibido.");
                 return;
             }
-            long totalCent = Math.round(totalVenta * 100);
-            if (EFECTIVO.equals(metodoPago)) {
-                double recibido = leerDineroRecibido();
-                if (recibido <= 0) {
-                    mostrarError("Ingresa el dinero recibido.");
-                    return;
-                }
-                if (Math.round(recibido * 100) < totalCent) {
-                    mostrarError("El dinero recibido (" + moneda.format(recibido)
-                            + ") no cubre el total (" + moneda.format(totalVenta) + ").");
-                    return;
-                }
-            }
-
-            int op = JOptionPane.showConfirmDialog(this,
-                    "Total: " + moneda.format(totalVenta) + "\n"
-                    + "Método de pago: " + (EFECTIVO.equals(metodoPago) ? "Efectivo" : "Tarjeta") + "\n"
-                    + (EFECTIVO.equals(metodoPago) ? "Cambio: " + lblCambio.getText() + "\n" : "")
-                    + "¿Confirmar la venta?",
-                    "Confirmar venta", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-            if (op != JOptionPane.YES_OPTION) {
+            if (Math.round(recibido * 100) < totalCent) {
+                mostrarError("El dinero recibido (" + moneda.format(recibido)
+                        + ") no cubre el total (" + moneda.format(totalVenta) + ").");
                 return;
             }
+        }
 
-            try {
-                List<DetalleVentaProducto> detalles = new ArrayList<>();
-                for (Map.Entry<Integer, Integer> en : carrito.entrySet()) {
-                    DetalleVentaProducto d = new DetalleVentaProducto();
-                    d.setProducto(productosPorId.get(en.getKey()));
-                    d.setCantidad(en.getValue());
-                    detalles.add(d);
-                }
-                boolean ef = EFECTIVO.equals(metodoPago);
-                double recibido = ef ? leerDineroRecibido() : 0;
+        int op = JOptionPane.showConfirmDialog(this,
+                "Total: " + moneda.format(totalVenta) + "\n"
+                        + "Método de pago: " + (EFECTIVO.equals(metodoPago) ? "Efectivo" : "Tarjeta") + "\n"
+                        + (EFECTIVO.equals(metodoPago) ? "Cambio: " + lblCambio.getText() + "\n" : "")
+                        + "¿Confirmar la venta?",
+                "Confirmar venta", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+        if (op != JOptionPane.YES_OPTION) {
+            return;
+        }
 
-                Venta venta = ServiceFacadeLocator.getInstanceFacadeVenta()
-                        .registrarVenta(usuarioActual, metodoPago, detalles);
-
-                List<TicketDialog.Linea> lineas = new ArrayList<>();
-                for (DetalleVentaProducto d : detalles) {
-                    lineas.add(new TicketDialog.Linea(d.getProducto().getNombre(), d.getCantidad(),
-                            d.getPrecioUnitario() * d.getCantidad()));
-                }
-                double total = venta.getTotal();   
-                double iva = Math.round((total - venta.getSubtotal()) * 100) / 100.0;
-                double cambio = ef ? Math.max(0, recibido - total) : 0;
-
-                nuevaVenta();
-                cargarProductos(); 
-
-                new TicketDialog(this, DelegateVenta.folio(venta.getIdVenta()), venta.getFecha(),
-                        usuarioActual.getNombrePersona(), ef ? "Efectivo" : "Tarjeta",
-                        lineas, iva, total, ef ? recibido : total, cambio).setVisible(true);
-            } catch (IllegalArgumentException ex) {
-                mostrarError(ex.getMessage());
-                cargarProductos(); 
-            } catch (Exception | ExceptionInInitializerError ex) {
-                mostrarError("No se pudo guardar la venta: " + ex.getMessage());
+        try {
+            List<DetalleVentaProducto> detalles = new ArrayList<>();
+            for (Map.Entry<Integer, Integer> en : carrito.entrySet()) {
+                DetalleVentaProducto d = new DetalleVentaProducto();
+                d.setProducto(productosPorId.get(en.getKey()));
+                d.setCantidad(en.getValue());
+                detalles.add(d);
             }
-        }
+            boolean ef = EFECTIVO.equals(metodoPago);
+            double recibido = ef ? leerDineroRecibido() : 0;
 
-        private void nuevaVenta() {
-            carrito.clear();
-            seleccionarMetodo(null);
-            lblProducto.setText("Producto");
-            refrescarCarrito();
-        }
+            Venta venta = ServiceFacadeLocator.getInstanceFacadeVenta()
+                    .registrarVenta(usuarioActual, metodoPago, detalles, carritoServicios);
 
-        private void mostrarError(String msg) {
-            JOptionPane.showMessageDialog(this, msg, "Error", JOptionPane.ERROR_MESSAGE);
-        }
+            List<TicketDialog.Linea> lineas = new ArrayList<>();
+            for (DetalleVentaProducto d : detalles) {
+                lineas.add(new TicketDialog.Linea(d.getProducto().getNombre(), d.getCantidad(),
+                        d.getPrecioUnitario() * d.getCantidad()));
+            }
+            for (DetalleVentaServicio d : carritoServicios) {
+                lineas.add(new TicketDialog.Linea(
+                        d.getServicio().getNombre() + " - " + d.getNombreCliente(),
+                        d.getCantidad(), d.getPrecioUnitario() * d.getCantidad()));
+            }
+            double total = venta.getTotal();
+            double iva = Math.round((total - venta.getSubtotal()) * 100) / 100.0;
+            double cambio = ef ? Math.max(0, recibido - total) : 0;
 
-        private void mostrarInfo(String msg) {
-            JOptionPane.showMessageDialog(this, msg, "Venta confirmada", JOptionPane.INFORMATION_MESSAGE);
-        }
+            nuevaVenta();
+            cargarProductos();
 
-        private static String escapar(String t) {
-            return t == null ? "" : t.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;");
+            new TicketDialog(this, DelegateVenta.folio(venta.getIdVenta()), venta.getFecha(),
+                    usuarioActual.getNombrePersona(), ef ? "Efectivo" : "Tarjeta",
+                    lineas, iva, total, ef ? recibido : total, cambio).setVisible(true);
+        } catch (IllegalArgumentException ex) {
+            mostrarError(ex.getMessage());
+            cargarProductos();
+        } catch (Exception | ExceptionInInitializerError ex) {
+            mostrarError("No se pudo guardar la venta: " + ex.getMessage());
         }
+    }
+
+    private void nuevaVenta() {
+        carrito.clear();
+        carritoServicios.clear();
+        seleccionarMetodo(null);
+        lblProducto.setText("Producto");
+        refrescarCarrito();
+    }
+
+    private void mostrarError(String msg) {
+        JOptionPane.showMessageDialog(this, msg, "Error", JOptionPane.ERROR_MESSAGE);
+    }
+
+    private void mostrarInfo(String msg) {
+        JOptionPane.showMessageDialog(this, msg, "Venta confirmada", JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    private static String escapar(String t) {
+        return t == null ? "" : t.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;");
+    }
 
     private static class CantidadRenderer extends JPanel implements TableCellRenderer {
         private final JLabel lbl = new JLabel("1");
@@ -1412,86 +1471,84 @@ public class Ventas extends javax.swing.JFrame {
         }
     }
 
-private int nivelAviso(Producto p) {
-    int ex = p.getExistencias() == null ? 0 : p.getExistencias();
-    int min = p.getStockMinimo() == null ? 0 : p.getStockMinimo();
-    if (ex <= 0) return 2;
-    if (ex <= min) return 1;
-    return 0;
-}
-
-private void actualizarAvisos() {
-    int sin = 0;
-    int bajas = 0;
-    for (Producto p : catalogo) {
-        int n = nivelAviso(p);
-        if (n == 2) sin++;
-        else if (n == 1) bajas++;
-    }
-    int total = sin + bajas;
-    btnAvisos.setText(total == 0 ? "Avisos" : "Avisos (" + total + ")");
-    btnAvisos.setBackground(sin > 0 ? new Color(255, 170, 170)
-            : bajas > 0 ? new Color(255, 235, 160)
-            : new Color(153, 153, 153));
-}
-
-private void mostrarAvisos() {
-    List<Producto> sin = new ArrayList<>();
-    List<Producto> bajas = new ArrayList<>();
-    for (Producto p : catalogo) {
-        int n = nivelAviso(p);
-        if (n == 2) sin.add(p);
-        else if (n == 1) bajas.add(p);
+    private int nivelAviso(Producto p) {
+        int ex = p.getExistencias() == null ? 0 : p.getExistencias();
+        int min = p.getStockMinimo() == null ? 0 : p.getStockMinimo();
+        if (ex <= 0) return 2;
+        if (ex <= min) return 1;
+        return 0;
     }
 
-    JPanel contenido = new JPanel();
-    contenido.setLayout(new javax.swing.BoxLayout(contenido, javax.swing.BoxLayout.Y_AXIS));
-    contenido.setBackground(Color.WHITE);
-
-    if (sin.isEmpty() && bajas.isEmpty()) {
-        contenido.add(filaAviso("Todo en orden: no hay productos con pocas existencias.",
-                new Color(220, 245, 215)));
-    }
-    for (Producto p : sin) {
-        contenido.add(filaAviso("<b>" + escapar(p.getNombre()) + "</b><br>Sin existencias",
-                new Color(255, 170, 170)));
-    }
-    for (Producto p : bajas) {
-        contenido.add(filaAviso("<b>" + escapar(p.getNombre()) + "</b><br>Quedan "
-                + p.getExistencias() + " (mínimo " + p.getStockMinimo() + ")",
-                new Color(255, 235, 160)));
+    private void actualizarAvisos() {
+        int sin = 0;
+        int bajas = 0;
+        for (Producto p : catalogo) {
+            int n = nivelAviso(p);
+            if (n == 2) sin++;
+            else if (n == 1) bajas++;
+        }
+        int total = sin + bajas;
+        btnAvisos.setText(total == 0 ? "Avisos" : "Avisos (" + total + ")");
+        btnAvisos.setBackground(sin > 0 ? new Color(255, 170, 170)
+                : bajas > 0 ? new Color(255, 235, 160)
+                : new Color(153, 153, 153));
     }
 
-    int filas = Math.max(1, sin.size() + bajas.size());
-    javax.swing.JScrollPane sp = new javax.swing.JScrollPane(contenido);
-    sp.setBorder(null);
-    sp.setPreferredSize(new Dimension(340, Math.min(filas, 6) * 56 + 2));
+    private void mostrarAvisos() {
+        List<Producto> sin = new ArrayList<>();
+        List<Producto> bajas = new ArrayList<>();
+        for (Producto p : catalogo) {
+            int n = nivelAviso(p);
+            if (n == 2) sin.add(p);
+            else if (n == 1) bajas.add(p);
+        }
 
-    JLabel titulo = new JLabel("Avisos de inventario");
-    titulo.setFont(new java.awt.Font("Instrument Sans", 1, 14));
-    titulo.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 12, 8, 12));
+        JPanel contenido = new JPanel();
+        contenido.setLayout(new javax.swing.BoxLayout(contenido, javax.swing.BoxLayout.Y_AXIS));
+        contenido.setBackground(Color.WHITE);
 
-    popupAvisos.removeAll();
-    popupAvisos.setBorder(javax.swing.BorderFactory.createLineBorder(new Color(204, 204, 204)));
-    popupAvisos.add(titulo);
-    popupAvisos.add(sp);
-    popupAvisos.show(btnAvisos, btnAvisos.getWidth() - 340, btnAvisos.getHeight());
-}
+        if (sin.isEmpty() && bajas.isEmpty()) {
+            contenido.add(filaAviso("Todo en orden: no hay productos con pocas existencias.",
+                    new Color(220, 245, 215)));
+        }
+        for (Producto p : sin) {
+            contenido.add(filaAviso("<b>" + escapar(p.getNombre()) + "</b><br>Sin existencias",
+                    new Color(255, 170, 170)));
+        }
+        for (Producto p : bajas) {
+            contenido.add(filaAviso("<b>" + escapar(p.getNombre()) + "</b><br>Quedan "
+                            + p.getExistencias() + " (mínimo " + p.getStockMinimo() + ")",
+                    new Color(255, 235, 160)));
+        }
 
-private JLabel filaAviso(String html, Color fondo) {
-    JLabel l = new JLabel("<html>" + html + "</html>");
-    l.setOpaque(true);
-    l.setBackground(fondo);
-    l.setForeground(Color.BLACK);
-    l.setBorder(javax.swing.BorderFactory.createCompoundBorder(
-            javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, Color.WHITE),
-            javax.swing.BorderFactory.createEmptyBorder(8, 12, 8, 12)));
-    l.setAlignmentX(Component.LEFT_ALIGNMENT);
-    l.setPreferredSize(new Dimension(320, 56));
-    l.setMaximumSize(new Dimension(Integer.MAX_VALUE, 56));
-    return l;
-}
+        int filas = Math.max(1, sin.size() + bajas.size());
+        javax.swing.JScrollPane sp = new javax.swing.JScrollPane(contenido);
+        sp.setBorder(null);
+        sp.setPreferredSize(new Dimension(340, Math.min(filas, 6) * 56 + 2));
 
+        JLabel titulo = new JLabel("Avisos de inventario");
+        titulo.setFont(new java.awt.Font("Instrument Sans", 1, 14));
+        titulo.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 12, 8, 12));
 
+        popupAvisos.removeAll();
+        popupAvisos.setBorder(javax.swing.BorderFactory.createLineBorder(new Color(204, 204, 204)));
+        popupAvisos.add(titulo);
+        popupAvisos.add(sp);
+        popupAvisos.show(btnAvisos, btnAvisos.getWidth() - 340, btnAvisos.getHeight());
+    }
+
+    private JLabel filaAviso(String html, Color fondo) {
+        JLabel l = new JLabel("<html>" + html + "</html>");
+        l.setOpaque(true);
+        l.setBackground(fondo);
+        l.setForeground(Color.BLACK);
+        l.setBorder(javax.swing.BorderFactory.createCompoundBorder(
+                javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, Color.WHITE),
+                javax.swing.BorderFactory.createEmptyBorder(8, 12, 8, 12)));
+        l.setAlignmentX(Component.LEFT_ALIGNMENT);
+        l.setPreferredSize(new Dimension(320, 56));
+        l.setMaximumSize(new Dimension(Integer.MAX_VALUE, 56));
+        return l;
+    }
 
 }

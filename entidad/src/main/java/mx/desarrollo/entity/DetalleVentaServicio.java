@@ -33,6 +33,15 @@ public class DetalleVentaServicio {
     @Column(name = "precioUnitario")
     private Double precioUnitario;
 
+    @Size(max = 100)
+    @Column(name = "nombreCliente", length = 100)
+    private String nombreCliente;
+
+    @NotNull
+    @Column(name = "estadoTrabajo", length = 20, nullable = false)
+    private String estadoTrabajo = "Pendiente";
+
+
     public DetalleVentaServicio() {
     }
 
@@ -75,5 +84,24 @@ public class DetalleVentaServicio {
     public void setPrecioUnitario(Double precioUnitario) {
         this.precioUnitario = precioUnitario;
     }
+
+
+    public String getNombreCliente() {
+        return nombreCliente;
+    }
+
+    public void setNombreCliente(String nombreCliente) {
+        this.nombreCliente = nombreCliente;
+    }
+
+    public String getEstadoTrabajo() {
+        return estadoTrabajo;
+    }
+
+    public void setEstadoTrabajo(String estadoTrabajo) {
+        this.estadoTrabajo = estadoTrabajo;
+    }
+
+
 
 }
