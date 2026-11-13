@@ -41,7 +41,6 @@ public class ServiceFacadeLocator {
         return facadeHistorial;
     }
 
-
     private static FacadeServicio facadeServicio;
 
     public static FacadeServicio getInstanceFacadeServicio() {
@@ -52,5 +51,12 @@ public class ServiceFacadeLocator {
         return facadeServicio;
     }
 
+    private static FacadeCorteCaja facadeCorteCaja;
 
+    public static FacadeCorteCaja getInstanceFacadeCorteCaja() {
+        if (facadeCorteCaja == null) {
+            facadeCorteCaja = new FacadeCorteCaja();
+        }
+        return facadeCorteCaja;
+    }
 }

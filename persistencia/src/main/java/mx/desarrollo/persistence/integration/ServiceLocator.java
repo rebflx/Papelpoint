@@ -1,10 +1,7 @@
 package mx.desarrollo.persistence.integration;
-import mx.desarrollo.persistence.dao.HistorialDAO;
-import mx.desarrollo.persistence.dao.VentaDAO;
+import mx.desarrollo.persistence.dao.*;
 import mx.desarrollo.persistence.dao.servicioDAO;
 import jakarta.persistence.EntityManager;
-import mx.desarrollo.persistence.dao.ProductoDAO;
-import mx.desarrollo.persistence.dao.UsuarioDAO;
 import mx.desarrollo.persistence.persistence.HibernateUtil;
 
 public class ServiceLocator {
@@ -60,5 +57,14 @@ public class ServiceLocator {
         return servicioDAO;
     }
 
+
+    private static CorteCajaDAO corteCajaDAO;
+
+    public static CorteCajaDAO getInstanceCorteCajaDAO() {
+        if (corteCajaDAO == null) {
+            corteCajaDAO = new CorteCajaDAO();
+        }
+        return corteCajaDAO;
+    }
 
 }

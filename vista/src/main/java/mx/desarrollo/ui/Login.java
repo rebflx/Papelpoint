@@ -4,21 +4,45 @@
  */
 package mx.desarrollo.ui;
 
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Cursor;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.geom.Path2D;
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import javax.swing.plaf.basic.BasicButtonUI;
+import javax.swing.plaf.basic.BasicPasswordFieldUI;
+import javax.swing.plaf.basic.BasicTextFieldUI;
 
 /**
  *
  * @author erick
  */
-public class Login extends javax.swing.JFrame {
-    
+public class Login extends JFrame {
+
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Login.class.getName());
+
+    private static final Color COLOR_TARJETA = new Color(196, 217, 191);
+    private static final Color COLOR_BORDE = new Color(120, 120, 120);
+    private static final Color COLOR_BORDE_FOCO = new Color(86, 130, 76);
+    private static final Color COLOR_TEXTO = new Color(40, 40, 40);
 
     /**
      * Creates new form Login
      */
     public Login() {
         initComponents();
+        getContentPane().setBackground(Color.WHITE);
+        setTitle("PapelPoint - Iniciar sesión");
+        getRootPane().setDefaultButton(btnIngresar);   // Enter = Iniciar sesión
+        setExtendedState(java.awt.Frame.MAXIMIZED_BOTH);
     }
 
     /**
@@ -30,92 +54,72 @@ public class Login extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
-        btnIngresar = new javax.swing.JButton();
-        txtUsuario = new javax.swing.JTextField();
-        txtContrasena = new javax.swing.JPasswordField();
-        lblUsuario = new javax.swing.JLabel();
-        lblPass = new javax.swing.JLabel();
-        jPanel2 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        lblTitulo = new javax.swing.JLabel();
+        pnlTarjeta = new RoundedPanel();
+        lblTitulo = new JLabel();
+        lblSubtitulo = new JLabel();
+        lblUsuario = new JLabel();
+        txtUsuario = new RoundedTextField("Ingrese su usuario");
+        lblPass = new JLabel();
+        txtContrasena = new RoundedPasswordField("Ingrese su contraseña");
+        btnIngresar = new RoundedButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setBounds(new java.awt.Rectangle(0, 0, 1920, 1080));
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        setBackground(new Color(255, 255, 255));
 
-        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel1.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        pnlTarjeta.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        btnIngresar.setText("Ingresar");
+        lblTitulo.setFont(new java.awt.Font("Dosis", 0, 36)); // NOI18N
+        lblTitulo.setForeground(new Color(0, 0, 0));
+        lblTitulo.setHorizontalAlignment(SwingConstants.CENTER);
+        lblTitulo.setText("PapelPoint");
+        pnlTarjeta.add(lblTitulo, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 66, 380, 46));
+
+        lblSubtitulo.setFont(new java.awt.Font("Dosis", 0, 14)); // NOI18N
+        lblSubtitulo.setForeground(new Color(70, 70, 70));
+        lblSubtitulo.setHorizontalAlignment(SwingConstants.CENTER);
+        lblSubtitulo.setText("Sistema de gestión");
+        pnlTarjeta.add(lblSubtitulo, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 110, 380, 20));
+
+        lblUsuario.setFont(new java.awt.Font("Dosis", 0, 13)); // NOI18N
+        lblUsuario.setForeground(new Color(51, 51, 51));
+        lblUsuario.setText("Usuario:");
+        pnlTarjeta.add(lblUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(82, 160, 200, 18));
+
+        txtUsuario.setFont(new java.awt.Font("Dosis", 0, 14)); // NOI18N
+        pnlTarjeta.add(txtUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 182, 260, 38));
+
+        lblPass.setFont(new java.awt.Font("Dosis", 0, 13)); // NOI18N
+        lblPass.setForeground(new Color(51, 51, 51));
+        lblPass.setText("Contraseña:");
+        pnlTarjeta.add(lblPass, new org.netbeans.lib.awtextra.AbsoluteConstraints(82, 228, 200, 18));
+
+        txtContrasena.setFont(new java.awt.Font("Dosis", 0, 14)); // NOI18N
+        pnlTarjeta.add(txtContrasena, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 250, 260, 38));
+
+        btnIngresar.setFont(new java.awt.Font("Dosis", 0, 14)); // NOI18N
+        btnIngresar.setText("Iniciar sesión →");
         btnIngresar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnIngresarActionPerformed(evt);
             }
         });
-        jPanel1.add(btnIngresar, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 370, 370, 40));
-        jPanel1.add(txtUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 220, 380, 40));
-        jPanel1.add(txtContrasena, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 300, 380, 40));
+        pnlTarjeta.add(btnIngresar, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 314, 240, 40));
 
-
-
-        lblUsuario.setFont(new java.awt.Font("Dosis", 0, 14)); // NOI18N
-        lblUsuario.setText("Usuario:");
-        jPanel1.add(lblUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 190, -1, -1));
-
-        lblPass.setFont(new java.awt.Font("Dosis", 0, 14)); // NOI18N
-        lblPass.setText("Contraseña:");
-        jPanel1.add(lblPass, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 270, -1, -1));
-
-        jPanel2.setBackground(new java.awt.Color(136, 180, 123));
-
-        jLabel1.setFont(new java.awt.Font("Dosis", 0, 14)); // NOI18N
-        jLabel1.setText("Sistema de gestión");
-
-        lblTitulo.setFont(new java.awt.Font("Dosis", 0, 36)); // NOI18N
-        lblTitulo.setText("PapelPoint");
-
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap(151, Short.MAX_VALUE)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addGap(172, 172, 172))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addComponent(lblTitulo)
-                        .addGap(145, 145, 145))))
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(42, 42, 42)
-                .addComponent(lblTitulo)
-                .addGap(31, 31, 31)
-                .addComponent(jLabel1)
-                .addContainerGap(291, Short.MAX_VALUE))
-        );
-
-        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 20, 470, 430));
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        GroupLayout layout = new GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            layout.createParallelGroup(GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(541, 541, 541)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 714, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(542, Short.MAX_VALUE))
+                .addGap(0, 150, Short.MAX_VALUE)
+                .addComponent(pnlTarjeta, GroupLayout.PREFERRED_SIZE, 420, GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 150, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(234, Short.MAX_VALUE)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 504, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(231, 231, 231))
+            layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(0, 150, Short.MAX_VALUE)
+                .addComponent(pnlTarjeta, GroupLayout.PREFERRED_SIZE, 410, GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 150, Short.MAX_VALUE))
         );
 
         pack();
@@ -137,7 +141,7 @@ public class Login extends javax.swing.JFrame {
         }
 
             new Ventas(u).setVisible(true);
-            this.dispose();                    // cierra el login
+            this.dispose();
 
     } catch (Throwable ex) {
         ex.printStackTrace();
@@ -156,13 +160,13 @@ public class Login extends javax.swing.JFrame {
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
          */
         try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+            for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }
             }
-        } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (ReflectiveOperationException | UnsupportedLookAndFeelException ex) {
             logger.log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
@@ -172,14 +176,236 @@ public class Login extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnIngresar;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JLabel lblPass;
-    private javax.swing.JLabel lblTitulo;
-    private javax.swing.JLabel lblUsuario;
-    private javax.swing.JPasswordField txtContrasena;
-    private javax.swing.JTextField txtUsuario;
+    private JButton btnIngresar;
+    private JLabel lblPass;
+    private JLabel lblSubtitulo;
+    private JLabel lblTitulo;
+    private JLabel lblUsuario;
+    private JPanel pnlTarjeta;
+    private JPasswordField txtContrasena;
+    private JTextField txtUsuario;
     // End of variables declaration//GEN-END:variables
+
+    // =====================================================================
+    //  Componentes personalizados (pintados con Java2D, independientes
+    //  del Look and Feel para que se vean igual en cualquier equipo)
+    // =====================================================================
+
+    static class RoundedPanel extends JPanel {
+
+        private static final int MARGEN = 20;
+
+        RoundedPanel() {
+            setOpaque(false);
+        }
+
+        @Override
+        protected void paintComponent(Graphics g) {
+            Graphics2D g2 = (Graphics2D) g.create();
+            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+            int w = getWidth() - 2 * MARGEN;
+            int h = getHeight() - 2 * MARGEN;
+
+            for (int i = 14; i >= 1; i--) {
+                g2.setColor(new Color(0, 0, 0, 3));
+                g2.fillRoundRect(MARGEN - i, MARGEN - i + 8, w + 2 * i, h + 2 * i, 10 + 2 * i, 10 + 2 * i);
+            }
+
+            g2.setColor(COLOR_TARJETA);
+            g2.fillRoundRect(MARGEN, MARGEN, w, h, 10, 10);
+            g2.dispose();
+            super.paintComponent(g);
+        }
+    }
+
+    private static void pintarFondoCampo(Graphics2D g2, JComponent c) {
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        g2.setColor(Color.WHITE);
+        g2.fillRoundRect(0, 0, c.getWidth() - 1, c.getHeight() - 1, 10, 10);
+    }
+
+    private static void pintarBordeYHint(Graphics2D g2, javax.swing.text.JTextComponent c, String hint) {
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+
+        if (c.getDocument().getLength() == 0 && hint != null) {
+            g2.setFont(c.getFont());
+            g2.setColor(new Color(160, 160, 160));
+            FontMetrics fm = g2.getFontMetrics();
+            int y = (c.getHeight() - fm.getHeight()) / 2 + fm.getAscent();
+            g2.drawString(hint, c.getInsets().left, y);
+        }
+
+        boolean foco = c.hasFocus();
+        g2.setStroke(new BasicStroke(foco ? 1.6f : 1f));
+        g2.setColor(foco ? COLOR_BORDE_FOCO : COLOR_BORDE);
+        g2.drawRoundRect(0, 0, c.getWidth() - 1, c.getHeight() - 1, 10, 10);
+    }
+
+    static class RoundedTextField extends JTextField {
+
+        private final String hint;
+
+        RoundedTextField(String hint) {
+            this.hint = hint;
+            setOpaque(false);
+            setBorder(new EmptyBorder(0, 12, 0, 12));
+            setForeground(COLOR_TEXTO);
+            setCaretColor(COLOR_TEXTO);
+        }
+
+        @Override
+        public void updateUI() {
+            setUI(new BasicTextFieldUI());
+        }
+
+        @Override
+        protected void paintComponent(Graphics g) {
+            Graphics2D g2 = (Graphics2D) g.create();
+            pintarFondoCampo(g2, this);
+            super.paintComponent(g);
+            pintarBordeYHint(g2, this, hint);
+            g2.dispose();
+        }
+    }
+
+    static class RoundedPasswordField extends JPasswordField {
+
+        private static final int ANCHO_OJO = 34;
+        private final String hint;
+        private final JLabel ojo = new JLabel();
+        private boolean visibleTexto = false;
+
+        RoundedPasswordField(String hint) {
+            this.hint = hint;
+            setOpaque(false);
+            setBorder(new EmptyBorder(0, 12, 0, ANCHO_OJO));
+            setForeground(COLOR_TEXTO);
+            setCaretColor(COLOR_TEXTO);
+            setEchoChar('•');
+
+            ojo.setIcon(new EyeIcon(false));
+            ojo.setHorizontalAlignment(SwingConstants.CENTER);
+            ojo.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+            ojo.setToolTipText("Mostrar / ocultar contraseña");
+            ojo.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    alternarVisibilidad();
+                }
+            });
+            add(ojo);
+        }
+
+        private void alternarVisibilidad() {
+            visibleTexto = !visibleTexto;
+            setEchoChar(visibleTexto ? (char) 0 : '•');
+            ojo.setIcon(new EyeIcon(visibleTexto));
+            repaint();
+        }
+
+        @Override
+        public void updateUI() {
+            setUI(new BasicPasswordFieldUI());
+        }
+
+        @Override
+        public void doLayout() {
+            super.doLayout();
+            ojo.setBounds(getWidth() - ANCHO_OJO, 0, ANCHO_OJO, getHeight());
+        }
+
+        @Override
+        protected void paintComponent(Graphics g) {
+            Graphics2D g2 = (Graphics2D) g.create();
+            pintarFondoCampo(g2, this);
+            super.paintComponent(g);
+            pintarBordeYHint(g2, this, hint);
+            g2.dispose();
+        }
+    }
+
+    static class RoundedButton extends JButton {
+
+        RoundedButton() {
+            setOpaque(false);
+            setContentAreaFilled(false);
+            setBorderPainted(false);
+            setFocusPainted(false);
+            setForeground(Color.BLACK);
+            setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        }
+
+        @Override
+        public void updateUI() {
+            setUI(new BasicButtonUI());
+        }
+
+        @Override
+        protected void paintComponent(Graphics g) {
+            Graphics2D g2 = (Graphics2D) g.create();
+            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+            int w = getWidth();
+            int h = getHeight() - 4;
+            int desplazamiento = getModel().isPressed() ? 2 : 0;
+
+            g2.setColor(new Color(0, 0, 0, 60));
+            g2.fillRoundRect(1, 3, w - 2, h, 8, 8);
+            g2.setColor(new Color(0, 0, 0, 30));
+            g2.fillRoundRect(0, 4, w, h, 8, 8);
+
+            g2.setColor(getModel().isRollover() ? new Color(244, 249, 243) : Color.WHITE);
+            g2.fillRoundRect(0, desplazamiento, w, h, 8, 8);
+            g2.dispose();
+
+            super.paintComponent(g);
+        }
+    }
+
+    static class EyeIcon implements Icon {
+
+        private final boolean tachado;
+
+        EyeIcon(boolean tachado) {
+            this.tachado = tachado;
+        }
+
+        @Override
+        public void paintIcon(Component c, Graphics g, int x, int y) {
+            Graphics2D g2 = (Graphics2D) g.create();
+            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            g2.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
+            g2.setColor(new Color(90, 90, 90));
+            g2.setStroke(new BasicStroke(1.4f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
+
+            Path2D ojo = new Path2D.Double();
+            ojo.moveTo(x + 1, y + 7);
+            ojo.quadTo(x + 9, y - 3, x + 17, y + 7);
+            ojo.quadTo(x + 9, y + 17, x + 1, y + 7);
+            g2.draw(ojo);
+            g2.fillOval(x + 6, y + 4, 6, 6);
+
+            if (tachado) {
+                g2.setColor(Color.WHITE);
+                g2.setStroke(new BasicStroke(4f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
+                g2.drawLine(x + 3, y + 14, x + 15, y + 0);
+                g2.setColor(new Color(90, 90, 90));
+                g2.setStroke(new BasicStroke(1.4f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
+                g2.drawLine(x + 3, y + 14, x + 15, y + 0);
+            }
+            g2.dispose();
+        }
+
+        @Override
+        public int getIconWidth() {
+            return 18;
+        }
+
+        @Override
+        public int getIconHeight() {
+            return 14;
+        }
+    }
 }
