@@ -67,4 +67,18 @@ public class ServiceLocator {
         return corteCajaDAO;
     }
 
+    private static DescuentoDAO descuentoDAO;
+
+    public static DescuentoDAO getInstanceDescuentoDAO() {
+
+        if (descuentoDAO == null) {
+            descuentoDAO = new DescuentoDAO(
+                    getEntityManager()
+            );
+        }
+
+        return descuentoDAO;
+    }
+
+
 }

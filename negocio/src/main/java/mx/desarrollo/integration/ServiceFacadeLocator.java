@@ -59,4 +59,16 @@ public class ServiceFacadeLocator {
         }
         return facadeCorteCaja;
     }
+
+    private static FacadeDescuento facadeDescuento;
+
+    public static FacadeDescuento getInstanceFacadeDescuento() {
+
+        if (facadeDescuento == null) {
+            facadeDescuento = new FacadeDescuento();
+        }
+
+        return facadeDescuento;
+    }
+
 }

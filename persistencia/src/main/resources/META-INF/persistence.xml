@@ -20,6 +20,8 @@
         <class>mx.desarrollo.entity.HistorialModificacionProducto</class>
         <class>mx.desarrollo.entity.Servicio</class>
         <class>mx.desarrollo.entity.DetalleVentaServicio</class>
+        <class>mx.desarrollo.entity.Descuento</class>
+
 
 
         <properties>
