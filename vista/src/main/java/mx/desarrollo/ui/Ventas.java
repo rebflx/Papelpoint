@@ -1122,21 +1122,24 @@ public class Ventas extends javax.swing.JFrame {
         mostrarProductos();
     }
 
+
     private void mostrarProductos() {
+
         for (int i = 0; i < botonesProducto.length; i++) {
-            javax.swing.JButton b = botonesProducto[i];
+            JButton boton = botonesProducto[i];
             if (i < visibles.size()) {
                 Producto p = visibles.get(i);
-                boolean hay = p.getExistencias() != null && p.getExistencias() > 0;
-                b.setText("<html><center>" + escapar(p.getNombre()) + "<br>"
-                        + (hay ? moneda.format(p.getPrecio()) : "Agotado") + "</center></html>");
-                b.setEnabled(hay);
+                boolean disponible = p.getExistencias() != null && p.getExistencias() > 0;
+                double precioFinal = precioConDescuento(p);
+                boton.setText("<html><center>" + escapar(p.getNombre()) + "<br>" + (disponible ? moneda.format(precioFinal): "Agotado") + "</center></html>");
+                boton.setEnabled(disponible);
             } else {
-                b.setText("");
-                b.setEnabled(false);
+                boton.setText("");
+                boton.setEnabled(false);
             }
         }
     }
+
     //esto es del carrito
     private void agregarAlCarrito(Producto p) {
         int actual = carrito.getOrDefault(p.getIdProducto(), 0);
@@ -1146,7 +1149,7 @@ public class Ventas extends javax.swing.JFrame {
         }
         carrito.put(p.getIdProducto(), actual + 1);
         lblProducto.setText("<html><b>" + escapar(p.getNombre()) + "</b><br>"
-                + moneda.format(p.getPrecio()) + " - existencias: " + p.getExistencias() + "</html>");
+                + moneda.format(precioConDescuento(p)) + " - existencias: " + p.getExistencias() + "</html>");
         refrescarCarrito();
     }
 
@@ -1224,9 +1227,10 @@ public class Ventas extends javax.swing.JFrame {
         for (Map.Entry<Integer, Integer> en : carrito.entrySet()) {
             Producto p = productosPorId.get(en.getKey());
             int cant = en.getValue();
+            double precioFinal = precioConDescuento(p);
             modelo.addRow(new Object[]{
-                    p.getNombre(), moneda.format(p.getPrecio()), String.valueOf(cant),
-                    moneda.format(p.getPrecio() * cant), "Eliminar"
+                    p.getNombre(), moneda.format(precioFinal), String.valueOf(cant),
+                    moneda.format(precioFinal * cant), "Eliminar"
             });
         }
         for (DetalleVentaServicio d : carritoServicios) {
@@ -1243,13 +1247,19 @@ public class Ventas extends javax.swing.JFrame {
 
     private void calcularTotales() {
         double subtotal = 0;
+        double descuento = 0;
         for (Map.Entry<Integer, Integer> en : carrito.entrySet()) {
-            subtotal += productosPorId.get(en.getKey()).getPrecio() * en.getValue();
+
+            Producto producto = productosPorId.get(en.getKey());
+            int cantidad = en.getValue();
+            double precioNormal = producto.getPrecio();
+            double precioFinal = precioConDescuento(producto);
+            subtotal += precioNormal * cantidad;
+            descuento += (precioNormal - precioFinal) * cantidad;
         }
         for (DetalleVentaServicio d : carritoServicios) {
             subtotal += d.getServicio().getPrecio() * d.getCantidad();
         }
-        double descuento = 0;
         double base = subtotal - descuento;
         double iva = base * IVA;
         totalVenta = base + iva;
@@ -1328,6 +1338,7 @@ public class Ventas extends javax.swing.JFrame {
     }
 
     private void confirmarVenta() {
+        refrescarCarrito();
         if (carrito.isEmpty() && carritoServicios.isEmpty()) {
             mostrarError("Agrega al menos un producto o servicio a la venta.");
             return;
@@ -1550,5 +1561,12 @@ public class Ventas extends javax.swing.JFrame {
         l.setMaximumSize(new Dimension(Integer.MAX_VALUE, 56));
         return l;
     }
+
+
+    private double precioConDescuento(Producto producto) {
+
+        return ServiceFacadeLocator.getInstanceFacadeDescuento().calcularPrecioConDescuento(producto);
+    }
+
 
 }

@@ -41,6 +41,13 @@ public class Producto {
     @Column(name = "imagen", length = 500)
     private String imagen;
 
+
+    @Override
+    public String toString() {
+        return nombre + " - $" + precio;
+    }
+
+
     public Producto() {
     }
 

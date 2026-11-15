@@ -17,6 +17,7 @@ import jakarta.persistence.TypedQuery;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import mx.desarrollo.entity.Descuento;
 
 public class VentaDAO extends AbstractDAO<Venta> {
 
@@ -64,9 +65,12 @@ public class VentaDAO extends AbstractDAO<Venta> {
                 p.setExistencias(p.getExistencias() - d.getCantidad());
                 d.setVenta(venta);
                 d.setProducto(p);
-                d.setPrecioUnitario(p.getPrecio());
+                double precioFinal = obtenerPrecioFinal(em, p);
 
-                subtotal += p.getPrecio() * d.getCantidad();
+                d.setPrecioUnitario(precioFinal);
+
+                subtotal += precioFinal * d.getCantidad();
+
             }
 
             // Se valida y guarda cada servicio dentro de la MISMA transaccion.
@@ -239,5 +243,26 @@ public class VentaDAO extends AbstractDAO<Venta> {
     private static double redondear(double valor){
         return Math.round(valor * 100) / 100.0;
     }
+
+
+    private double obtenerPrecioFinal(
+            EntityManager em,
+            Producto producto) {
+
+        List<Descuento> descuentos = em.createQuery("" +
+                                "SELECT d FROM Descuento d " +
+                                "WHERE d.producto.idProducto = :idProducto " +
+                                "AND d.vigencia >= :ahora " +
+                                "ORDER BY d.vigencia ASC, d.idDescuento DESC", Descuento.class
+                ).setParameter("idProducto", producto.getIdProducto()).setParameter("ahora", LocalDateTime.now()).setMaxResults(1).getResultList();
+        double precio = producto.getPrecio();
+        if (!descuentos.isEmpty()) {
+
+            double porcentaje = descuentos.get(0).getPorcentajeDescuento();
+            precio = precio * (1 - porcentaje / 100.0);
+        }
+        return Math.round(precio * 100.0) / 100.0;
+    }
+
 
 }

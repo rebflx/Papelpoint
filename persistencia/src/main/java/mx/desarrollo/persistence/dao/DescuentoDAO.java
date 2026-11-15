@@ -43,6 +43,29 @@ public class DescuentoDAO extends AbstractDAO<Descuento> {
 
         return resultados.stream().findFirst();
     }
+
+
+    public List<Descuento> obtenerTodos() {
+        return execute(em -> {
+            em.clear();
+
+            return em.createQuery(
+                    "SELECT d FROM Descuento d " +
+                            "JOIN FETCH d.producto " +
+                            "ORDER BY d.idDescuento DESC",
+                    Descuento.class
+            ).getResultList();
+        });
+    }
+
+    public void eliminarPorId(Integer id) {
+        Descuento descuento = find(id)
+                .orElseThrow(() ->
+                        new IllegalArgumentException("El descuento no existe."));
+
+        delete(descuento);
+    }
+
 }
 
 

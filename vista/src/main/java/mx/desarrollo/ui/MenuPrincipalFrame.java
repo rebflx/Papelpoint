@@ -10,6 +10,9 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import java.awt.Font;
+import java.awt.Cursor;
+
 
 import mx.desarrollo.delegate.DelegateUsuario;
 import mx.desarrollo.entity.Usuario;
@@ -28,6 +31,7 @@ public class MenuPrincipalFrame extends javax.swing.JFrame {
     public MenuPrincipalFrame() {
         initComponents();
         panelCambiante.add(new AgregarProdPanel(), "AGREGAR_PRODUCTO");
+   
     }
 
     private Usuario usuarioActual;
@@ -97,27 +101,29 @@ public class MenuPrincipalFrame extends javax.swing.JFrame {
     private void initComponents() {
 
         panelIzquierda = new javax.swing.JPanel();
-        jLabel2 = new JLabel();
+        jLabel2 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
-        botonSeg = new JButton();
-        botonConsultas = new JButton();
-        botonTickets = new JButton();
-        botonInventario = new JButton();
-        jLabel3 = new JLabel();
+        botonSeg = new javax.swing.JButton();
+        botonConsultas = new javax.swing.JButton();
+        botonTickets = new javax.swing.JButton();
+        botonInventario = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
         jSeparator2 = new javax.swing.JSeparator();
-        botonVentas = new JButton();
-        botonCortes = new JButton();
-        botonUsuarios = new JButton();
-        botonEditar = new JButton();
-        imgTicket = new JLabel();
-        imgSeg = new JLabel();
-        imgTickets = new JLabel();
-        imgVenta = new JLabel();
-        imgInventario = new JLabel();
-        imgConsulta = new JLabel();
-        imgCortes = new JLabel();
-        imgUsuario = new JLabel();
-        imgEditar = new JLabel();
+        botonVentas = new javax.swing.JButton();
+        botonCortes = new javax.swing.JButton();
+        botonUsuarios = new javax.swing.JButton();
+        botonEditar = new javax.swing.JButton();
+        imgTicket = new javax.swing.JLabel();
+        imgSeg = new javax.swing.JLabel();
+        imgTickets = new javax.swing.JLabel();
+        imgVenta = new javax.swing.JLabel();
+        imgInventario = new javax.swing.JLabel();
+        imgCortes = new javax.swing.JLabel();
+        imgUsuario = new javax.swing.JLabel();
+        imgEditar = new javax.swing.JLabel();
+        botonDescuentos = new javax.swing.JButton();
+        imgConsulta2 = new javax.swing.JLabel();
+        imgConsulta3 = new javax.swing.JLabel();
         panelCambiante = new javax.swing.JPanel();
         SEGURIDAD = new javax.swing.JPanel();
         EDITAR = new javax.swing.JPanel();
@@ -126,32 +132,32 @@ public class MenuPrincipalFrame extends javax.swing.JFrame {
         CONSULTAS = new javax.swing.JPanel();
         INVENTARIO = new javax.swing.JPanel();
         jSeparator3 = new javax.swing.JSeparator();
-        jLabel4 = new JLabel();
-        jButton10 = new JButton();
-        btnReabastecimiento = new JButton();
-        jLabel1 = new JLabel();
-        btnHistorial = new JButton();
-        jButton11 = new JButton();
-        btnConsultaServicios = new JButton();
+        jLabel4 = new javax.swing.JLabel();
+        jButton10 = new javax.swing.JButton();
+        btnReabastecimiento = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        btnHistorial = new javax.swing.JButton();
+        jButton11 = new javax.swing.JButton();
+        btnConsultaServicios = new javax.swing.JButton();
         TICKETS = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        panelIzquierda.setBackground(new Color(136, 180, 123));
-        panelIzquierda.setForeground(new Color(136, 180, 123));
+        panelIzquierda.setBackground(new java.awt.Color(136, 180, 123));
+        panelIzquierda.setForeground(new java.awt.Color(136, 180, 123));
         panelIzquierda.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel2.setBackground(new Color(136, 180, 123));
+        jLabel2.setBackground(new java.awt.Color(136, 180, 123));
         jLabel2.setFont(new java.awt.Font("Instrument Sans", 0, 28)); // NOI18N
-        jLabel2.setForeground(new Color(255, 255, 255));
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("Admin");
-        panelIzquierda.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 310, -1, -1));
+        panelIzquierda.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 340, -1, -1));
 
         jSeparator1.setAutoscrolls(true);
-        panelIzquierda.add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 360, 180, 20));
+        panelIzquierda.add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 380, 180, 20));
 
         botonSeg.setFont(new java.awt.Font("Instrument Sans", 1, 16)); // NOI18N
-        botonSeg.setForeground(new Color(255, 255, 255));
+        botonSeg.setForeground(new java.awt.Color(255, 255, 255));
         botonSeg.setText("Seguridad");
         botonSeg.setBorderPainted(false);
         botonSeg.setContentAreaFilled(false);
@@ -168,10 +174,10 @@ public class MenuPrincipalFrame extends javax.swing.JFrame {
                 botonSegActionPerformed(evt);
             }
         });
-        panelIzquierda.add(botonSeg, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 510, 140, 60));
+        panelIzquierda.add(botonSeg, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 530, 140, 60));
 
         botonConsultas.setFont(new java.awt.Font("Instrument Sans", 1, 16)); // NOI18N
-        botonConsultas.setForeground(new Color(255, 255, 255));
+        botonConsultas.setForeground(new java.awt.Color(255, 255, 255));
         botonConsultas.setText("Consultas");
         botonConsultas.setBorderPainted(false);
         botonConsultas.setContentAreaFilled(false);
@@ -191,7 +197,7 @@ public class MenuPrincipalFrame extends javax.swing.JFrame {
         panelIzquierda.add(botonConsultas, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 240, 140, 40));
 
         botonTickets.setFont(new java.awt.Font("Instrument Sans", 1, 16)); // NOI18N
-        botonTickets.setForeground(new Color(255, 255, 255));
+        botonTickets.setForeground(new java.awt.Color(255, 255, 255));
         botonTickets.setText("Tickets");
         botonTickets.setBorderPainted(false);
         botonTickets.setContentAreaFilled(false);
@@ -211,7 +217,7 @@ public class MenuPrincipalFrame extends javax.swing.JFrame {
         panelIzquierda.add(botonTickets, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 140, 130, 40));
 
         botonInventario.setFont(new java.awt.Font("Instrument Sans", 1, 16)); // NOI18N
-        botonInventario.setForeground(new Color(255, 255, 255));
+        botonInventario.setForeground(new java.awt.Color(255, 255, 255));
         botonInventario.setText("Inventario");
         botonInventario.setBorderPainted(false);
         botonInventario.setContentAreaFilled(false);
@@ -230,9 +236,9 @@ public class MenuPrincipalFrame extends javax.swing.JFrame {
         });
         panelIzquierda.add(botonInventario, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 190, -1, 40));
 
-        jLabel3.setBackground(new Color(136, 180, 123));
+        jLabel3.setBackground(new java.awt.Color(136, 180, 123));
         jLabel3.setFont(new java.awt.Font("Instrument Sans", 0, 28)); // NOI18N
-        jLabel3.setForeground(new Color(255, 255, 255));
+        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("PapelPoint");
         panelIzquierda.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, -1, -1));
 
@@ -240,7 +246,7 @@ public class MenuPrincipalFrame extends javax.swing.JFrame {
         panelIzquierda.add(jSeparator2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 60, 180, 20));
 
         botonVentas.setFont(new java.awt.Font("Instrument Sans", 1, 16)); // NOI18N
-        botonVentas.setForeground(new Color(255, 255, 255));
+        botonVentas.setForeground(new java.awt.Color(255, 255, 255));
         botonVentas.setText("Ventas");
         botonVentas.setContentAreaFilled(false);
         botonVentas.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -259,7 +265,7 @@ public class MenuPrincipalFrame extends javax.swing.JFrame {
         panelIzquierda.add(botonVentas, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 90, 100, 40));
 
         botonCortes.setFont(new java.awt.Font("Instrument Sans", 1, 16)); // NOI18N
-        botonCortes.setForeground(new Color(255, 255, 255));
+        botonCortes.setForeground(new java.awt.Color(255, 255, 255));
         botonCortes.setText("Cortes");
         botonCortes.setBorderPainted(false);
         botonCortes.setContentAreaFilled(false);
@@ -276,10 +282,10 @@ public class MenuPrincipalFrame extends javax.swing.JFrame {
                 botonCortesActionPerformed(evt);
             }
         });
-        panelIzquierda.add(botonCortes, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 370, 120, 40));
+        panelIzquierda.add(botonCortes, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 390, 120, 40));
 
         botonUsuarios.setFont(new java.awt.Font("Instrument Sans", 1, 16)); // NOI18N
-        botonUsuarios.setForeground(new Color(255, 255, 255));
+        botonUsuarios.setForeground(new java.awt.Color(255, 255, 255));
         botonUsuarios.setText("Usuarios");
         botonUsuarios.setBorderPainted(false);
         botonUsuarios.setContentAreaFilled(false);
@@ -296,10 +302,10 @@ public class MenuPrincipalFrame extends javax.swing.JFrame {
                 botonUsuariosActionPerformed(evt);
             }
         });
-        panelIzquierda.add(botonUsuarios, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 420, 140, 40));
+        panelIzquierda.add(botonUsuarios, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 440, 140, 40));
 
         botonEditar.setFont(new java.awt.Font("Instrument Sans", 1, 16)); // NOI18N
-        botonEditar.setForeground(new Color(255, 255, 255));
+        botonEditar.setForeground(new java.awt.Color(255, 255, 255));
         botonEditar.setText("Editar");
         botonEditar.setAutoscrolls(true);
         botonEditar.setBorderPainted(false);
@@ -317,47 +323,70 @@ public class MenuPrincipalFrame extends javax.swing.JFrame {
                 botonEditarActionPerformed(evt);
             }
         });
-        panelIzquierda.add(botonEditar, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 470, 140, 40));
+        panelIzquierda.add(botonEditar, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 490, 140, 40));
 
-        imgTicket.setIcon(new ImageIcon(getClass().getResource("/imagenes/Rectangle4.png"))); // NOI18N
+        imgTicket.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/Rectangle4.png"))); // NOI18N
         panelIzquierda.add(imgTicket, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 140, -1, -1));
 
-        imgSeg.setIcon(new ImageIcon(getClass().getResource("/imagenes/Rectangle4.png"))); // NOI18N
-        panelIzquierda.add(imgSeg, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 520, -1, 40));
+        imgSeg.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/Rectangle4.png"))); // NOI18N
+        panelIzquierda.add(imgSeg, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 540, -1, 40));
 
-        imgTickets.setIcon(new ImageIcon(getClass().getResource("/imagenes/Rectangle4.png"))); // NOI18N
+        imgTickets.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/Rectangle4.png"))); // NOI18N
         panelIzquierda.add(imgTickets, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 140, -1, -1));
 
-        imgVenta.setIcon(new ImageIcon(getClass().getResource("/imagenes/Rectangle4.png"))); // NOI18N
+        imgVenta.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/Rectangle4.png"))); // NOI18N
         panelIzquierda.add(imgVenta, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 90, -1, -1));
 
-        imgInventario.setIcon(new ImageIcon(getClass().getResource("/imagenes/Rectangle4.png"))); // NOI18N
+        imgInventario.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/Rectangle4.png"))); // NOI18N
         panelIzquierda.add(imgInventario, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 190, -1, -1));
 
-        imgConsulta.setIcon(new ImageIcon(getClass().getResource("/imagenes/Rectangle4.png"))); // NOI18N
-        panelIzquierda.add(imgConsulta, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 240, -1, -1));
+        imgCortes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/Rectangle4.png"))); // NOI18N
+        panelIzquierda.add(imgCortes, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 390, -1, -1));
 
-        imgCortes.setIcon(new ImageIcon(getClass().getResource("/imagenes/Rectangle4.png"))); // NOI18N
-        panelIzquierda.add(imgCortes, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 370, -1, -1));
+        imgUsuario.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/Rectangle4.png"))); // NOI18N
+        panelIzquierda.add(imgUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 440, -1, -1));
 
-        imgUsuario.setIcon(new ImageIcon(getClass().getResource("/imagenes/Rectangle4.png"))); // NOI18N
-        panelIzquierda.add(imgUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 420, -1, -1));
+        imgEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/Rectangle4.png"))); // NOI18N
+        panelIzquierda.add(imgEditar, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 490, -1, -1));
 
-        imgEditar.setIcon(new ImageIcon(getClass().getResource("/imagenes/Rectangle4.png"))); // NOI18N
-        panelIzquierda.add(imgEditar, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 470, -1, -1));
+        botonDescuentos.setFont(new java.awt.Font("Instrument Sans", 1, 16)); // NOI18N
+        botonDescuentos.setForeground(new java.awt.Color(255, 255, 255));
+        botonDescuentos.setText("Descuentos");
+        botonDescuentos.setBorderPainted(false);
+        botonDescuentos.setContentAreaFilled(false);
+        botonDescuentos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                botonDescuentosMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                botonDescuentosMouseExited(evt);
+            }
+        });
+        botonDescuentos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonDescuentosActionPerformed(evt);
+            }
+        });
+        panelIzquierda.add(botonDescuentos, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 290, 140, 40));
 
-        panelCambiante.setBackground(new Color(255, 102, 102));
-        panelCambiante.setLayout(new CardLayout());
+        imgConsulta2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/Rectangle4.png"))); // NOI18N
+        panelIzquierda.add(imgConsulta2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 290, -1, -1));
+
+        imgConsulta3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/Rectangle4.png"))); // NOI18N
+        panelIzquierda.add(imgConsulta3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 240, -1, -1));
+
+        panelCambiante.setBackground(new java.awt.Color(255, 102, 102));
+        panelCambiante.setLayout(new java.awt.CardLayout());
 
         javax.swing.GroupLayout SEGURIDADLayout = new javax.swing.GroupLayout(SEGURIDAD);
         SEGURIDAD.setLayout(SEGURIDADLayout);
         SEGURIDADLayout.setHorizontalGroup(
-                SEGURIDADLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGap(0, 1280, Short.MAX_VALUE)
+            SEGURIDADLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 1280, Short.MAX_VALUE)
         );
         SEGURIDADLayout.setVerticalGroup(
-                SEGURIDADLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGap(0, 770, Short.MAX_VALUE)
+            SEGURIDADLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 770, Short.MAX_VALUE)
         );
 
         panelCambiante.add(SEGURIDAD, "card8");
@@ -365,12 +394,12 @@ public class MenuPrincipalFrame extends javax.swing.JFrame {
         javax.swing.GroupLayout EDITARLayout = new javax.swing.GroupLayout(EDITAR);
         EDITAR.setLayout(EDITARLayout);
         EDITARLayout.setHorizontalGroup(
-                EDITARLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGap(0, 1280, Short.MAX_VALUE)
+            EDITARLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 1280, Short.MAX_VALUE)
         );
         EDITARLayout.setVerticalGroup(
-                EDITARLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGap(0, 770, Short.MAX_VALUE)
+            EDITARLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 770, Short.MAX_VALUE)
         );
 
         panelCambiante.add(EDITAR, "card7");
@@ -378,12 +407,12 @@ public class MenuPrincipalFrame extends javax.swing.JFrame {
         javax.swing.GroupLayout USUARIOSLayout = new javax.swing.GroupLayout(USUARIOS);
         USUARIOS.setLayout(USUARIOSLayout);
         USUARIOSLayout.setHorizontalGroup(
-                USUARIOSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGap(0, 1280, Short.MAX_VALUE)
+            USUARIOSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 1280, Short.MAX_VALUE)
         );
         USUARIOSLayout.setVerticalGroup(
-                USUARIOSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGap(0, 770, Short.MAX_VALUE)
+            USUARIOSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 770, Short.MAX_VALUE)
         );
 
         panelCambiante.add(USUARIOS, "card6");
@@ -391,12 +420,12 @@ public class MenuPrincipalFrame extends javax.swing.JFrame {
         javax.swing.GroupLayout CORTESLayout = new javax.swing.GroupLayout(CORTES);
         CORTES.setLayout(CORTESLayout);
         CORTESLayout.setHorizontalGroup(
-                CORTESLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGap(0, 1280, Short.MAX_VALUE)
+            CORTESLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 1280, Short.MAX_VALUE)
         );
         CORTESLayout.setVerticalGroup(
-                CORTESLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGap(0, 770, Short.MAX_VALUE)
+            CORTESLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 770, Short.MAX_VALUE)
         );
 
         panelCambiante.add(CORTES, "card5");
@@ -404,31 +433,31 @@ public class MenuPrincipalFrame extends javax.swing.JFrame {
         javax.swing.GroupLayout CONSULTASLayout = new javax.swing.GroupLayout(CONSULTAS);
         CONSULTAS.setLayout(CONSULTASLayout);
         CONSULTASLayout.setHorizontalGroup(
-                CONSULTASLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGap(0, 1280, Short.MAX_VALUE)
+            CONSULTASLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 1280, Short.MAX_VALUE)
         );
         CONSULTASLayout.setVerticalGroup(
-                CONSULTASLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGap(0, 770, Short.MAX_VALUE)
+            CONSULTASLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 770, Short.MAX_VALUE)
         );
 
         panelCambiante.add(CONSULTAS, "card4");
 
-        INVENTARIO.setBackground(new Color(255, 255, 255));
+        INVENTARIO.setBackground(new java.awt.Color(255, 255, 255));
         INVENTARIO.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jSeparator3.setBackground(new Color(136, 180, 123));
-        jSeparator3.setForeground(new Color(136, 180, 123));
+        jSeparator3.setBackground(new java.awt.Color(136, 180, 123));
+        jSeparator3.setForeground(new java.awt.Color(136, 180, 123));
         jSeparator3.setAutoscrolls(true);
         INVENTARIO.add(jSeparator3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 60, 1280, 60));
 
-        jLabel4.setBackground(new Color(136, 180, 123));
+        jLabel4.setBackground(new java.awt.Color(136, 180, 123));
         jLabel4.setFont(new java.awt.Font("Instrument Sans", 0, 28)); // NOI18N
-        jLabel4.setForeground(new Color(136, 180, 123));
+        jLabel4.setForeground(new java.awt.Color(136, 180, 123));
         jLabel4.setText("Inventario");
         INVENTARIO.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, -1, -1));
 
-        jButton10.setBackground(new Color(195, 217, 189));
+        jButton10.setBackground(new java.awt.Color(195, 217, 189));
         jButton10.setText("PAQUETES");
         jButton10.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -437,7 +466,7 @@ public class MenuPrincipalFrame extends javax.swing.JFrame {
         });
         INVENTARIO.add(jButton10, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 290, 220, 110));
 
-        btnReabastecimiento.setBackground(new Color(195, 217, 189));
+        btnReabastecimiento.setBackground(new java.awt.Color(195, 217, 189));
         btnReabastecimiento.setText("<html><center>REABASTECIMIENTO</center></html>");
         btnReabastecimiento.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -449,7 +478,7 @@ public class MenuPrincipalFrame extends javax.swing.JFrame {
         jLabel1.setText(".");
         INVENTARIO.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(1143, 672, 137, 90));
 
-        btnHistorial.setBackground(new Color(195, 217, 189));
+        btnHistorial.setBackground(new java.awt.Color(195, 217, 189));
         btnHistorial.setText("<html><center>HISTORIAL DE<br>MODIFICACIONES</center></html>");
         btnHistorial.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -458,7 +487,7 @@ public class MenuPrincipalFrame extends javax.swing.JFrame {
         });
         INVENTARIO.add(btnHistorial, new org.netbeans.lib.awtextra.AbsoluteConstraints(395, 420, 220, 110));
 
-        jButton11.setBackground(new Color(195, 217, 189));
+        jButton11.setBackground(new java.awt.Color(195, 217, 189));
         jButton11.setText("AGREGAR PRODUCTO");
         jButton11.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -467,7 +496,7 @@ public class MenuPrincipalFrame extends javax.swing.JFrame {
         });
         INVENTARIO.add(jButton11, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 160, 220, 110));
 
-        btnConsultaServicios.setBackground(new Color(195, 217, 189));
+        btnConsultaServicios.setBackground(new java.awt.Color(195, 217, 189));
         btnConsultaServicios.setText("<html><center>CONSULTA SERVICIOS</center></html>");
         btnConsultaServicios.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -478,17 +507,17 @@ public class MenuPrincipalFrame extends javax.swing.JFrame {
 
         panelCambiante.add(INVENTARIO, "card3");
 
-        TICKETS.setBackground(new Color(255, 255, 255));
+        TICKETS.setBackground(new java.awt.Color(255, 255, 255));
 
         javax.swing.GroupLayout TICKETSLayout = new javax.swing.GroupLayout(TICKETS);
         TICKETS.setLayout(TICKETSLayout);
         TICKETSLayout.setHorizontalGroup(
-                TICKETSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGap(0, 1280, Short.MAX_VALUE)
+            TICKETSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 1280, Short.MAX_VALUE)
         );
         TICKETSLayout.setVerticalGroup(
-                TICKETSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGap(0, 770, Short.MAX_VALUE)
+            TICKETSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 770, Short.MAX_VALUE)
         );
 
         panelCambiante.add(TICKETS, "card2");
@@ -496,16 +525,16 @@ public class MenuPrincipalFrame extends javax.swing.JFrame {
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createSequentialGroup()
-                                .addComponent(panelIzquierda, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, 0)
-                                .addComponent(panelCambiante, javax.swing.GroupLayout.PREFERRED_SIZE, 1280, javax.swing.GroupLayout.PREFERRED_SIZE))
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(panelIzquierda, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0)
+                .addComponent(panelCambiante, javax.swing.GroupLayout.PREFERRED_SIZE, 1280, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         layout.setVerticalGroup(
-                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(panelIzquierda, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(panelCambiante, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(panelIzquierda, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(panelCambiante, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -641,11 +670,11 @@ public class MenuPrincipalFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_botonInventarioMouseExited
 
     private void botonConsultasMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botonConsultasMouseEntered
-        activarHover(imgConsulta, botonConsultas);
+        activarHover(imgConsulta3, botonConsultas);
     }//GEN-LAST:event_botonConsultasMouseEntered
 
     private void botonConsultasMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botonConsultasMouseExited
-        desactivarHover(imgConsulta, botonConsultas);
+        desactivarHover(imgConsulta3, botonConsultas);
     }//GEN-LAST:event_botonConsultasMouseExited
 
     private void botonSegMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botonSegMouseEntered
@@ -727,6 +756,21 @@ public class MenuPrincipalFrame extends javax.swing.JFrame {
 
     }//GEN-LAST:event_btnConsultaServiciosActionPerformed
 
+    private void botonDescuentosMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botonDescuentosMouseEntered
+        // TODO add your handling code here:
+        activarHover(imgConsulta2, botonDescuentos);
+    }//GEN-LAST:event_botonDescuentosMouseEntered
+
+    private void botonDescuentosMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botonDescuentosMouseExited
+        // TODO add your handling code here:
+        desactivarHover(imgConsulta2, botonDescuentos);
+    }//GEN-LAST:event_botonDescuentosMouseExited
+
+    private void botonDescuentosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonDescuentosActionPerformed
+        // TODO add your handling code here:z
+        mostrarDescuentos();
+    }//GEN-LAST:event_botonDescuentosActionPerformed
+
     private void activarHover(JLabel imagen, JButton boton) {
         imagen.setIcon(new ImageIcon(
                 getClass().getResource("/imagenes/Rectangle3.png")
@@ -740,6 +784,25 @@ public class MenuPrincipalFrame extends javax.swing.JFrame {
         ));
         boton.setForeground(Color.WHITE);
     }
+
+
+    public void mostrarDescuentos() {
+
+        Descuentos panelDescuentos = new Descuentos();
+
+        panelCambiante.add(panelDescuentos, "DESCUENTOS");
+
+        CardLayout cl = (CardLayout) panelCambiante.getLayout();
+        cl.show(panelCambiante, "DESCUENTOS");
+
+        panelCambiante.revalidate();
+        panelCambiante.repaint();
+    }
+
+
+    
+
+
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -771,32 +834,34 @@ public class MenuPrincipalFrame extends javax.swing.JFrame {
     private javax.swing.JPanel SEGURIDAD;
     private javax.swing.JPanel TICKETS;
     private javax.swing.JPanel USUARIOS;
-    private JButton botonConsultas;
-    private JButton botonCortes;
-    private JButton botonEditar;
-    private JButton botonInventario;
-    private JButton botonSeg;
-    private JButton botonTickets;
-    private JButton botonUsuarios;
-    private JButton botonVentas;
-    private JButton btnConsultaServicios;
-    private JButton btnHistorial;
-    private JButton btnReabastecimiento;
-    private JLabel imgConsulta;
-    private JLabel imgCortes;
-    private JLabel imgEditar;
-    private JLabel imgInventario;
-    private JLabel imgSeg;
-    private JLabel imgTicket;
-    private JLabel imgTickets;
-    private JLabel imgUsuario;
-    private JLabel imgVenta;
-    private JButton jButton10;
-    private JButton jButton11;
-    private JLabel jLabel1;
-    private JLabel jLabel2;
-    private JLabel jLabel3;
-    private JLabel jLabel4;
+    private javax.swing.JButton botonConsultas;
+    private javax.swing.JButton botonCortes;
+    private javax.swing.JButton botonDescuentos;
+    private javax.swing.JButton botonEditar;
+    private javax.swing.JButton botonInventario;
+    private javax.swing.JButton botonSeg;
+    private javax.swing.JButton botonTickets;
+    private javax.swing.JButton botonUsuarios;
+    private javax.swing.JButton botonVentas;
+    private javax.swing.JButton btnConsultaServicios;
+    private javax.swing.JButton btnHistorial;
+    private javax.swing.JButton btnReabastecimiento;
+    private javax.swing.JLabel imgConsulta2;
+    private javax.swing.JLabel imgConsulta3;
+    private javax.swing.JLabel imgCortes;
+    private javax.swing.JLabel imgEditar;
+    private javax.swing.JLabel imgInventario;
+    private javax.swing.JLabel imgSeg;
+    private javax.swing.JLabel imgTicket;
+    private javax.swing.JLabel imgTickets;
+    private javax.swing.JLabel imgUsuario;
+    private javax.swing.JLabel imgVenta;
+    private javax.swing.JButton jButton10;
+    private javax.swing.JButton jButton11;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator3;
