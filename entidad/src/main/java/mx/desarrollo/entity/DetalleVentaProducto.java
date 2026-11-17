@@ -33,6 +33,9 @@ public class DetalleVentaProducto {
     @Column(name = "precioUnitario")
     private Double precioUnitario;
 
+    @Column(name = "precioOriginal")
+    private Double precioOriginal;
+
     public DetalleVentaProducto() {
     }
 
@@ -74,6 +77,11 @@ public class DetalleVentaProducto {
 
     public void setPrecioUnitario(Double precioUnitario) {
         this.precioUnitario = precioUnitario;
+    }
+
+    public Double getPrecioOriginal(){ return precioOriginal; }
+
+    public void setPrecioOriginal(Double precioOriginal){ this.precioOriginal = precioOriginal;
     }
 
 }

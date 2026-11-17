@@ -317,15 +317,27 @@ public class TicketDialog extends javax.swing.JDialog {
     private javax.swing.JTable tblProductos;
     // End of variables declaration//GEN-END:variables
 
-         public static class Linea {
+    public static class Linea {
         final String nombre;
         final int cantidad;
         final double importe;
+        final double importeOriginal;
 
+        //para productos o servicios sin descuento
         public Linea(String nombre, int cantidad, double importe) {
+            this(nombre, cantidad, importe, importe);
+        }
+
+        //para productos con precio original registrado
+        public Linea(String nombre, int cantidad, double importe, double importeOriginal) {
             this.nombre = nombre;
             this.cantidad = cantidad;
             this.importe = importe;
+            this.importeOriginal = importeOriginal;
+        }
+
+        public double getAhorro(){
+            return Math.max(0, importeOriginal - importe);
         }
     }
 
@@ -455,13 +467,46 @@ public class TicketDialog extends javax.swing.JDialog {
             int anchoNombre = ancho - ANCHO_CANT - ANCHO_IMPORTE - 4; // 4 px de aire para no rozar CANT
 
             int total = altoLinea + ESPACIO_ENCABEZADO;
+            double ahorroTotal = 0;
             for (Linea l : lineas) {
+                double ahorro = l.getAhorro();
+
+                double importeMostrado = ahorro > 0.005
+                        ? l.importeOriginal
+                        : l.importe;
                 List<String> partes = partir(l.nombre == null ? "" : l.nombre, fm, anchoNombre);
                 nombres.add(partes);
                 cantidades.add(String.valueOf(l.cantidad));
-                importes.add(moneda.format(l.importe));
+                importes.add(moneda.format(importeMostrado));
                 total += partes.size() * altoLinea + SEPARACION;
+
+                if(ahorro > 0.005){
+                    double porcentaje = l.importeOriginal > 0 ? ahorro / l.importeOriginal * 100 : 0;
+
+                    String descripcion = String.format( Locale.forLanguageTag("es-MX"), "Descuento %.1f%%", porcentaje);
+
+                    List<String> partesDescuento = partir(descripcion, fm, anchoNombre);
+                    nombres.add(partesDescuento);
+                    cantidades.add("");
+                    importes.add("-" + moneda.format(ahorro));
+
+                    total += partesDescuento.size()* altoLinea + SEPARACION;
+                    ahorroTotal +=ahorro;
+                }
             }
+
+            if (ahorroTotal > 0.005) {
+                List<String> partesAhorro = partir(
+                        "AHORRO TOTAL", fm, anchoNombre
+                );
+
+                nombres.add(partesAhorro);
+                cantidades.add("");
+                importes.add(moneda.format(ahorroTotal));
+
+                total += partesAhorro.size() * altoLinea + SEPARACION;
+            }
+
             this.alto = total;
             setPreferredSize(new Dimension(ancho, alto));
         }
