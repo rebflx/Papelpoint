@@ -224,6 +224,11 @@ private void cargarProductos() {
     aplicarFiltros();
 }
 
+   public void filtrarPorEstado(String estado) {
+        jTextField1.setText("");
+        jComboBox2.setSelectedItem(estado);   // dispara aplicarFiltros()
+    }
+
     private void aplicarFiltros() {
         String texto = jTextField1.getText().trim().toLowerCase();
         String estadoSel = String.valueOf(jComboBox2.getSelectedItem());

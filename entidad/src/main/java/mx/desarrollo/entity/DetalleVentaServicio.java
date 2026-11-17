@@ -41,7 +41,6 @@ public class DetalleVentaServicio {
     private String estadoTrabajo = "Pendiente";
 
 
-    // Datos especificos del trabajo, no del catalogo de servicios.
     @Size(max = 500)
     @Column(name = "descripcionTrabajo", length = 500)
     private String descripcionTrabajo;
@@ -51,8 +50,11 @@ public class DetalleVentaServicio {
     private Producto productoMaterial;
 
     public String getDescripcionTrabajo() { return descripcionTrabajo; }
+    
     public void setDescripcionTrabajo(String descripcionTrabajo) { this.descripcionTrabajo = descripcionTrabajo; }
+    
     public Producto getProductoMaterial() { return productoMaterial; }
+    
     public void setProductoMaterial(Producto productoMaterial) { this.productoMaterial = productoMaterial; }
 
     public DetalleVentaServicio() {

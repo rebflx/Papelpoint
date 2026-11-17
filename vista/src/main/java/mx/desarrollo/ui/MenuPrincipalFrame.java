@@ -133,13 +133,15 @@ public class MenuPrincipalFrame extends javax.swing.JFrame {
         INVENTARIO = new javax.swing.JPanel();
         jSeparator3 = new javax.swing.JSeparator();
         jLabel4 = new javax.swing.JLabel();
-        jButton10 = new javax.swing.JButton();
         btnReabastecimiento = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         btnHistorial = new javax.swing.JButton();
         jButton11 = new javax.swing.JButton();
         btnConsultaServicios = new javax.swing.JButton();
         TICKETS = new javax.swing.JPanel();
+        PROMOCIONES = new javax.swing.JPanel();
+        jButton12 = new javax.swing.JButton();
+        jButton13 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -151,10 +153,10 @@ public class MenuPrincipalFrame extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Instrument Sans", 0, 28)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("Admin");
-        panelIzquierda.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 340, -1, -1));
+        panelIzquierda.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 400, -1, -1));
 
         jSeparator1.setAutoscrolls(true);
-        panelIzquierda.add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 380, 180, 20));
+        panelIzquierda.add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 440, 180, 20));
 
         botonSeg.setFont(new java.awt.Font("Instrument Sans", 1, 16)); // NOI18N
         botonSeg.setForeground(new java.awt.Color(255, 255, 255));
@@ -174,7 +176,7 @@ public class MenuPrincipalFrame extends javax.swing.JFrame {
                 botonSegActionPerformed(evt);
             }
         });
-        panelIzquierda.add(botonSeg, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 530, 140, 60));
+        panelIzquierda.add(botonSeg, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 550, 140, 60));
 
         botonConsultas.setFont(new java.awt.Font("Instrument Sans", 1, 16)); // NOI18N
         botonConsultas.setForeground(new java.awt.Color(255, 255, 255));
@@ -282,7 +284,7 @@ public class MenuPrincipalFrame extends javax.swing.JFrame {
                 botonCortesActionPerformed(evt);
             }
         });
-        panelIzquierda.add(botonCortes, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 390, 120, 40));
+        panelIzquierda.add(botonCortes, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 340, 120, 40));
 
         botonUsuarios.setFont(new java.awt.Font("Instrument Sans", 1, 16)); // NOI18N
         botonUsuarios.setForeground(new java.awt.Color(255, 255, 255));
@@ -302,7 +304,7 @@ public class MenuPrincipalFrame extends javax.swing.JFrame {
                 botonUsuariosActionPerformed(evt);
             }
         });
-        panelIzquierda.add(botonUsuarios, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 440, 140, 40));
+        panelIzquierda.add(botonUsuarios, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 460, 140, 40));
 
         botonEditar.setFont(new java.awt.Font("Instrument Sans", 1, 16)); // NOI18N
         botonEditar.setForeground(new java.awt.Color(255, 255, 255));
@@ -323,13 +325,13 @@ public class MenuPrincipalFrame extends javax.swing.JFrame {
                 botonEditarActionPerformed(evt);
             }
         });
-        panelIzquierda.add(botonEditar, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 490, 140, 40));
+        panelIzquierda.add(botonEditar, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 510, 140, 40));
 
         imgTicket.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/Rectangle4.png"))); // NOI18N
         panelIzquierda.add(imgTicket, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 140, -1, -1));
 
         imgSeg.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/Rectangle4.png"))); // NOI18N
-        panelIzquierda.add(imgSeg, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 540, -1, 40));
+        panelIzquierda.add(imgSeg, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 560, -1, 40));
 
         imgTickets.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/Rectangle4.png"))); // NOI18N
         panelIzquierda.add(imgTickets, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 140, -1, -1));
@@ -341,17 +343,17 @@ public class MenuPrincipalFrame extends javax.swing.JFrame {
         panelIzquierda.add(imgInventario, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 190, -1, -1));
 
         imgCortes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/Rectangle4.png"))); // NOI18N
-        panelIzquierda.add(imgCortes, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 390, -1, -1));
+        panelIzquierda.add(imgCortes, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 340, -1, -1));
 
         imgUsuario.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/Rectangle4.png"))); // NOI18N
-        panelIzquierda.add(imgUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 440, -1, -1));
+        panelIzquierda.add(imgUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 460, -1, -1));
 
         imgEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/Rectangle4.png"))); // NOI18N
-        panelIzquierda.add(imgEditar, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 490, -1, -1));
+        panelIzquierda.add(imgEditar, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 510, -1, -1));
 
         botonDescuentos.setFont(new java.awt.Font("Instrument Sans", 1, 16)); // NOI18N
         botonDescuentos.setForeground(new java.awt.Color(255, 255, 255));
-        botonDescuentos.setText("Descuentos");
+        botonDescuentos.setText("Promociones");
         botonDescuentos.setBorderPainted(false);
         botonDescuentos.setContentAreaFilled(false);
         botonDescuentos.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -457,15 +459,6 @@ public class MenuPrincipalFrame extends javax.swing.JFrame {
         jLabel4.setText("Inventario");
         INVENTARIO.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, -1, -1));
 
-        jButton10.setBackground(new java.awt.Color(195, 217, 189));
-        jButton10.setText("PAQUETES");
-        jButton10.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton10ActionPerformed(evt);
-            }
-        });
-        INVENTARIO.add(jButton10, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 290, 220, 110));
-
         btnReabastecimiento.setBackground(new java.awt.Color(195, 217, 189));
         btnReabastecimiento.setText("<html><center>REABASTECIMIENTO</center></html>");
         btnReabastecimiento.addActionListener(new java.awt.event.ActionListener() {
@@ -485,7 +478,7 @@ public class MenuPrincipalFrame extends javax.swing.JFrame {
                 btnHistorialActionPerformed(evt);
             }
         });
-        INVENTARIO.add(btnHistorial, new org.netbeans.lib.awtextra.AbsoluteConstraints(395, 420, 220, 110));
+        INVENTARIO.add(btnHistorial, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 290, 220, 110));
 
         jButton11.setBackground(new java.awt.Color(195, 217, 189));
         jButton11.setText("AGREGAR PRODUCTO");
@@ -521,6 +514,51 @@ public class MenuPrincipalFrame extends javax.swing.JFrame {
         );
 
         panelCambiante.add(TICKETS, "card2");
+
+        jButton12.setBackground(new java.awt.Color(195, 217, 189));
+        jButton12.setText("PAQUETES");
+        jButton12.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton12ActionPerformed(evt);
+            }
+        });
+
+        jButton13.setBackground(new java.awt.Color(195, 217, 189));
+        jButton13.setText("DESCUENTOS");
+        jButton13.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton13ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout PROMOCIONESLayout = new javax.swing.GroupLayout(PROMOCIONES);
+        PROMOCIONES.setLayout(PROMOCIONESLayout);
+        PROMOCIONESLayout.setHorizontalGroup(
+            PROMOCIONESLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PROMOCIONESLayout.createSequentialGroup()
+                .addContainerGap(628, Short.MAX_VALUE)
+                .addComponent(jButton12, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(440, 440, 440))
+            .addGroup(PROMOCIONESLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(PROMOCIONESLayout.createSequentialGroup()
+                    .addGap(373, 373, 373)
+                    .addComponent(jButton13, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(695, Short.MAX_VALUE)))
+        );
+        PROMOCIONESLayout.setVerticalGroup(
+            PROMOCIONESLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(PROMOCIONESLayout.createSequentialGroup()
+                .addGap(329, 329, 329)
+                .addComponent(jButton12, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(346, Short.MAX_VALUE))
+            .addGroup(PROMOCIONESLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(PROMOCIONESLayout.createSequentialGroup()
+                    .addGap(329, 329, 329)
+                    .addComponent(jButton13, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(346, Short.MAX_VALUE)))
+        );
+
+        panelCambiante.add(PROMOCIONES, "card9");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -618,18 +656,6 @@ public class MenuPrincipalFrame extends javax.swing.JFrame {
         panelCambiante.revalidate();
         panelCambiante.repaint();
     }//GEN-LAST:event_botonTicketsActionPerformed
-
-    private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
-        panelCambiante.remove(INVENTARIO);
-
-        panelCambiante.add(new AgregarProdPanel(usuarioActual), "AGREGAR_PRODUCTO");
-
-        CardLayout cl = (CardLayout) panelCambiante.getLayout();
-        cl.show(panelCambiante, "AGREGAR_PRODUCTO");
-
-        panelCambiante.revalidate();
-        panelCambiante.repaint();
-    }//GEN-LAST:event_jButton10ActionPerformed
 
     private void btnReabastecimientoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReabastecimientoActionPerformed
 
@@ -738,8 +764,15 @@ public class MenuPrincipalFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_btnHistorialActionPerformed
 
     private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton11ActionPerformed
+     panelCambiante.remove(INVENTARIO);
+
+        panelCambiante.add(new AgregarProdPanel(usuarioActual), "AGREGAR_PRODUCTO");
+
+        CardLayout cl = (CardLayout) panelCambiante.getLayout();
+        cl.show(panelCambiante, "AGREGAR_PRODUCTO");
+
+        panelCambiante.revalidate();
+        panelCambiante.repaint();    }//GEN-LAST:event_jButton11ActionPerformed
 
     private void btnConsultaServiciosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultaServiciosActionPerformed
         // TODO add your handling code here:
@@ -767,9 +800,20 @@ public class MenuPrincipalFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_botonDescuentosMouseExited
 
     private void botonDescuentosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonDescuentosActionPerformed
-        // TODO add your handling code here:z
-        mostrarDescuentos();
+       panelCambiante.removeAll();
+        panelCambiante.add(PROMOCIONES);
+        panelCambiante.repaint();
+        panelCambiante.revalidate();
+
     }//GEN-LAST:event_botonDescuentosActionPerformed
+
+    private void jButton12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton12ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton12ActionPerformed
+
+    private void jButton13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton13ActionPerformed
+        mostrarDescuentos();
+    }//GEN-LAST:event_jButton13ActionPerformed
 
     private void activarHover(JLabel imagen, JButton boton) {
         imagen.setIcon(new ImageIcon(
@@ -799,8 +843,29 @@ public class MenuPrincipalFrame extends javax.swing.JFrame {
         panelCambiante.repaint();
     }
 
-
+ public void mostrarConsultas(Ventas ventas, String estado) {
+        this.ventasOrigen = ventas;
+        if (ventas != null) {
+            setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+            addWindowListener(new java.awt.event.WindowAdapter() {
+                @Override
+                public void windowClosed(java.awt.event.WindowEvent e) {
+                    if (!ventas.isVisible() && ventas.isDisplayable()) {
+                        ventas.setVisible(true);
+                    }
+                }
+            });
+        }
+        ConsultasProdPanel panel = new ConsultasProdPanel();
+        panel.filtrarPorEstado(estado);
+        panelCambiante.add(panel, "CONSULTAS_PRODUCTO");
+        CardLayout cl = (CardLayout) panelCambiante.getLayout();
+        cl.show(panelCambiante, "CONSULTAS_PRODUCTO");
+        panelCambiante.revalidate();
+        panelCambiante.repaint();
+    }
     
+ 
 
 
 
@@ -831,6 +896,7 @@ public class MenuPrincipalFrame extends javax.swing.JFrame {
     private javax.swing.JPanel CORTES;
     private javax.swing.JPanel EDITAR;
     private javax.swing.JPanel INVENTARIO;
+    private javax.swing.JPanel PROMOCIONES;
     private javax.swing.JPanel SEGURIDAD;
     private javax.swing.JPanel TICKETS;
     private javax.swing.JPanel USUARIOS;
@@ -856,8 +922,9 @@ public class MenuPrincipalFrame extends javax.swing.JFrame {
     private javax.swing.JLabel imgTickets;
     private javax.swing.JLabel imgUsuario;
     private javax.swing.JLabel imgVenta;
-    private javax.swing.JButton jButton10;
     private javax.swing.JButton jButton11;
+    private javax.swing.JButton jButton12;
+    private javax.swing.JButton jButton13;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

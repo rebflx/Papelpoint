@@ -22,7 +22,6 @@ import javax.swing.table.DefaultTableModel;
  * @author Andre :c
  */
 
-/** Consultas de los servicios cobrados, con estado de trabajo editable. */
 public class ConsultasServicios extends javax.swing.JPanel {
 
     private final List<ServicioFila> listaServicios = new ArrayList<>();
@@ -41,7 +40,6 @@ public class ConsultasServicios extends javax.swing.JPanel {
         cargarTrabajosDesdeBD();
     }
 
-    /** Recarga los trabajos cobrados de MySQL. */
     public void cargarTrabajosDesdeBD() {
         try {
             List<ServicioFila> filas = new ArrayList<>();
@@ -65,7 +63,6 @@ public class ConsultasServicios extends javax.swing.JPanel {
         }
     }
 
-    /** El boton actualiza solo el trabajo seleccionado, nunca el catalogo. */
     private void marcarSeleccionadoRealizado() {
         int fila = tablaProductos.getSelectedRow();
         if (fila < 0) {
@@ -160,10 +157,7 @@ public class ConsultasServicios extends javax.swing.JPanel {
         tablaProductos.getColumnModel().getColumn(6).setCellRenderer(textoConTooltip);
     }
 
-    /**
-     * Reemplaza los registros que muestra la pantalla.
-     * Llama a este método desde la capa que consulte los servicios de la BD.
-     */
+
     public void mostrarServicios(List<ServicioFila> servicios) {
         listaServicios.clear();
         if (servicios != null) {
@@ -213,11 +207,7 @@ public class ConsultasServicios extends javax.swing.JPanel {
         jLabel1.setVisible(pendientes > 0);
     }
 
-    /**
-     * Representa una fila de la consulta. No es una entidad de base de datos.
-     * El ID debe ser el identificador del registro del servicio realizado/solicitado,
-     * no necesariamente el ID del catálogo de tipos de servicio.
-     */
+  
     public static class ServicioFila {
         public final int id;
         public final String servicio;
