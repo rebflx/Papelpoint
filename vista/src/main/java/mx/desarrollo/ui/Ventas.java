@@ -1387,8 +1387,13 @@ public class Ventas extends javax.swing.JFrame {
 
             List<TicketDialog.Linea> lineas = new ArrayList<>();
             for (DetalleVentaProducto d : detalles) {
-                lineas.add(new TicketDialog.Linea(d.getProducto().getNombre(), d.getCantidad(),
-                        d.getPrecioUnitario() * d.getCantidad()));
+
+                double precioFinal = d.getPrecioUnitario();
+
+                double precioOriginal = d.getPrecioOriginal() != null ? d.getPrecioOriginal() : precioFinal;
+
+                lineas.add(new TicketDialog.Linea(d.getProducto().getNombre(), d.getCantidad(), precioFinal * d.getCantidad(),
+                        precioOriginal * d.getCantidad()));
             }
             for (DetalleVentaServicio d : carritoServicios) {
                 lineas.add(new TicketDialog.Linea(

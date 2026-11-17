@@ -65,8 +65,11 @@ public class VentaDAO extends AbstractDAO<Venta> {
                 p.setExistencias(p.getExistencias() - d.getCantidad());
                 d.setVenta(venta);
                 d.setProducto(p);
+
+                double precioOriginal = p.getPrecio();
                 double precioFinal = obtenerPrecioFinal(em, p);
 
+                d.setPrecioOriginal(precioOriginal);
                 d.setPrecioUnitario(precioFinal);
 
                 subtotal += precioFinal * d.getCantidad();

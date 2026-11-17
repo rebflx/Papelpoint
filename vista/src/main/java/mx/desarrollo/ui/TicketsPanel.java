@@ -711,8 +711,13 @@ public class TicketsPanel extends javax.swing.JPanel {
         Venta v = t.getVenta();
         List<TicketDialog.Linea> lineas = new ArrayList<>();
         for (DetalleVentaProducto d : detalleActual) {
-            lineas.add(new TicketDialog.Linea(d.getProducto().getNombre(), d.getCantidad(),
-                    d.getPrecioUnitario() * d.getCantidad()));
+            double precioFinal = d.getPrecioUnitario();
+
+            double precioOriginal = d.getPrecioOriginal() != null
+                    ? d.getPrecioOriginal()
+                    : precioFinal;
+            lineas.add(new TicketDialog.Linea(d.getProducto().getNombre(), d.getCantidad(), precioFinal * d.getCantidad(),
+                    d.getPrecioOriginal() * d.getCantidad()));
         }
         for (DetalleVentaServicio d : serviciosActuales) {
             lineas.add(new TicketDialog.Linea(
