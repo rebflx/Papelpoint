@@ -1,5 +1,4 @@
 package mx.desarrollo.entity;
-
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import java.time.LocalDateTime;
@@ -41,6 +40,20 @@ public class DetalleVentaServicio {
     @Column(name = "estadoTrabajo", length = 20, nullable = false)
     private String estadoTrabajo = "Pendiente";
 
+
+    // Datos especificos del trabajo, no del catalogo de servicios.
+    @Size(max = 500)
+    @Column(name = "descripcionTrabajo", length = 500)
+    private String descripcionTrabajo;
+
+    @ManyToOne
+    @JoinColumn(name = "idProductoMaterial")
+    private Producto productoMaterial;
+
+    public String getDescripcionTrabajo() { return descripcionTrabajo; }
+    public void setDescripcionTrabajo(String descripcionTrabajo) { this.descripcionTrabajo = descripcionTrabajo; }
+    public Producto getProductoMaterial() { return productoMaterial; }
+    public void setProductoMaterial(Producto productoMaterial) { this.productoMaterial = productoMaterial; }
 
     public DetalleVentaServicio() {
     }

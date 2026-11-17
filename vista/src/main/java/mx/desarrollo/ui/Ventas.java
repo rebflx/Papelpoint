@@ -889,11 +889,18 @@ public class Ventas extends javax.swing.JFrame {
     private void btnServiciosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnServiciosActionPerformed
         // TODO add your handling code here:
 
-        MenuPrincipalFrame menu = new MenuPrincipalFrame(usuarioActual);
-        menu.mostrarServicios(this);
-        menu.setLocationRelativeTo(this);
-        menu.setVisible(true);
-        this.setVisible(false); // Ocultar, NO destruir el carrito original.
+        Servicios panel = new Servicios(usuarioActual);
+        javax.swing.JDialog dialogo = new javax.swing.JDialog(
+                this, "Servicios", java.awt.Dialog.ModalityType.APPLICATION_MODAL);
+        panel.configurarCarrito(detalle -> {
+            agregarServicioAlCarrito(detalle);
+            dialogo.dispose();
+        });
+        dialogo.setContentPane(panel);
+        dialogo.pack();
+        dialogo.setLocationRelativeTo(this);
+        dialogo.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        dialogo.setVisible(true);
 
     }//GEN-LAST:event_btnServiciosActionPerformed
 
@@ -1161,6 +1168,21 @@ public class Ventas extends javax.swing.JFrame {
                 detalle.getCantidad() == null || detalle.getCantidad() < 1 ||
                 detalle.getNombreCliente() == null || detalle.getNombreCliente().isBlank()) {
             throw new IllegalArgumentException("Los datos del servicio no son validos.");
+        }
+        if (detalle.getProductoMaterial() == null || detalle.getProductoMaterial().getIdProducto() == null ||
+                detalle.getDescripcionTrabajo() == null || detalle.getDescripcionTrabajo().isBlank()) {
+            throw new IllegalArgumentException("Selecciona un material y escribe la descripcion del trabajo.");
+        }
+        int materialId = detalle.getProductoMaterial().getIdProducto();
+        int reservado = carrito.getOrDefault(materialId, 0);
+        for (DetalleVentaServicio otro : carritoServicios) {
+            if (otro.getProductoMaterial() != null &&
+                    materialId == otro.getProductoMaterial().getIdProducto()) {
+                reservado += otro.getCantidad();
+            }
+        }
+        if (detalle.getProductoMaterial().getExistencias() < reservado + detalle.getCantidad()) {
+            throw new IllegalArgumentException("No hay suficientes materiales o existencias para agregar el servicio.");
         }
         carritoServicios.add(detalle);
         refrescarCarrito();

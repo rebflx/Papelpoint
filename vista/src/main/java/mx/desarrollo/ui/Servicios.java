@@ -5,11 +5,14 @@ import java.util.List;
 import javax.swing.JOptionPane;
 import mx.desarrollo.entity.Servicio;
 import mx.desarrollo.entity.DetalleVentaServicio;
+import mx.desarrollo.entity.Producto;
+import javax.swing.*;
+import java.awt.*;
 import mx.desarrollo.integration.ServiceFacadeLocator;
 
 /**
  *
- * @author erick
+ * @author erick y andre.
  */
 public class Servicios extends javax.swing.JPanel {
 
@@ -17,6 +20,9 @@ public class Servicios extends javax.swing.JPanel {
     private List<Servicio> todos = new ArrayList<>();
     private final List<Servicio> disponibles = new ArrayList<>();
     private java.util.function.Consumer<DetalleVentaServicio> receptorCarrito;
+    private final java.util.List<Producto> materiales = new java.util.ArrayList<>();
+    private final JComboBox<Producto> comboMaterial = new JComboBox<>();
+    private final JTextArea txtDescripcionTrabajo = new JTextArea();
 
     public void configurarCarrito(java.util.function.Consumer<DetalleVentaServicio> receptor) {
         this.receptorCarrito = receptor;
@@ -25,7 +31,9 @@ public class Servicios extends javax.swing.JPanel {
     public Servicios() {
         initComponents();
         soloPrecio(precioTxt);
+        configurarTrabajoYMaterial();
         cargarServicios();
+        cargarMateriales();
     }
 
     // Conservamos este constructor por compatibilidad con MenuPrincipalFrame.
@@ -275,7 +283,29 @@ public class Servicios extends javax.swing.JPanel {
             return;
         }
 
+        String descripcion = txtDescripcionTrabajo.getText().trim();
+        if (descripcion.isEmpty() || descripcion.length() > 500) {
+            aviso("Escribe una descripcion del trabajo (maximo 500 caracteres).");
+            return;
+        }
+        Producto material = (Producto) comboMaterial.getSelectedItem();
+        if (material == null) {
+            aviso("No hay materiales disponibles o con existencias suficientes. Revisa el inventario.");
+            return;
+        }
+        // Actualizar stock desde la BD para no confiar en un combo antiguo.
+        Integer materialSeleccionadoId = material.getIdProducto();
+        cargarMateriales();
+        material = materiales.stream()
+                .filter(m -> m.getIdProducto().equals(materialSeleccionadoId))
+                .findFirst().orElse(null);
+        if (material == null || material.getExistencias() < cantidad) {
+            aviso("No hay suficientes materiales o existencias para este servicio.");
+            return;
+        }
         DetalleVentaServicio detalle = new DetalleVentaServicio();
+        detalle.setDescripcionTrabajo(descripcion);
+        detalle.setProductoMaterial(material);
         detalle.setServicio(disponibles.get(indice));
         detalle.setNombreCliente(cliente);
         detalle.setCantidad(cantidad);
@@ -291,93 +321,146 @@ public class Servicios extends javax.swing.JPanel {
         jComboBox1.setSelectedIndex(jComboBox1.getItemCount() > 0 ? 0 : -1);
         precioTxt1.setText(""); // Campo: nombre del cliente
         stockTxt1.setValue(1); // Campo: cantidad
+        txtDescripcionTrabajo.setText("");
+        if (comboMaterial.getItemCount() > 0) comboMaterial.setSelectedIndex(0);
     }//GEN-LAST:event_btnLimpiar1ActionPerformed
 
     private void btnEditarPrecioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarPrecioActionPerformed
-        // TODO add your handling code here:
-            int indice = jComboBox1.getSelectedIndex();
+        int indice = jComboBox1.getSelectedIndex();
+        if (indice < 0 || indice >= disponibles.size()) {
+            aviso("Selecciona un servicio para modificar.");
+            return;
+        }
+        Servicio servicio = disponibles.get(indice);
+        String nombreAnterior = servicio.getNombre();
+        double precioAnterior = servicio.getPrecio();
 
-    if (indice < 0 || indice >= disponibles.size()) {
-        aviso("Selecciona un servicio.");
-        return;
-    }
+        JTextField campoNombre = new JTextField(nombreAnterior, 24);
+        JTextField campoPrecio = new JTextField(String.format(java.util.Locale.US, "%.2f", precioAnterior), 12);
+        JPanel formulario = new JPanel(new GridLayout(0, 1, 4, 4));
+        formulario.add(new JLabel("Nombre del servicio:"));
+        formulario.add(campoNombre);
+        formulario.add(new JLabel("Precio del servicio:"));
+        formulario.add(campoPrecio);
+        int opcion = JOptionPane.showConfirmDialog(this, formulario,
+                "Modificar servicio", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+        if (opcion != JOptionPane.OK_OPTION) return;
 
-    Servicio servicio = disponibles.get(indice);
-
-    double precioAnterior = servicio.getPrecio();
-
-    String entrada = JOptionPane.showInputDialog(
-            this,
-            "Servicio: " + servicio.getNombre()
-            + "\nPrecio actual: $" + precioAnterior
-            + "\n\nEscribe el nuevo precio:",
-            String.format(java.util.Locale.US, "%.2f", precioAnterior)
-    );
-
-    if (entrada == null) {
-        return;
-    }
-
-    double nuevoPrecio;
-
-    try {
-        nuevoPrecio = Double.parseDouble(
-                entrada.trim().replace(",", ".")
-        );
-    } catch (NumberFormatException ex) {
-        aviso("Escribe un precio válido.");
-        return;
-    }
-
-    if (!Double.isFinite(nuevoPrecio) || nuevoPrecio <= 0) {
-        aviso("El precio debe ser mayor que cero.");
-        return;
-    }
-
-    if (Math.round(nuevoPrecio * 100) != nuevoPrecio * 100) {
-        aviso("El precio solo puede tener dos decimales.");
-        return;
-    }
-
-    if (Double.compare(nuevoPrecio, precioAnterior) == 0) {
-        aviso("El precio es igual al actual.");
-        return;
-    }
-
-    int confirmar = JOptionPane.showConfirmDialog(
-            this,
-            "¿Actualizar el precio de " + servicio.getNombre()
-            + "\nde $" + precioAnterior
-            + " a $" + nuevoPrecio + "?",
-            "Confirmar cambio",
-            JOptionPane.YES_NO_OPTION
-    );
-
-    if (confirmar != JOptionPane.YES_OPTION) {
-        return;
-    }
-
-    try {
-        servicio.setPrecio(nuevoPrecio);
-
-        ServiceFacadeLocator.getInstanceFacadeServicio()
-                .modificarServicio(servicio);
-
-        cargarServicios();
-
-        JOptionPane.showMessageDialog(
-                this,
-                "Precio actualizado correctamente.",
-                "Listo",
-                JOptionPane.INFORMATION_MESSAGE
-        );
-
-    } catch (Exception ex) {
-        servicio.setPrecio(precioAnterior);
-        errorBD(ex);
-    }
+        String nuevoNombre = campoNombre.getText().trim();
+        if (nuevoNombre.isEmpty() || nuevoNombre.length() > 100 || nuevoNombre.matches("\\d+")) {
+            aviso("Escribe un nombre valido (maximo 100 caracteres).");
+            return;
+        }
+        boolean repetido = todos.stream().anyMatch(s ->
+                !s.getIdServicio().equals(servicio.getIdServicio()) &&
+                        s.getNombre().trim().equalsIgnoreCase(nuevoNombre));
+        if (repetido) {
+            aviso("Ya existe otro servicio con ese nombre.");
+            return;
+        }
+        double nuevoPrecio;
+        try {
+            nuevoPrecio = Double.parseDouble(campoPrecio.getText().trim().replace(",", "."));
+        } catch (NumberFormatException ex) {
+            aviso("Escribe un precio valido.");
+            return;
+        }
+        if (!Double.isFinite(nuevoPrecio) || nuevoPrecio <= 0 ||
+                java.math.BigDecimal.valueOf(nuevoPrecio).scale() > 2) {
+            aviso("El precio debe ser mayor que cero y tener maximo dos decimales.");
+            return;
+        }
+        if (nuevoNombre.equals(nombreAnterior) && Double.compare(nuevoPrecio, precioAnterior) == 0) return;
+        if (JOptionPane.showConfirmDialog(this,
+                "¿Guardar los cambios del servicio " + nombreAnterior + "?",
+                "Confirmar", JOptionPane.YES_NO_OPTION) != JOptionPane.YES_OPTION) return;
+        try {
+            servicio.setNombre(nuevoNombre);
+            servicio.setPrecio(nuevoPrecio);
+            ServiceFacadeLocator.getInstanceFacadeServicio().modificarServicio(servicio);
+            cargarServicios();
+            for (int i = 0; i < disponibles.size(); i++) {
+                if (disponibles.get(i).getIdServicio().equals(servicio.getIdServicio())) {
+                    jComboBox1.setSelectedIndex(i);
+                    break;
+                }
+            }
+            JOptionPane.showMessageDialog(this, "Servicio actualizado correctamente.");
+        } catch (Exception ex) {
+            servicio.setNombre(nombreAnterior);
+            servicio.setPrecio(precioAnterior);
+            errorBD(ex);
+        }
     }//GEN-LAST:event_btnEditarPrecioActionPerformed
 
+
+    /** Campos agregados fuera del codigo generado para conservar el .form de NetBeans. */
+    private void configurarTrabajoYMaterial() {
+        // Ampliar el panel inferior sin alterar initComponents() generado.
+        remove(jPanel2);
+        add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 400, 930, 285));
+        precioTxt2.setVisible(false); // Campo sobrante del formulario original.
+        btnEditarPrecio.setText("Editar servicio");
+        // AbsoluteLayout ignora setBounds() al volver a distribuir el panel.
+        // Quitamos los botones de sus posiciones originales y los agregamos
+        // con nuevas AbsoluteConstraints, sin alterar sus ActionListeners.
+        jPanel2.remove(btnEditarPrecio);
+        jPanel2.remove(btnLimpiar1);
+        jPanel2.remove(btnGuardar1);
+        jPanel2.add(btnEditarPrecio,
+                new org.netbeans.lib.awtextra.AbsoluteConstraints(35, 225, 145, 36));
+        jPanel2.add(btnLimpiar1,
+                new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 225, 140, 36));
+        jPanel2.add(btnGuardar1,
+                new org.netbeans.lib.awtextra.AbsoluteConstraints(755, 225, 140, 36));
+
+        JLabel etiquetaDescripcion = new JLabel("Descripcion del trabajo*");
+        etiquetaDescripcion.setFont(new Font("Instrument Sans", Font.PLAIN, 14));
+        jPanel2.add(etiquetaDescripcion, new org.netbeans.lib.awtextra.AbsoluteConstraints(35, 112, 250, 20));
+        txtDescripcionTrabajo.setLineWrap(true);
+        txtDescripcionTrabajo.setWrapStyleWord(true);
+        txtDescripcionTrabajo.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+        JScrollPane scroll = new JScrollPane(txtDescripcionTrabajo);
+        jPanel2.add(scroll, new org.netbeans.lib.awtextra.AbsoluteConstraints(35, 138, 525, 68));
+
+        JLabel etiquetaMaterial = new JLabel("Material (producto del inventario)*");
+        etiquetaMaterial.setFont(new Font("Instrument Sans", Font.PLAIN, 14));
+        jPanel2.add(etiquetaMaterial, new org.netbeans.lib.awtextra.AbsoluteConstraints(585, 112, 310, 20));
+        comboMaterial.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+        jPanel2.add(comboMaterial, new org.netbeans.lib.awtextra.AbsoluteConstraints(585, 138, 310, 35));
+        JButton refrescar = new JButton("Actualizar materiales");
+        refrescar.addActionListener(e -> cargarMateriales());
+        jPanel2.add(refrescar, new org.netbeans.lib.awtextra.AbsoluteConstraints(585, 180, 180, 28));
+        revalidate();
+        repaint();
+    }
+
+    private void cargarMateriales() {
+        Integer anterior = comboMaterial.getSelectedItem() instanceof Producto p ? p.getIdProducto() : null;
+        materiales.clear();
+        comboMaterial.removeAllItems();
+        try {
+            for (Producto p : ServiceFacadeLocator.getInstanceFacadeProducto().obtenerProductosActualizados()) {
+                if (Boolean.TRUE.equals(p.getActivo()) && p.getExistencias() != null && p.getExistencias() > 0) {
+                    materiales.add(p);
+                    comboMaterial.addItem(p);
+                }
+            }
+            if (anterior != null) {
+                for (int i = 0; i < materiales.size(); i++) {
+                    if (materiales.get(i).getIdProducto().equals(anterior)) {
+                        comboMaterial.setSelectedIndex(i);
+                        break;
+                    }
+                }
+            }
+            if (materiales.isEmpty()) {
+                aviso("No hay materiales disponibles o con existencias en el inventario.");
+            }
+        } catch (Exception ex) {
+            errorBD(ex);
+        }
+    }
 
     private void cargarServicios() {
         jComboBox1.removeAllItems();

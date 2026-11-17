@@ -53,7 +53,9 @@ public class ConsultasServicios extends javax.swing.JPanel {
                         detalle.getPrecioUnitario() == null ? 0 : detalle.getPrecioUnitario(),
                         detalle.getNombreCliente(),
                         detalle.getCantidad(),
-                        detalle.getEstadoTrabajo()));
+                        detalle.getEstadoTrabajo(),
+                        detalle.getDescripcionTrabajo(),
+                        detalle.getProductoMaterial() == null ? "" : detalle.getProductoMaterial().getNombre()));
             }
             mostrarServicios(filas);
         } catch (RuntimeException ex) {
@@ -71,7 +73,7 @@ public class ConsultasServicios extends javax.swing.JPanel {
             return;
         }
         int id = Integer.parseInt(tablaProductos.getValueAt(fila, 0).toString());
-        String estado = String.valueOf(tablaProductos.getValueAt(fila, 5));
+        String estado = String.valueOf(tablaProductos.getValueAt(fila, 7));
         if ("Realizado".equalsIgnoreCase(estado)) {
             JOptionPane.showMessageDialog(this, "Este trabajo ya esta realizado.");
             return;
@@ -97,6 +99,12 @@ public class ConsultasServicios extends javax.swing.JPanel {
     }
 
     private void configurarTabla() {
+        // Columnas adicionales para la descripcion del trabajo y material usado.
+        tablaProductos.setModel(new DefaultTableModel(
+                new Object[]{"ID", "Servicio", "Precio", "Nombre Cliente", "Cantidad", "Descripcion", "Material", "Estado"}, 0) {
+            @Override public boolean isCellEditable(int fila, int columna) { return false; }
+        });
+        tablaProductos.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
         tablaProductos.setShowVerticalLines(false);
         tablaProductos.setShowHorizontalLines(true);
         tablaProductos.setGridColor(new Color(220, 220, 220));
@@ -104,8 +112,8 @@ public class ConsultasServicios extends javax.swing.JPanel {
         tablaProductos.getTableHeader().setReorderingAllowed(false);
         tablaProductos.setAutoCreateRowSorter(false);
 
-        // Solamente se colorea la columna Estado (índice 5).
-        tablaProductos.getColumnModel().getColumn(5).setCellRenderer(
+        // Solamente se colorea la columna Estado (indice 7).
+        tablaProductos.getColumnModel().getColumn(7).setCellRenderer(
                 new DefaultTableCellRenderer() {
                     @Override
                     public Component getTableCellRendererComponent(JTable tabla, Object valor,
@@ -130,12 +138,26 @@ public class ConsultasServicios extends javax.swing.JPanel {
                 }
         );
 
-        tablaProductos.getColumnModel().getColumn(0).setPreferredWidth(65);
-        tablaProductos.getColumnModel().getColumn(1).setPreferredWidth(190);
-        tablaProductos.getColumnModel().getColumn(2).setPreferredWidth(100);
-        tablaProductos.getColumnModel().getColumn(3).setPreferredWidth(200);
-        tablaProductos.getColumnModel().getColumn(4).setPreferredWidth(90);
-        tablaProductos.getColumnModel().getColumn(5).setPreferredWidth(130);
+        // Ajuste al ancho de 900 px del JScrollPane para que Estado sea visible.
+        int[] anchos = {55, 145, 80, 135, 65, 180, 135, 90};
+        for (int i = 0; i < anchos.length; i++) {
+            tablaProductos.getColumnModel().getColumn(i).setPreferredWidth(anchos[i]);
+        }
+
+        // Las celdas de descripcion/material pueden ser largas: mostrar
+        // el texto completo al pasar el mouse sin ensanchar la tabla.
+        DefaultTableCellRenderer textoConTooltip = new DefaultTableCellRenderer() {
+            @Override
+            public Component getTableCellRendererComponent(JTable tabla, Object valor,
+                                                           boolean seleccionado, boolean tieneFoco, int fila, int columna) {
+                JLabel celda = (JLabel) super.getTableCellRendererComponent(
+                        tabla, valor, seleccionado, tieneFoco, fila, columna);
+                celda.setToolTipText(valor == null ? null : valor.toString());
+                return celda;
+            }
+        };
+        tablaProductos.getColumnModel().getColumn(5).setCellRenderer(textoConTooltip);
+        tablaProductos.getColumnModel().getColumn(6).setCellRenderer(textoConTooltip);
     }
 
     /**
@@ -165,7 +187,9 @@ public class ConsultasServicios extends javax.swing.JPanel {
 
             boolean coincideTexto = String.valueOf(s.id).contains(busqueda)
                     || s.servicio.toLowerCase(Locale.ROOT).contains(busqueda)
-                    || s.nombreCliente.toLowerCase(Locale.ROOT).contains(busqueda);
+                    || s.nombreCliente.toLowerCase(Locale.ROOT).contains(busqueda)
+                    || s.descripcion.toLowerCase(Locale.ROOT).contains(busqueda)
+                    || s.material.toLowerCase(Locale.ROOT).contains(busqueda);
             boolean coincideEstado = "Todos".equals(filtroEstado)
                     || s.estado.equalsIgnoreCase(filtroEstado);
 
@@ -176,6 +200,8 @@ public class ConsultasServicios extends javax.swing.JPanel {
                         String.format(Locale.forLanguageTag("es-MX"), "$%,.2f", s.precio),
                         s.nombreCliente,
                         s.cantidad,
+                        s.descripcion,
+                        s.material,
                         s.estado
                 });
             }
@@ -199,15 +225,20 @@ public class ConsultasServicios extends javax.swing.JPanel {
         public final String nombreCliente;
         public final int cantidad;
         public final String estado;
+        public final String descripcion;
+        public final String material;
 
         public ServicioFila(int id, String servicio, double precio,
-                            String nombreCliente, int cantidad, String estado) {
+                            String nombreCliente, int cantidad, String estado,
+                            String descripcion, String material) {
             this.id = id;
             this.servicio = servicio == null ? "" : servicio;
             this.precio = precio;
             this.nombreCliente = nombreCliente == null ? "" : nombreCliente;
             this.cantidad = cantidad;
             this.estado = estado == null ? "" : estado.trim();
+            this.descripcion = descripcion == null ? "" : descripcion;
+            this.material = material == null ? "" : material;
         }
     }
 

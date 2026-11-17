@@ -1,6 +1,5 @@
 package mx.desarrollo.persistence.dao;
 
-
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.LockModeType;
@@ -89,6 +88,23 @@ public class VentaDAO extends AbstractDAO<Venta> {
                 if (servicio == null || !Boolean.TRUE.equals(servicio.getDisponible())) {
                     throw new IllegalArgumentException("Un servicio del carrito ya no esta disponible.");
                 }
+                String descripcion = d.getDescripcionTrabajo() == null ? "" : d.getDescripcionTrabajo().trim();
+                if (descripcion.isEmpty() || descripcion.length() > 500) {
+                    throw new IllegalArgumentException("La descripcion del trabajo es obligatoria (maximo 500 caracteres).");
+                }
+                if (d.getProductoMaterial() == null || d.getProductoMaterial().getIdProducto() == null) {
+                    throw new IllegalArgumentException("Selecciona un material del inventario para el servicio.");
+                }
+                Producto material = em.find(Producto.class, d.getProductoMaterial().getIdProducto(),
+                        LockModeType.PESSIMISTIC_WRITE);
+                if (material == null || !Boolean.TRUE.equals(material.getActivo()) ||
+                        material.getExistencias() < d.getCantidad()) {
+                    throw new IllegalArgumentException("No hay suficientes materiales o existencias para el servicio "
+                            + servicio.getNombre() + ".");
+                }
+                material.setExistencias(material.getExistencias() - d.getCantidad());
+                d.setProductoMaterial(material);
+                d.setDescripcionTrabajo(descripcion);
                 d.setServicio(servicio);
                 d.setVenta(venta);
                 d.setNombreCliente(cliente);
@@ -189,7 +205,7 @@ public class VentaDAO extends AbstractDAO<Venta> {
         EntityManager em = getEntityManager();
         try {
             return em.createQuery(
-                            "SELECT d FROM DetalleVentaServicio d JOIN FETCH d.servicio "
+                            "SELECT d FROM DetalleVentaServicio d JOIN FETCH d.servicio LEFT JOIN FETCH d.productoMaterial "
                                     + "WHERE d.venta.idVenta = :id ORDER BY d.idDetalleServicio",
                             DetalleVentaServicio.class)
                     .setParameter("id", idVenta)
@@ -204,7 +220,7 @@ public class VentaDAO extends AbstractDAO<Venta> {
         EntityManager em = getEntityManager();
         try {
             return em.createQuery(
-                            "SELECT d FROM DetalleVentaServicio d JOIN FETCH d.servicio "
+                            "SELECT d FROM DetalleVentaServicio d JOIN FETCH d.servicio LEFT JOIN FETCH d.productoMaterial "
                                     + "ORDER BY d.idDetalleServicio DESC",
                             DetalleVentaServicio.class)
                     .getResultList();
@@ -250,11 +266,11 @@ public class VentaDAO extends AbstractDAO<Venta> {
             Producto producto) {
 
         List<Descuento> descuentos = em.createQuery("" +
-                                "SELECT d FROM Descuento d " +
-                                "WHERE d.producto.idProducto = :idProducto " +
-                                "AND d.vigencia >= :ahora " +
-                                "ORDER BY d.vigencia ASC, d.idDescuento DESC", Descuento.class
-                ).setParameter("idProducto", producto.getIdProducto()).setParameter("ahora", LocalDateTime.now()).setMaxResults(1).getResultList();
+                "SELECT d FROM Descuento d " +
+                "WHERE d.producto.idProducto = :idProducto " +
+                "AND d.vigencia >= :ahora " +
+                "ORDER BY d.vigencia ASC, d.idDescuento DESC", Descuento.class
+        ).setParameter("idProducto", producto.getIdProducto()).setParameter("ahora", LocalDateTime.now()).setMaxResults(1).getResultList();
         double precio = producto.getPrecio();
         if (!descuentos.isEmpty()) {
 
