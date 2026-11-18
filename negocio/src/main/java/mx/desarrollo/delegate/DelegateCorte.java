@@ -57,6 +57,8 @@ public class DelegateCorte {
         CorteCaja corte = dao().registrarCorte(u, redondear(efectivoContado), redondear(fondoInicial),
                 METODO_EFECTIVO, ESTADO_COMPLETADA);
 
+        SesionCaja.cerrar(u.getIdUsuario());
+
         List<Venta> ventas = dao().ventasDeCorte(corte.getIdCorte());
         return construirResumen(ventas, corte.getUsuario(), null, corte.getFechaInicio(), corte.getFechaCierre(), corte);
     }
@@ -211,7 +213,7 @@ public class DelegateCorte {
         double total = 0, efectivo = 0, canceladas = 0;
         LocalDateTime primera = null;
 
-        Map<String, double[]> metodos = new LinkedHashMap<>();   // metodo -> {transacciones, monto}
+        Map<String, double[]> metodos = new LinkedHashMap<>();
         Map<String, Double> porUsuario = new LinkedHashMap<>();
 
         for (Venta v : ventas) {
