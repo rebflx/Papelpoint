@@ -71,4 +71,9 @@ public class ServiceFacadeLocator {
         return facadeDescuento;
     }
 
+    private static FacadePaquete facadePaquete;
+    public static FacadePaquete getInstanceFacadePaquete() {
+        if (facadePaquete == null) facadePaquete = new FacadePaquete();
+        return facadePaquete;
+    }
 }

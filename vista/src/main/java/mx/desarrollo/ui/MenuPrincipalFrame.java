@@ -809,6 +809,15 @@ public class MenuPrincipalFrame extends javax.swing.JFrame {
 
     private void jButton12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton12ActionPerformed
         // TODO add your handling code here:
+        Paquetes panelPaquetes = new Paquetes(usuarioActual);
+
+        panelCambiante.add(panelPaquetes, "PAQUETES");
+
+        CardLayout cl = (CardLayout) panelCambiante.getLayout();
+        cl.show(panelCambiante, "PAQUETES");
+
+        panelCambiante.revalidate();
+        panelCambiante.repaint();
     }//GEN-LAST:event_jButton12ActionPerformed
 
     private void jButton13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton13ActionPerformed

@@ -81,4 +81,9 @@ public class ServiceLocator {
     }
 
 
+    private static PaqueteDAO paqueteDAO;
+    public static PaqueteDAO getInstancePaqueteDAO() {
+        if (paqueteDAO == null) paqueteDAO = new PaqueteDAO(getEntityManager());
+        return paqueteDAO;
+    }
 }

@@ -23,6 +23,10 @@ public class Paquete {
     @Column(name = "precio")
     private Double precio;
 
+    @Size(max = 500)
+    @Column(name = "descripcion", length = 500)
+    private String descripcion;
+
     @NotNull
     @Column(name = "activa", nullable = false)
     private Boolean activa = true;
@@ -52,6 +56,14 @@ public class Paquete {
 
     public void setPrecio(Double precio) {
         this.precio = precio;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
     }
 
     public Boolean getActiva() {

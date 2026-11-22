@@ -21,7 +21,8 @@
         <class>mx.desarrollo.entity.Servicio</class>
         <class>mx.desarrollo.entity.DetalleVentaServicio</class>
         <class>mx.desarrollo.entity.Descuento</class>
-
+        <class>mx.desarrollo.entity.Paquete</class>
+        <class>mx.desarrollo.entity.ProductoPaquete</class>
 
 
         <properties>
