@@ -16,12 +16,21 @@ import mx.desarrollo.integration.ServiceFacadeLocator;
  */
 public class Servicios extends javax.swing.JPanel {
 
-    // Servicios obtenidos de la base de datos.
+    // Servicios en la base de datos.
+
     private List<Servicio> todos = new ArrayList<>();
     private final List<Servicio> disponibles = new ArrayList<>();
     private java.util.function.Consumer<DetalleVentaServicio> receptorCarrito;
     private final java.util.List<Producto> materiales = new java.util.ArrayList<>();
-    private final JComboBox<Producto> comboMaterial = new JComboBox<>();
+    // Reutilización del buscador de materiales/productos que esta en ventas.
+    private final JTextField txtBuscarMaterial = new JTextField();
+    private final JPopupMenu popupMaterial = new JPopupMenu();
+    private final PnlSugerencias pnlSugerenciasMaterial = new PnlSugerencias();
+    private final DefaultListModel<Producto> modeloSugerenciasMaterial = new DefaultListModel<>();
+    private final JList<Producto> listaSugerenciasMaterial = pnlSugerenciasMaterial.getLista();
+    private final JLabel lblMaterialSeleccionado = new JLabel("Selecciona un material");
+    private Producto materialSeleccionado;
+    private boolean seleccionandoMaterial = false;
     private final JTextArea txtDescripcionTrabajo = new JTextArea();
 
     public void configurarCarrito(java.util.function.Consumer<DetalleVentaServicio> receptor) {
@@ -288,18 +297,19 @@ public class Servicios extends javax.swing.JPanel {
             aviso("Escribe una descripcion del trabajo (maximo 500 caracteres).");
             return;
         }
-        Producto material = (Producto) comboMaterial.getSelectedItem();
-        if (material == null) {
-            aviso("No hay materiales disponibles o con existencias suficientes. Revisa el inventario.");
+        if (materialSeleccionado == null) {
+            aviso("Selecciona un material del buscador antes de agregar el servicio.");
+            txtBuscarMaterial.requestFocusInWindow();
             return;
         }
-        // Actualizar stock desde la BD para no confiar en un combo antiguo.
-        Integer materialSeleccionadoId = material.getIdProducto();
-        cargarMateriales();
-        material = materiales.stream()
+        // Consultar nuevamente la BD para validar existencias actuales.
+        Integer materialSeleccionadoId = materialSeleccionado.getIdProducto();
+        cargarMateriales(false);
+        Producto material = materiales.stream()
                 .filter(m -> m.getIdProducto().equals(materialSeleccionadoId))
                 .findFirst().orElse(null);
-        if (material == null || material.getExistencias() < cantidad) {
+        if (material == null || material.getExistencias() == null
+                || material.getExistencias() < cantidad) {
             aviso("No hay suficientes materiales o existencias para este servicio.");
             return;
         }
@@ -322,7 +332,7 @@ public class Servicios extends javax.swing.JPanel {
         precioTxt1.setText(""); // Campo: nombre del cliente
         stockTxt1.setValue(1); // Campo: cantidad
         txtDescripcionTrabajo.setText("");
-        if (comboMaterial.getItemCount() > 0) comboMaterial.setSelectedIndex(0);
+        limpiarMaterialSeleccionado();
     }//GEN-LAST:event_btnLimpiar1ActionPerformed
 
     private void btnEditarPrecioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarPrecioActionPerformed
@@ -396,14 +406,12 @@ public class Servicios extends javax.swing.JPanel {
 
     /** Campos agregados fuera del codigo generado para conservar el .form de NetBeans. */
     private void configurarTrabajoYMaterial() {
-        // Ampliar el panel inferior sin alterar initComponents() generado.
+
         remove(jPanel2);
         add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 400, 930, 285));
         precioTxt2.setVisible(false); // Campo sobrante del formulario original.
         btnEditarPrecio.setText("Editar servicio");
-        // AbsoluteLayout ignora setBounds() al volver a distribuir el panel.
-        // Quitamos los botones de sus posiciones originales y los agregamos
-        // con nuevas AbsoluteConstraints, sin alterar sus ActionListeners.
+
         jPanel2.remove(btnEditarPrecio);
         jPanel2.remove(btnLimpiar1);
         jPanel2.remove(btnGuardar1);
@@ -426,35 +434,200 @@ public class Servicios extends javax.swing.JPanel {
         JLabel etiquetaMaterial = new JLabel("Material (producto del inventario)*");
         etiquetaMaterial.setFont(new Font("Instrument Sans", Font.PLAIN, 14));
         jPanel2.add(etiquetaMaterial, new org.netbeans.lib.awtextra.AbsoluteConstraints(585, 112, 310, 20));
-        comboMaterial.setFont(new Font("Segoe UI", Font.PLAIN, 13));
-        jPanel2.add(comboMaterial, new org.netbeans.lib.awtextra.AbsoluteConstraints(585, 138, 310, 35));
-        JButton refrescar = new JButton("Actualizar materiales");
-        refrescar.addActionListener(e -> cargarMateriales());
-        jPanel2.add(refrescar, new org.netbeans.lib.awtextra.AbsoluteConstraints(585, 180, 180, 28));
+
+        // Mismo buscador de sugerencias usado en Ventas, adaptado para seleccionar
+        // un material en lugar de agregar un producto al carrito.
+        configurarBusquedaMaterial();
+        jPanel2.add(txtBuscarMaterial, new org.netbeans.lib.awtextra.AbsoluteConstraints(585, 138, 310, 35));
+
+        lblMaterialSeleccionado.setFont(new Font("Segoe UI", Font.PLAIN, 11));
+        lblMaterialSeleccionado.setForeground(new Color(70, 110, 75));
+        jPanel2.add(lblMaterialSeleccionado, new org.netbeans.lib.awtextra.AbsoluteConstraints(585, 180, 310, 22));
         revalidate();
         repaint();
     }
 
-    private void cargarMateriales() {
-        Integer anterior = comboMaterial.getSelectedItem() instanceof Producto p ? p.getIdProducto() : null;
-        materiales.clear();
-        comboMaterial.removeAllItems();
-        try {
-            for (Producto p : ServiceFacadeLocator.getInstanceFacadeProducto().obtenerProductosActualizados()) {
-                if (Boolean.TRUE.equals(p.getActivo()) && p.getExistencias() != null && p.getExistencias() > 0) {
-                    materiales.add(p);
-                    comboMaterial.addItem(p);
+    private void configurarBusquedaMaterial() {
+        txtBuscarMaterial.setFont(new Font("Instrument Sans", Font.PLAIN, 13));
+        txtBuscarMaterial.setText("Buscar material...");
+        txtBuscarMaterial.setForeground(new Color(120, 120, 120));
+        txtBuscarMaterial.setToolTipText("Escribe y selecciona un producto del inventario");
+
+        popupMaterial.setFocusable(false);
+        popupMaterial.setBorder(BorderFactory.createLineBorder(new Color(204, 204, 204)));
+        listaSugerenciasMaterial.setFocusable(false);
+        listaSugerenciasMaterial.setModel(modeloSugerenciasMaterial);
+        listaSugerenciasMaterial.setFixedCellHeight(36);
+        listaSugerenciasMaterial.setCellRenderer(new PnlFilaSugerencia());
+        listaSugerenciasMaterial.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            @Override
+            public void mouseMoved(java.awt.event.MouseEvent e) {
+                int i = listaSugerenciasMaterial.locationToIndex(e.getPoint());
+                if (i >= 0) listaSugerenciasMaterial.setSelectedIndex(i);
+            }
+        });
+        listaSugerenciasMaterial.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent e) {
+                int i = listaSugerenciasMaterial.locationToIndex(e.getPoint());
+                if (i >= 0 && i < modeloSugerenciasMaterial.size()) {
+                    seleccionarMaterial(modeloSugerenciasMaterial.get(i));
                 }
             }
+        });
+        popupMaterial.add(pnlSugerenciasMaterial);
+
+        txtBuscarMaterial.addActionListener(e -> {
+            if (!popupMaterial.isVisible() || modeloSugerenciasMaterial.isEmpty()) return;
+            Producto p = listaSugerenciasMaterial.getSelectedValue();
+            seleccionarMaterial(p != null ? p : modeloSugerenciasMaterial.get(0));
+        });
+        txtBuscarMaterial.getInputMap().put(
+                KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_ESCAPE, 0), "cerrarMaterial");
+        txtBuscarMaterial.getActionMap().put("cerrarMaterial", new AbstractAction() {
+            @Override public void actionPerformed(java.awt.event.ActionEvent e) {
+                popupMaterial.setVisible(false);
+            }
+        });
+        txtBuscarMaterial.getInputMap().put(
+                KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_DOWN, 0), "materialAbajo");
+        txtBuscarMaterial.getActionMap().put("materialAbajo", new AbstractAction() {
+            @Override public void actionPerformed(java.awt.event.ActionEvent e) {
+                int n = modeloSugerenciasMaterial.size();
+                if (n > 0) listaSugerenciasMaterial.setSelectedIndex(
+                        (listaSugerenciasMaterial.getSelectedIndex() + 1) % n);
+            }
+        });
+        txtBuscarMaterial.getInputMap().put(
+                KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_UP, 0), "materialArriba");
+        txtBuscarMaterial.getActionMap().put("materialArriba", new AbstractAction() {
+            @Override public void actionPerformed(java.awt.event.ActionEvent e) {
+                int n = modeloSugerenciasMaterial.size();
+                if (n > 0) listaSugerenciasMaterial.setSelectedIndex(
+                        (listaSugerenciasMaterial.getSelectedIndex() - 1 + n) % n);
+            }
+        });
+
+        txtBuscarMaterial.addFocusListener(new java.awt.event.FocusAdapter() {
+            @Override public void focusGained(java.awt.event.FocusEvent e) {
+                // Actualizar productos al usar el buscador, sin boton adicional.
+                cargarMateriales(false);
+                if ("Buscar material...".equals(txtBuscarMaterial.getText())) {
+                    txtBuscarMaterial.setText("");
+                    txtBuscarMaterial.setForeground(new Color(51, 51, 51));
+                }
+            }
+            @Override public void focusLost(java.awt.event.FocusEvent e) {
+                popupMaterial.setVisible(false);
+                if (txtBuscarMaterial.getText().isBlank()) {
+                    txtBuscarMaterial.setText("Buscar material...");
+                    txtBuscarMaterial.setForeground(new Color(120, 120, 120));
+                }
+            }
+        });
+        txtBuscarMaterial.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
+            @Override public void insertUpdate(javax.swing.event.DocumentEvent e) { cambioBusquedaMaterial(); }
+            @Override public void removeUpdate(javax.swing.event.DocumentEvent e) { cambioBusquedaMaterial(); }
+            @Override public void changedUpdate(javax.swing.event.DocumentEvent e) { cambioBusquedaMaterial(); }
+        });
+    }
+
+    private void cambioBusquedaMaterial() {
+        if (seleccionandoMaterial) return;
+        materialSeleccionado = null; // Escribir no equivale a seleccionar un producto.
+        lblMaterialSeleccionado.setText("Selecciona un material");
+        // DocumentListener se ejecuta durante la edición del documento;
+        // mostrar el popup después evita cambios de foco prematuros.
+        SwingUtilities.invokeLater(this::mostrarSugerenciasMaterial);
+    }
+
+    private void mostrarSugerenciasMaterial() {
+        if (materialSeleccionado != null) {
+            popupMaterial.setVisible(false);
+            return;
+        }
+        String texto = txtBuscarMaterial.getText().trim().toLowerCase(java.util.Locale.ROOT);
+        if (!txtBuscarMaterial.isShowing() || texto.isEmpty()
+                || texto.equals("buscar material...")) {
+            popupMaterial.setVisible(false);
+            return;
+        }
+        modeloSugerenciasMaterial.clear();
+        for (Producto p : materiales) {
+            if (p.getNombre() != null &&
+                    p.getNombre().toLowerCase(java.util.Locale.ROOT).contains(texto)) {
+                modeloSugerenciasMaterial.addElement(p);
+                if (modeloSugerenciasMaterial.size() >= 8) break;
+            }
+        }
+        if (modeloSugerenciasMaterial.isEmpty()) {
+            popupMaterial.setVisible(false);
+            return;
+        }
+        int alto = Math.min(modeloSugerenciasMaterial.size(), 5)
+                * listaSugerenciasMaterial.getFixedCellHeight() + 4;
+        popupMaterial.setPopupSize(380, alto);
+        popupMaterial.show(txtBuscarMaterial, 0, txtBuscarMaterial.getHeight());
+    }
+
+    private void seleccionarMaterial(Producto p) {
+        if (p == null) return;
+        popupMaterial.setVisible(false);
+        materialSeleccionado = p;
+        seleccionandoMaterial = true;
+        try {
+            txtBuscarMaterial.setText(p.getNombre());
+            txtBuscarMaterial.setForeground(new Color(51, 51, 51));
+        } finally {
+            seleccionandoMaterial = false;
+        }
+        lblMaterialSeleccionado.setText("Existencias: " + p.getExistencias());
+        txtBuscarMaterial.setToolTipText(p.getNombre() + " - $" + p.getPrecio()
+                + " - Existencias: " + p.getExistencias());
+    }
+
+    private void limpiarMaterialSeleccionado() {
+        popupMaterial.setVisible(false);
+        materialSeleccionado = null;
+        seleccionandoMaterial = true;
+        try {
+            txtBuscarMaterial.setText("Buscar material...");
+            txtBuscarMaterial.setForeground(new Color(120, 120, 120));
+        } finally {
+            seleccionandoMaterial = false;
+        }
+        lblMaterialSeleccionado.setText("Selecciona un material");
+    }
+
+    private void cargarMateriales() {
+        cargarMateriales(true);
+    }
+
+    private void cargarMateriales(boolean mostrarAviso) {
+        Integer anterior = materialSeleccionado == null ? null : materialSeleccionado.getIdProducto();
+        try {
+            java.util.List<Producto> actualizados = ServiceFacadeLocator
+                    .getInstanceFacadeProducto().obtenerProductosActualizados();
+            materiales.clear();
+            for (Producto p : actualizados) {
+                if (Boolean.TRUE.equals(p.getActivo()) && p.getExistencias() != null
+                        && p.getExistencias() > 0) {
+                    materiales.add(p);
+                }
+            }
+            Producto encontrado = null;
             if (anterior != null) {
-                for (int i = 0; i < materiales.size(); i++) {
-                    if (materiales.get(i).getIdProducto().equals(anterior)) {
-                        comboMaterial.setSelectedIndex(i);
+                for (Producto p : materiales) {
+                    if (p.getIdProducto().equals(anterior)) {
+                        encontrado = p;
                         break;
                     }
                 }
             }
-            if (materiales.isEmpty()) {
+            if (encontrado != null) seleccionarMaterial(encontrado);
+            else if (anterior != null) limpiarMaterialSeleccionado();
+            popupMaterial.setVisible(false);
+            if (materiales.isEmpty() && mostrarAviso) {
                 aviso("No hay materiales disponibles o con existencias en el inventario.");
             }
         } catch (Exception ex) {
