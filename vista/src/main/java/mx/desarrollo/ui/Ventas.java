@@ -26,9 +26,12 @@ import javax.swing.JOptionPane;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import mx.desarrollo.delegate.DelegateVenta;
+import mx.desarrollo.entity.DetalleVentaPaquete;
 import mx.desarrollo.entity.DetalleVentaProducto;
 import mx.desarrollo.entity.DetalleVentaServicio;
+import mx.desarrollo.entity.Paquete;
 import mx.desarrollo.entity.Producto;
+import mx.desarrollo.entity.ProductoPaquete;
 import mx.desarrollo.entity.Usuario;
 import mx.desarrollo.entity.Venta;
 import mx.desarrollo.integration.ServiceFacadeLocator;
@@ -45,6 +48,7 @@ public class Ventas extends javax.swing.JFrame {
 
     private static final double IVA = DelegateVenta.IVA;
     private static final String tempBUSQUEDA = "Buscar Productos";
+    private static final String tempBUSQUEDA_PAQUETES = "Buscar Paquetes";
     private static final String EFECTIVO = "EFECTIVO";
     private static final String TARJETA = "TARJETA";
 
@@ -54,6 +58,12 @@ public class Ventas extends javax.swing.JFrame {
     private final Map<Integer, Producto> productosPorId = new LinkedHashMap<>();
     private final Map<Integer, Integer> carrito = new LinkedHashMap<>();
     private final List<DetalleVentaServicio> carritoServicios = new ArrayList<>();
+    private final List<Paquete> catalogoPaquetes = new ArrayList<>();
+    private final List<Paquete> paquetesVisibles = new ArrayList<>();
+    private final Map<Integer, Paquete> paquetesPorId = new LinkedHashMap<>();
+    private final Map<Integer, List<ProductoPaquete>> componentesPorPaquete = new java.util.HashMap<>();
+    private final Map<Integer, Integer> carritoPaquetes = new LinkedHashMap<>();
+    private boolean modoPaquetes = false;
     private JButton[] botonesProducto;
     private JButton[] botonesDinero;
     private String metodoPago = null;
@@ -108,6 +118,7 @@ public class Ventas extends javax.swing.JFrame {
         btnAvisos.addActionListener(e -> mostrarAvisos());
         btnAbrirCaja.addActionListener(e -> abrirCaja());
         btnCerrarCaja.addActionListener(e -> cerrarCaja());
+        btnPaquetes.addActionListener(e -> alternarModoPaquetes());
         iniciarRelojCaja();
     }
 
@@ -129,6 +140,7 @@ public class Ventas extends javax.swing.JFrame {
         btnCerrarCaja = new JButton();
         btnMenuprincipal = new JButton();
         btnServicios = new JButton();
+        btnPaquetes = new JButton();
         btnAbrirCaja = new JButton();
         jLabel3 = new JLabel();
         jLabel4 = new JLabel();
@@ -768,6 +780,13 @@ public class Ventas extends javax.swing.JFrame {
         boton17.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         boton17.setPreferredSize(new Dimension(108, 73));
 
+        btnPaquetes.setBackground(new Color(153, 153, 153));
+        btnPaquetes.setFont(new java.awt.Font("Instrument Sans", 1, 12)); // NOI18N
+        btnPaquetes.setText("Paquetes");
+        btnPaquetes.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        btnPaquetes.setFocusable(false);
+        btnPaquetes.setPreferredSize(new Dimension(108, 59));
+
         javax.swing.GroupLayout pnlProductosLayout = new javax.swing.GroupLayout(pnlProductos);
         pnlProductos.setLayout(pnlProductosLayout);
         pnlProductosLayout.setHorizontalGroup(
@@ -776,7 +795,9 @@ public class Ventas extends javax.swing.JFrame {
                 .addGroup(pnlProductosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnlProductosLayout.createSequentialGroup()
                         .addGap(16, 16, 16)
-                        .addComponent(txtBuscarProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 412, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(txtBuscarProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 296, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(6, 6, 6)
+                        .addComponent(btnPaquetes, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(pnlProductosLayout.createSequentialGroup()
                         .addGap(37, 37, 37)
                         .addGroup(pnlProductosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -818,7 +839,9 @@ public class Ventas extends javax.swing.JFrame {
             pnlProductosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlProductosLayout.createSequentialGroup()
                 .addGap(20, 20, 20)
-                .addComponent(txtBuscarProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(pnlProductosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtBuscarProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnPaquetes, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(pnlProductosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(boton1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1031,6 +1054,7 @@ public class Ventas extends javax.swing.JFrame {
     private JButton btnImprimirTicket;
     private JButton btnLimpiar;
     private JButton btnMenuprincipal;
+    private JButton btnPaquetes;
     private JButton btnQuinientosP;
     private JButton btnServicios;
     private JButton btnTarjeta;
@@ -1084,7 +1108,11 @@ private void configurarProductos() {
         final int idx = i;
 
         botonesProducto[i].addActionListener(e -> {
-            if (idx < visibles.size()) {
+            if (modoPaquetes) {
+                if (idx < paquetesVisibles.size()) {
+                    agregarPaqueteAlCarrito(paquetesVisibles.get(idx));
+                }
+            } else if (idx < visibles.size()) {
                 agregarAlCarrito(visibles.get(idx));
             }
         });
@@ -1106,6 +1134,7 @@ private void configurarProductos() {
         } catch (Exception | ExceptionInInitializerError ex) {
             mostrarError("No se pudieron cargar los productos: " + ex.getMessage());
         }
+        cargarPaquetes();
         ajustarCarrito();
         actualizarAvisos();
                 cargarBotonesProductos();
@@ -1122,11 +1151,12 @@ private void configurarProductos() {
                 carrito.put(id, p.getExistencias());
             }
         }
+        ajustarCarritoPaquetes();
         refrescarCarrito();
     }
 
    private void configurarBusqueda() {
-        txtBuscarProducto.setText(tempBUSQUEDA);
+        txtBuscarProducto.setText(placeholderBusqueda());
 
         popupBusqueda.setFocusable(false);
         lstSugerencias.setFocusable(false);
@@ -1183,7 +1213,7 @@ private void configurarProductos() {
         txtBuscarProducto.addFocusListener(new java.awt.event.FocusAdapter() {
             @Override
             public void focusGained(java.awt.event.FocusEvent e) {
-                if (tempBUSQUEDA.equals(txtBuscarProducto.getText())) {
+                if (esPlaceholder(txtBuscarProducto.getText())) {
                     txtBuscarProducto.setText("");
                 }
             }
@@ -1192,7 +1222,7 @@ private void configurarProductos() {
             public void focusLost(java.awt.event.FocusEvent e) {
                 popupBusqueda.setVisible(false);
                 if (txtBuscarProducto.getText().isBlank()) {
-                    txtBuscarProducto.setText(tempBUSQUEDA);
+                    txtBuscarProducto.setText(placeholderBusqueda());
                 }
             }
         });
@@ -1204,9 +1234,13 @@ private void configurarProductos() {
     }
 
     private void mostrarSugerencias() {
+        if (modoPaquetes) {
+            filtrarPaquetes();
+            return;
+        }
         String texto = txtBuscarProducto.getText().trim().toLowerCase();
         if (!txtBuscarProducto.isShowing()
-                || texto.isEmpty() || texto.equals(tempBUSQUEDA.toLowerCase())) {
+                || texto.isEmpty() || esPlaceholder(texto)) {
             popupBusqueda.setVisible(false);
             return;
         }
@@ -1239,6 +1273,10 @@ private void configurarProductos() {
     }   
 
     private void cargarBotonesProductos() {
+    if (modoPaquetes) {
+        filtrarPaquetes();
+        return;
+    }
     visibles.clear();
 
     for (Producto p : catalogo) {
@@ -1254,6 +1292,10 @@ private void configurarProductos() {
 
 
     private void mostrarProductos() {
+        if (modoPaquetes) {
+            mostrarPaquetes();
+            return;
+        }
 
         for (int i = 0; i < botonesProducto.length; i++) {
             JButton boton = botonesProducto[i];
@@ -1272,8 +1314,9 @@ private void configurarProductos() {
     
     private void agregarAlCarrito(Producto p) {
     int actual = carrito.getOrDefault(p.getIdProducto(), 0);
+    int enPaquetes = reservadoPorPaquetes().getOrDefault(p.getIdProducto(), 0);
 
-    if (actual + 1 > p.getExistencias()) {
+    if (actual + 1 + enPaquetes > p.getExistencias()) {
         mostrarError("No hay mas existencias de \""
                 + p.getNombre()
                 + "\" (disponibles: "
@@ -1285,7 +1328,6 @@ private void configurarProductos() {
     refrescarCarrito();
 }
 
-    // eso sucede solo cuando se confirma el cobro
     public void agregarServicioAlCarrito(DetalleVentaServicio detalle) {
         if (detalle == null || detalle.getServicio() == null ||
                 detalle.getServicio().getIdServicio() == null ||
@@ -1312,6 +1354,208 @@ private void configurarProductos() {
         refrescarCarrito();
     }
 
+       //Paquetes
+
+    private String placeholderBusqueda() {
+        return modoPaquetes ? tempBUSQUEDA_PAQUETES : tempBUSQUEDA;
+    }
+
+    private boolean esPlaceholder(String texto) {
+        String t = texto == null ? "" : texto.trim();
+        return t.equalsIgnoreCase(tempBUSQUEDA) || t.equalsIgnoreCase(tempBUSQUEDA_PAQUETES);
+    }
+
+    private void cargarPaquetes() {
+        catalogoPaquetes.clear();
+        paquetesPorId.clear();
+        componentesPorPaquete.clear();
+        try {
+            for (Paquete p : ServiceFacadeLocator.getInstanceFacadePaquete().obtenerPaquetesActivos()) {
+                catalogoPaquetes.add(p);
+                paquetesPorId.put(p.getIdPaquete(), p);
+                componentesPorPaquete.put(p.getIdPaquete(),
+                        ServiceFacadeLocator.getInstanceFacadePaquete().obtenerComponentesActuales(p.getIdPaquete()));
+            }
+        } catch (Exception | ExceptionInInitializerError ex) {
+            catalogoPaquetes.clear();
+            paquetesPorId.clear();
+            componentesPorPaquete.clear();
+            ex.printStackTrace();
+            if (!catalogo.isEmpty()) {
+                mostrarError("No se pudieron cargar los paquetes: " + ex.getMessage());
+            }
+        }
+    }
+
+    private void alternarModoPaquetes() {
+        modoPaquetes = !modoPaquetes;
+        btnPaquetes.setText(modoPaquetes ? "Productos" : "Paquetes");
+        popupBusqueda.setVisible(false);
+        for (JButton b : botonesProducto) {
+            b.setToolTipText(null);
+        }
+        txtBuscarProducto.setText(placeholderBusqueda());
+        if (modoPaquetes) {
+            filtrarPaquetes();
+        } else {
+            cargarBotonesProductos();
+        }
+    }
+
+    private void filtrarPaquetes() {
+        String texto = esPlaceholder(txtBuscarProducto.getText())
+                ? "" : txtBuscarProducto.getText().trim().toLowerCase();
+        paquetesVisibles.clear();
+        for (Paquete p : catalogoPaquetes) {
+            if (paquetesVisibles.size() >= botonesProducto.length) {
+                break;
+            }
+            boolean coincide = texto.isEmpty()
+                    || p.getNombrePaquete().toLowerCase().contains(texto)
+                    || (p.getDescripcion() != null && p.getDescripcion().toLowerCase().contains(texto));
+            if (coincide) {
+                paquetesVisibles.add(p);
+            }
+        }
+        mostrarPaquetes();
+    }
+
+    private void mostrarPaquetes() {
+        Map<Integer, Integer> existencias = existenciasActuales();
+        for (int i = 0; i < botonesProducto.length; i++) {
+            JButton boton = botonesProducto[i];
+            if (i < paquetesVisibles.size()) {
+                Paquete p = paquetesVisibles.get(i);
+                boolean disponible = DelegateVenta.validarExistenciasPaquete(p.getNombrePaquete(),
+                        componentesPorPaquete.get(p.getIdPaquete()), 1, existencias, new LinkedHashMap<>()) == null;
+                boton.setText("<html><center>" + escapar(p.getNombrePaquete()) + "<br>"
+                        + (disponible ? moneda.format(p.getPrecio()) : "Agotado") + "</center></html>");
+                boton.setToolTipText(p.getDescripcion());
+                boton.setEnabled(disponible);
+            } else {
+                boton.setText("");
+                boton.setToolTipText(null);
+                boton.setEnabled(false);
+            }
+        }
+    }
+
+    private Map<Integer, Integer> existenciasActuales() {
+        Map<Integer, Integer> m = new LinkedHashMap<>();
+        for (Producto p : productosPorId.values()) {
+            m.put(p.getIdProducto(), p.getExistencias() == null ? 0 : p.getExistencias());
+        }
+        return m;
+    }
+
+    private Map<Integer, Integer> reservadoSinPaquetes() {
+        Map<Integer, Integer> r = new LinkedHashMap<>(carrito);
+        for (DetalleVentaServicio d : carritoServicios) {
+            if (d.getProductoMaterial() != null && d.getProductoMaterial().getIdProducto() != null) {
+                r.merge(d.getProductoMaterial().getIdProducto(), d.getCantidad(), Integer::sum);
+            }
+        }
+        return r;
+    }
+
+    private Map<Integer, Integer> reservadoPorPaquetes() {
+        Map<Integer, Integer> r = new LinkedHashMap<>();
+        for (Map.Entry<Integer, Integer> en : carritoPaquetes.entrySet()) {
+            List<ProductoPaquete> comps = componentesPorPaquete.get(en.getKey());
+            if (comps == null) {
+                continue;
+            }
+            for (ProductoPaquete pp : comps) {
+                r.merge(pp.getProducto().getIdProducto(), pp.getCantidad() * en.getValue(), Integer::sum);
+            }
+        }
+        return r;
+    }
+
+    private Map<Integer, Integer> reservadoTotal() {
+        Map<Integer, Integer> r = reservadoSinPaquetes();
+        reservadoPorPaquetes().forEach((id, n) -> r.merge(id, n, Integer::sum));
+        return r;
+    }
+
+    private String validarPaquete(Paquete p, int adicionales) {
+        return DelegateVenta.validarExistenciasPaquete(p.getNombrePaquete(),
+                componentesPorPaquete.get(p.getIdPaquete()), adicionales, existenciasActuales(), reservadoTotal());
+    }
+
+    private void agregarPaqueteAlCarrito(Paquete p) {
+        String falta = validarPaquete(p, 1);
+        if (falta != null) {
+            mostrarError(falta);
+            return;
+        }
+        carritoPaquetes.merge(p.getIdPaquete(), 1, Integer::sum);
+        refrescarCarrito();
+    }
+
+    private void ajustarCarritoPaquetes() {
+        Map<Integer, Integer> existencias = existenciasActuales();
+        Map<Integer, Integer> reservado = reservadoSinPaquetes();
+        for (Integer id : new ArrayList<>(carritoPaquetes.keySet())) {
+            Paquete p = paquetesPorId.get(id);
+            List<ProductoPaquete> comps = componentesPorPaquete.get(id);
+            int q = carritoPaquetes.get(id);
+            while (p != null && q > 0 && DelegateVenta.validarExistenciasPaquete(
+                    p.getNombrePaquete(), comps, q, existencias, reservado) != null) {
+                q--;
+            }
+            if (p == null || q <= 0) {
+                carritoPaquetes.remove(id);
+                continue;
+            }
+            carritoPaquetes.put(id, q);
+            for (ProductoPaquete pp : comps) {
+                reservado.merge(pp.getProducto().getIdProducto(), pp.getCantidad() * q, Integer::sum);
+            }
+        }
+    }
+
+    private List<DetalleVentaPaquete> armarDetallesPaquetes() {
+        List<DetalleVentaPaquete> lista = new ArrayList<>();
+        for (Map.Entry<Integer, Integer> en : carritoPaquetes.entrySet()) {
+            DetalleVentaPaquete d = new DetalleVentaPaquete();
+            d.setPaquete(paquetesPorId.get(en.getKey()));
+            d.setCantidad(en.getValue());
+            lista.add(d);
+        }
+        return lista;
+    }
+
+    private void clickEnPaquete(int fila, int indice, int col, MouseEvent e) {
+        if (indice < 0 || indice >= carritoPaquetes.size()) {
+            return;
+        }
+        Integer id = new ArrayList<>(carritoPaquetes.keySet()).get(indice);
+        Paquete p = paquetesPorId.get(id);
+        int cantidad = carritoPaquetes.get(id);
+        if (col == 4) {
+            carritoPaquetes.remove(id);
+        } else if (col == 2 && p != null) {
+            Rectangle r = tblArticulos.getCellRect(fila, col, false);
+            double rel = (e.getX() - r.x) / (double) r.width;
+            if (rel < 0.4) {
+                if (cantidad > 1) carritoPaquetes.put(id, cantidad - 1);
+            } else if (rel > 0.6) {
+                String falta = validarPaquete(p, 1);
+                if (falta != null) {
+                    mostrarError(falta);
+                    return;
+                }
+                carritoPaquetes.put(id, cantidad + 1);
+            } else {
+                return;
+            }
+        } else {
+            return;
+        }
+        refrescarCarrito();
+    }
+
     private void clickEnCarrito(MouseEvent e) {
         int fila = tblArticulos.rowAtPoint(e.getPoint());
         int col = tblArticulos.columnAtPoint(e.getPoint());
@@ -1319,7 +1563,11 @@ private void configurarProductos() {
 
         if (fila >= carrito.size()) {
             int indiceServicio = fila - carrito.size();
-            if (indiceServicio < 0 || indiceServicio >= carritoServicios.size()) return;
+            if (indiceServicio >= carritoServicios.size()) {
+                clickEnPaquete(fila, indiceServicio - carritoServicios.size(), col, e);
+                return;
+            }
+            if (indiceServicio < 0) return;
             DetalleVentaServicio d = carritoServicios.get(indiceServicio);
             if (col == 4) {
                 carritoServicios.remove(indiceServicio);
@@ -1352,7 +1600,7 @@ private void configurarProductos() {
             if (rel < 0.4) {
                 if (cantidad > 1) carrito.put(id, cantidad - 1);
             } else if (rel > 0.6) {
-                if (cantidad + 1 > p.getExistencias()) {
+                if (cantidad + 1 + reservadoPorPaquetes().getOrDefault(id, 0) > p.getExistencias()) {
                     mostrarError("No hay mas existencias de \"" + p.getNombre() +
                             "\" (disponibles: " + p.getExistencias() + ").");
                     return;
@@ -1388,6 +1636,13 @@ private void configurarProductos() {
                     "Eliminar"
             });
         }
+        for (Map.Entry<Integer, Integer> en : carritoPaquetes.entrySet()) {
+            Paquete p = paquetesPorId.get(en.getKey());
+            modelo.addRow(new Object[]{
+                    p.getNombrePaquete(), moneda.format(p.getPrecio()), String.valueOf(en.getValue()),
+                    moneda.format(p.getPrecio() * en.getValue()), "Eliminar"
+            });
+        }
         calcularTotales();
     }
 
@@ -1405,6 +1660,9 @@ private void configurarProductos() {
         }
         for (DetalleVentaServicio d : carritoServicios) {
             subtotal += d.getServicio().getPrecio() * d.getCantidad();
+        }
+        for (Map.Entry<Integer, Integer> en : carritoPaquetes.entrySet()) {
+            subtotal += paquetesPorId.get(en.getKey()).getPrecio() * en.getValue();
         }
         double base = subtotal - descuento;
         double iva = base * IVA;
@@ -1485,8 +1743,8 @@ private void configurarProductos() {
 
     private void confirmarVenta() {
         refrescarCarrito();
-        if (carrito.isEmpty() && carritoServicios.isEmpty()) {
-            mostrarError("Agrega al menos un producto o servicio a la venta.");
+        if (carrito.isEmpty() && carritoServicios.isEmpty() && carritoPaquetes.isEmpty()) {
+            mostrarError("Agrega al menos un producto, servicio o paquete a la venta.");
             return;
         }
         if (metodoPago == null) {
@@ -1525,11 +1783,12 @@ private void configurarProductos() {
                 d.setCantidad(en.getValue());
                 detalles.add(d);
             }
+            List<DetalleVentaPaquete> paquetesVenta = armarDetallesPaquetes();
             boolean ef = EFECTIVO.equals(metodoPago);
             double recibido = ef ? leerDineroRecibido() : 0;
 
             Venta venta = ServiceFacadeLocator.getInstanceFacadeVenta()
-                    .registrarVenta(usuarioActual, metodoPago, detalles, carritoServicios);
+                    .registrarVenta(usuarioActual, metodoPago, detalles, carritoServicios, paquetesVenta);
 
             List<TicketDialog.Linea> lineas = new ArrayList<>();
             for (DetalleVentaProducto d : detalles) {
@@ -1544,6 +1803,11 @@ private void configurarProductos() {
             for (DetalleVentaServicio d : carritoServicios) {
                 lineas.add(new TicketDialog.Linea(
                         d.getServicio().getNombre() + " - " + d.getNombreCliente(),
+                        d.getCantidad(), d.getPrecioUnitario() * d.getCantidad()));
+            }
+            for (DetalleVentaPaquete d : paquetesVenta) {
+                lineas.add(new TicketDialog.Linea(
+                        d.getPaquete().getNombrePaquete(),
                         d.getCantidad(), d.getPrecioUnitario() * d.getCantidad()));
             }
             double total = venta.getTotal();
@@ -1567,6 +1831,7 @@ private void configurarProductos() {
     private void nuevaVenta() {
         carrito.clear();
         carritoServicios.clear();
+        carritoPaquetes.clear();
         seleccionarMetodo(null);
         refrescarCarrito();
     }
@@ -1741,7 +2006,6 @@ private void configurarProductos() {
 
 
     //  Abrir / Cerrar caja
-
 
     private static final java.time.format.DateTimeFormatter FECHA_HORA_CAJA =
             java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");

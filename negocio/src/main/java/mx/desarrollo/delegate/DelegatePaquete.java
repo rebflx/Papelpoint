@@ -10,6 +10,13 @@ public class DelegatePaquete {
     public List<Paquete> listar() {
         return ServiceLocator.getInstancePaqueteDAO().listarActualizados();
     }
+    public List<Paquete> listarActivos() {
+        return ServiceLocator.getInstancePaqueteDAO().listarActivos();
+    }
+    public List<ProductoPaquete> componentesActuales(Integer id) {
+        if (id == null) throw new IllegalArgumentException("Selecciona un paquete.");
+        return ServiceLocator.getInstancePaqueteDAO().componentesActuales(id);
+    }
     public List<ProductoPaquete> obtenerProductos(Integer id) {
         return ServiceLocator.getInstancePaqueteDAO().obtenerProductos(id);
     }

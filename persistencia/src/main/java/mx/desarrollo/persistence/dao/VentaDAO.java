@@ -3,20 +3,13 @@ package mx.desarrollo.persistence.dao;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.LockModeType;
-import mx.desarrollo.entity.DetalleVentaProducto;
-import mx.desarrollo.entity.DetalleVentaServicio;
-import mx.desarrollo.entity.Servicio;
-import mx.desarrollo.entity.Producto;
-import mx.desarrollo.entity.Ticket;
-import mx.desarrollo.entity.Venta;
-import mx.desarrollo.entity.Usuario;
+import mx.desarrollo.entity.*;
 import mx.desarrollo.persistence.persistence.AbstractDAO;
 import mx.desarrollo.persistence.persistence.HibernateUtil;
 import jakarta.persistence.TypedQuery;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
-import mx.desarrollo.entity.Descuento;
 
 public class VentaDAO extends AbstractDAO<Venta> {
 
@@ -40,6 +33,12 @@ public class VentaDAO extends AbstractDAO<Venta> {
 
     public Venta registrarVenta(Venta venta, List<DetalleVentaProducto> detalles,
                                 List<DetalleVentaServicio> servicios, double tasaIva){
+        return registrarVenta(venta, detalles, servicios, List.of(), tasaIva);
+    }
+
+    public Venta registrarVenta(Venta venta, List<DetalleVentaProducto> detalles,
+                                List<DetalleVentaServicio> servicios,
+                                List<DetalleVentaPaquete> paquetes, double tasaIva){
         EntityManager em = getEntityManager();
         EntityTransaction tx = em.getTransaction();
         try{
@@ -56,7 +55,6 @@ public class VentaDAO extends AbstractDAO<Venta> {
                 if(p==null||!Boolean.TRUE.equals(p.getActivo())){
                     throw new IllegalArgumentException("Un producto del carrito ya no esta disponible");
                 }
-                // CORREGIDO: antes se comparaba cantidad < 1 y nunca se validaba el stock
                 if(p.getExistencias() < d.getCantidad()){
                     throw new IllegalArgumentException("No hay existencias suficientes de \"" + p.getNombre() + "\" (disponibles: " + p.getExistencias() + ")");
                 }
@@ -75,7 +73,6 @@ public class VentaDAO extends AbstractDAO<Venta> {
 
             }
 
-            // Se valida y guarda cada servicio dentro de la MISMA transaccion.
             for (DetalleVentaServicio d : servicios) {
                 if (d.getCantidad() == null || d.getCantidad() < 1) {
                     throw new IllegalArgumentException("La cantidad del servicio debe ser mayor que cero.");
@@ -116,15 +113,57 @@ public class VentaDAO extends AbstractDAO<Venta> {
                 subtotal += servicio.getPrecio() * d.getCantidad();
             }
 
+            for (DetalleVentaPaquete d : paquetes) {
+                if (d.getCantidad() == null || d.getCantidad() < 1) {
+                    throw new IllegalArgumentException("La cantidad del paquete debe ser de al menos 1");
+                }
+                if (d.getPaquete() == null || d.getPaquete().getIdPaquete() == null) {
+                    throw new IllegalArgumentException("No se selecciono un paquete valido.");
+                }
+                Paquete paquete = em.find(Paquete.class, d.getPaquete().getIdPaquete());
+                if (paquete == null || !Boolean.TRUE.equals(paquete.getActiva())) {
+                    throw new IllegalArgumentException("Un paquete del carrito ya no esta disponible.");
+                }
+                List<ProductoPaquete> componentes = em.createQuery(
+                                "SELECT pp FROM ProductoPaquete pp WHERE pp.paquete.idPaquete = :id "
+                                        + "ORDER BY pp.idProductoPaquete", ProductoPaquete.class)
+                        .setParameter("id", paquete.getIdPaquete())
+                        .getResultList();
+                if (componentes.isEmpty()) {
+                    throw new IllegalArgumentException("El paquete \"" + paquete.getNombrePaquete() + "\" no tiene productos.");
+                }
+                for (ProductoPaquete pp : componentes) {
+                    Producto p = em.find(Producto.class, pp.getProducto().getIdProducto(), LockModeType.PESSIMISTIC_WRITE);
+                    if (p == null || !Boolean.TRUE.equals(p.getActivo())) {
+                        throw new IllegalArgumentException("Un producto del paquete \"" + paquete.getNombrePaquete()
+                                + "\" ya no esta disponible.");
+                    }
+                    int requeridas = pp.getCantidad() * d.getCantidad();
+                    if (p.getExistencias() == null || p.getExistencias() < requeridas) {
+                        throw new IllegalArgumentException("No hay existencias suficientes de \"" + p.getNombre()
+                                + "\" para el paquete \"" + paquete.getNombrePaquete() + "\" (disponibles: "
+                                + (p.getExistencias() == null ? 0 : p.getExistencias()) + ", requeridas: " + requeridas + ")");
+                    }
+                    p.setExistencias(p.getExistencias() - requeridas);
+                }
+                d.setVenta(venta);
+                d.setPaquete(paquete);
+                d.setPrecioUnitario(paquete.getPrecio());
+                subtotal += paquete.getPrecio() * d.getCantidad();
+            }
+
             venta.setUsuario(em.getReference(Usuario.class, venta.getUsuario().getIdUsuario()));
             venta.setSubtotal(redondear(subtotal));
             venta.setTotal(redondear(subtotal * (1 + tasaIva)));
 
-            em.persist(venta);          // con IDENTITY aqui ya se asigna idVenta
+            em.persist(venta);
             for(DetalleVentaProducto d: detalles){
                 em.persist(d);
             }
             for(DetalleVentaServicio d: servicios){
+                em.persist(d);
+            }
+            for(DetalleVentaPaquete d: paquetes){
                 em.persist(d);
             }
 
@@ -218,7 +257,20 @@ public class VentaDAO extends AbstractDAO<Venta> {
         }
     }
 
-    /** Trabajos cobrados: se incluyen los datos del catalogo para mostrarlos en Consultas. */
+    public List<DetalleVentaPaquete> detallesPaqueteDeVenta(Integer idVenta) {
+        EntityManager em = getEntityManager();
+        try {
+            return em.createQuery(
+                            "SELECT d FROM DetalleVentaPaquete d JOIN FETCH d.paquete "
+                                    + "WHERE d.venta.idVenta = :id ORDER BY d.idDetallePaquete",
+                            DetalleVentaPaquete.class)
+                    .setParameter("id", idVenta)
+                    .getResultList();
+        } finally {
+            em.close();
+        }
+    }
+
     public List<DetalleVentaServicio> listarTrabajosServicio() {
         EntityManager em = getEntityManager();
         try {
@@ -232,7 +284,6 @@ public class VentaDAO extends AbstractDAO<Venta> {
         }
     }
 
-    /** Cambia el estado de un trabajo ya cobrado, sin modificar la venta. */
     public void actualizarEstadoTrabajo(Integer idDetalle, String nuevoEstado) {
         if (idDetalle == null || !"Realizado".equals(nuevoEstado)) {
             throw new IllegalArgumentException("ID o estado del trabajo no valido.");

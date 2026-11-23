@@ -1,10 +1,6 @@
 package mx.desarrollo.delegate;
 
-import mx.desarrollo.entity.DetalleVentaProducto;
-import mx.desarrollo.entity.DetalleVentaServicio;
-import mx.desarrollo.entity.Ticket;
-import mx.desarrollo.entity.Usuario;
-import mx.desarrollo.entity.Venta;
+import mx.desarrollo.entity.*;
 import mx.desarrollo.persistence.dao.VentaDAO;
 import mx.desarrollo.persistence.integration.ServiceLocator;
 
@@ -12,6 +8,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Map;
 
 public class DelegateVenta {
     public static final String METODO_EFECTIVO = "EFECTIVO";
@@ -27,10 +24,18 @@ public class DelegateVenta {
     public Venta registrarVenta(Usuario usuario, String metodoPago,
                                 List<DetalleVentaProducto> detalles,
                                 List<DetalleVentaServicio> servicios){
+        return registrarVenta(usuario, metodoPago, detalles, servicios, List.of());
+    }
+
+    public Venta registrarVenta(Usuario usuario, String metodoPago,
+                                List<DetalleVentaProducto> detalles,
+                                List<DetalleVentaServicio> servicios,
+                                List<DetalleVentaPaquete> paquetes){
         if(usuario == null || usuario.getIdUsuario() == null){
             throw new IllegalArgumentException("No hay un usuario en sesion");
         }
-        if((detalles == null || detalles.isEmpty()) && (servicios == null || servicios.isEmpty())){
+        if((detalles == null || detalles.isEmpty()) && (servicios == null || servicios.isEmpty())
+                && (paquetes == null || paquetes.isEmpty())){
             throw new IllegalArgumentException("El carrito esta vacio");
 
         }
@@ -46,7 +51,28 @@ public class DelegateVenta {
 
         return ServiceLocator.getInstanceVentaDAO().registrarVenta(
                 venta, detalles == null ? List.of() : detalles,
-                servicios == null ? List.of() : servicios, IVA);
+                servicios == null ? List.of() : servicios,
+                paquetes == null ? List.of() : paquetes, IVA);
+    }
+
+    public static String validarExistenciasPaquete(String nombrePaquete, List<ProductoPaquete> componentes,
+                                                   int cantidad, Map<Integer, Integer> existencias,
+                                                   Map<Integer, Integer> reservado){
+        if(componentes == null || componentes.isEmpty()){
+            return "El paquete \"" + nombrePaquete + "\" no tiene productos.";
+        }
+        for(ProductoPaquete pp : componentes){
+            Integer id = pp.getProducto().getIdProducto();
+            int disponibles = existencias.getOrDefault(id, 0);
+            int enCarrito = reservado.getOrDefault(id, 0);
+            int requeridas = pp.getCantidad() * cantidad;
+            if(disponibles - enCarrito < requeridas){
+                return "No hay existencias suficientes de \"" + pp.getProducto().getNombre()
+                        + "\" para el paquete \"" + nombrePaquete + "\" (disponibles: "
+                        + Math.max(0, disponibles - enCarrito) + ", requeridas: " + requeridas + ").";
+            }
+        }
+        return null;
     }
 
     public int numeroClienteDelDia(Venta venta){
@@ -81,6 +107,13 @@ public class DelegateVenta {
             throw new IllegalArgumentException("Venta no valida");
         }
         return ServiceLocator.getInstanceVentaDAO().detallesServicioDeVenta(idVenta);
+    }
+
+    public List<DetalleVentaPaquete> detallesPaqueteDeVenta(Integer idVenta) {
+        if (idVenta == null) {
+            throw new IllegalArgumentException("Venta no valida");
+        }
+        return ServiceLocator.getInstanceVentaDAO().detallesPaqueteDeVenta(idVenta);
     }
 
     public List<DetalleVentaServicio> listarTrabajosServicio() {

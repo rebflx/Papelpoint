@@ -5,6 +5,8 @@ import mx.desarrollo.entity.Paquete;
 import mx.desarrollo.entity.Producto;
 import mx.desarrollo.entity.ProductoPaquete;
 import mx.desarrollo.persistence.persistence.AbstractDAO;
+import mx.desarrollo.persistence.persistence.HibernateUtil;
+
 import java.util.List;
 import java.util.Map;
 
@@ -50,7 +52,6 @@ public class PaqueteDAO extends AbstractDAO<Paquete> {
             actual.setNombrePaquete(datos.getNombrePaquete());
             actual.setPrecio(datos.getPrecio());
             actual.setDescripcion(datos.getDescripcion());
-            // Primero eliminar los detalles anteriores dentro de la misma transacción.
             List<ProductoPaquete> anteriores = em.createQuery(
                             "SELECT pp FROM ProductoPaquete pp WHERE pp.paquete.idPaquete = :id", ProductoPaquete.class)
                     .setParameter("id", actual.getIdPaquete()).getResultList();
@@ -84,5 +85,27 @@ public class PaqueteDAO extends AbstractDAO<Paquete> {
             p.setActiva(false);
             return null;
         });
+    }
+
+    public List<Paquete> listarActivos() {
+        EntityManager em = HibernateUtil.getEntityManager();
+        try {
+            return em.createQuery("SELECT p FROM Paquete p WHERE p.activa = true ORDER BY p.nombrePaquete", Paquete.class)
+                    .getResultList();
+        } finally {
+            em.close();
+        }
+    }
+
+    public List<ProductoPaquete> componentesActuales(Integer idPaquete) {
+        EntityManager em = HibernateUtil.getEntityManager();
+        try {
+            return em.createQuery(
+                            "SELECT pp FROM ProductoPaquete pp JOIN FETCH pp.producto "
+                                    + "WHERE pp.paquete.idPaquete = :id ORDER BY pp.idProductoPaquete", ProductoPaquete.class)
+                    .setParameter("id", idPaquete).getResultList();
+        } finally {
+            em.close();
+        }
     }
 }
