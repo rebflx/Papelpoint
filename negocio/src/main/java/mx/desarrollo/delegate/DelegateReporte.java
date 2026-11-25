@@ -99,7 +99,6 @@ public class DelegateReporte {
             BigDecimal importe;
 
             if (todas) {
-
                 importe = v.total();
 
             } else {
