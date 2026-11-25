@@ -1,9 +1,22 @@
 package mx.desarrollo.ui;
 
+
+import java.awt.Cursor;
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JSpinner;
+import javax.swing.JTextField;
+import javax.swing.border.Border;
+import javax.swing.border.LineBorder;
+import javax.swing.border.TitledBorder;
 import java.awt.Color;
 import java.awt.Font;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+import javax.swing.BorderFactory;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import mx.desarrollo.entity.Producto;
@@ -16,18 +29,28 @@ import mx.desarrollo.integration.ServiceFacadeLocator;
  */
 public class AgregarProdPanel extends javax.swing.JPanel {
 
-    /**
-     * Creates new form AgregarProdPanel
-     */
+    
+    
+private static final Color VERDE = new Color(136, 180, 123);
+private static final Color VERDE_CLARO = new Color(232, 240, 229);
+private static final Color VERDE_TEXTO = new Color(94, 138, 84);
+private static final Color VERDE_HOVER = new Color(116, 163, 102);
+private static final Color FILA_ALTERNA = new Color(246, 250, 245);
+private static final Color SELECCION = new Color(214, 232, 209);
+private static final Color GRIS_LINEA = new Color(220, 220, 220);
+private static final Color TEXTO = new Color(51, 51, 51);
+private static final String FUENTE = "Instrument Sans";
+private static final NumberFormat MONEDA = NumberFormat.getCurrencyInstance(Locale.forLanguageTag("es-MX"));
+
     private List<Producto> todos = new ArrayList<>();
     
-    public AgregarProdPanel() {
+  public AgregarProdPanel() {
         initComponents();
+        aplicarEstilo();
         placeholder();
         tablaFormato();
         cargarProductos();
         soloPrecio(precioTxt);
-
     }
 
     private mx.desarrollo.entity.Usuario usuarioActual;
@@ -45,7 +68,92 @@ public class AgregarProdPanel extends javax.swing.JPanel {
         }
     }
   
+    private void aplicarEstilo() {
+        jPanel1.setBackground(Color.WHITE);
+        jPanel1.setBorder(BorderFactory.createTitledBorder(
+                new LineBorder(VERDE, 1, true), "Datos del producto",
+                TitledBorder.LEFT, TitledBorder.TOP,
+                new Font(FUENTE, Font.PLAIN, 16), VERDE_TEXTO));
+ 
+        for (JLabel etiqueta : new JLabel[]{jLabel6, jLabel5, jLabel3, jLabel4}) {
+            etiqueta.setFont(new Font(FUENTE, Font.BOLD, 13));
+            etiqueta.setForeground(VERDE_TEXTO);
+        }
+ 
+        for (JTextField campo : new JTextField[]{nombreTxt, precioTxt, buscarNom}) {
+            campo.setFont(new Font(FUENTE, Font.PLAIN, 14));
+            campo.setForeground(TEXTO);
+            campo.setCaretColor(VERDE_TEXTO);
+            campo.setSelectionColor(SELECCION);
+            bordeConFoco(campo, campo, 10);
+        }
+ 
+        for (JSpinner spinner : new JSpinner[]{existenciasTxt, stockTxt}) {
+            spinner.setFont(new Font(FUENTE, Font.PLAIN, 14));
+            if (spinner.getEditor() instanceof JSpinner.DefaultEditor) {
+                JTextField campo = ((JSpinner.DefaultEditor) spinner.getEditor()).getTextField();
+                campo.setFont(new Font(FUENTE, Font.PLAIN, 14));
+                campo.setForeground(TEXTO);
+                campo.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+                campo.setBorder(BorderFactory.createEmptyBorder(0, 6, 0, 0));
+                bordeConFoco(spinner, campo, 2);
+            }
+        }
+ 
+        estiloBoton(btnGuardar, VERDE, Color.WHITE, VERDE_HOVER);
+        estiloBoton(btnLimpiar, Color.WHITE, VERDE_TEXTO, VERDE_CLARO);
+ 
+        lblRegistrados.setFont(new Font(FUENTE, Font.PLAIN, 18));
+        lblRegistrados.setForeground(TEXTO);
+        lblRegistrados.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createMatteBorder(0, 4, 0, 0, VERDE),
+                BorderFactory.createEmptyBorder(0, 8, 0, 0)));
+ 
+        jScrollPane1.setBorder(new LineBorder(GRIS_LINEA, 1, false));
+    }
     
+    
+     private void bordeConFoco(JComponent contenedor, JTextField campo, int margen) {
+        Border normal = BorderFactory.createCompoundBorder(
+                new LineBorder(VERDE, 1, true),
+                BorderFactory.createEmptyBorder(0, margen, 0, margen));
+        Border enfocado = BorderFactory.createCompoundBorder(
+                new LineBorder(VERDE_TEXTO, 2, true),
+                BorderFactory.createEmptyBorder(0, margen - 1, 0, margen - 1));
+        contenedor.setBorder(normal);
+        campo.addFocusListener(new java.awt.event.FocusAdapter() {
+            @Override
+            public void focusGained(java.awt.event.FocusEvent e) {
+                contenedor.setBorder(enfocado);
+            }
+ 
+            @Override
+            public void focusLost(java.awt.event.FocusEvent e) {
+                contenedor.setBorder(normal);
+            }
+        });
+    }
+     
+      private void estiloBoton(JButton boton, Color fondo, Color texto, Color hover) {
+        boton.setBackground(fondo);
+        boton.setForeground(texto);
+        boton.setFont(new Font(FUENTE, Font.BOLD, 13));
+        boton.setBorder(new LineBorder(VERDE, 1, true));
+        boton.setFocusPainted(false);
+        boton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        boton.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseEntered(java.awt.event.MouseEvent e) {
+                boton.setBackground(hover);
+            }
+ 
+            @Override
+            public void mouseExited(java.awt.event.MouseEvent e) {
+                boton.setBackground(fondo);
+            }
+        });
+    }
+      
     public void tablaFormato(){
 tablaProductos.setShowVerticalLines(false);
 tablaProductos.setShowHorizontalLines(true);
@@ -294,6 +402,8 @@ private void cargarProductos() {
     } catch (Throwable ex) {
         errorBD(ex);
     }
+            lblRegistrados.setText("  Productos Registrados (" + todos.size() + ")");
+
 }
 
 private boolean nombreRepetido(String nombre) {

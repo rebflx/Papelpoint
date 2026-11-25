@@ -26,12 +26,9 @@ import javax.swing.JOptionPane;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import mx.desarrollo.delegate.DelegateVenta;
-import mx.desarrollo.entity.DetalleVentaPaquete;
 import mx.desarrollo.entity.DetalleVentaProducto;
 import mx.desarrollo.entity.DetalleVentaServicio;
-import mx.desarrollo.entity.Paquete;
 import mx.desarrollo.entity.Producto;
-import mx.desarrollo.entity.ProductoPaquete;
 import mx.desarrollo.entity.Usuario;
 import mx.desarrollo.entity.Venta;
 import mx.desarrollo.integration.ServiceFacadeLocator;
@@ -39,16 +36,16 @@ import javax.swing.DefaultListModel;
 import javax.swing.JList;
 import javax.swing.JPopupMenu;
 import javax.swing.ListCellRenderer;
-
+import mx.desarrollo.entity.DetalleVentaPaquete;
+import mx.desarrollo.entity.Paquete;
+import mx.desarrollo.entity.ProductoPaquete;
 /**
  *
  * @author rebec
  */
 public class Ventas extends javax.swing.JFrame {
 
-    private static final double IVA = DelegateVenta.IVA;
     private static final String tempBUSQUEDA = "Buscar Productos";
-    private static final String tempBUSQUEDA_PAQUETES = "Buscar Paquetes";
     private static final String EFECTIVO = "EFECTIVO";
     private static final String TARJETA = "TARJETA";
 
@@ -58,12 +55,6 @@ public class Ventas extends javax.swing.JFrame {
     private final Map<Integer, Producto> productosPorId = new LinkedHashMap<>();
     private final Map<Integer, Integer> carrito = new LinkedHashMap<>();
     private final List<DetalleVentaServicio> carritoServicios = new ArrayList<>();
-    private final List<Paquete> catalogoPaquetes = new ArrayList<>();
-    private final List<Paquete> paquetesVisibles = new ArrayList<>();
-    private final Map<Integer, Paquete> paquetesPorId = new LinkedHashMap<>();
-    private final Map<Integer, List<ProductoPaquete>> componentesPorPaquete = new java.util.HashMap<>();
-    private final Map<Integer, Integer> carritoPaquetes = new LinkedHashMap<>();
-    private boolean modoPaquetes = false;
     private JButton[] botonesProducto;
     private JButton[] botonesDinero;
     private String metodoPago = null;
@@ -76,7 +67,13 @@ public class Ventas extends javax.swing.JFrame {
     private final PnlSugerencias pnlSugerencias = new PnlSugerencias();
     private final DefaultListModel<Producto> modeloSugerencias = new DefaultListModel<>();
     private final JList<Producto> lstSugerencias = pnlSugerencias.getLista();
-    
+    private static final String tempBUSQUEDA_PAQUETES = "Buscar Paquetes";
+private final List<Paquete> catalogoPaquetes = new ArrayList<>();
+private final List<Paquete> paquetesVisibles = new ArrayList<>();
+private final Map<Integer, Paquete> paquetesPorId = new LinkedHashMap<>();
+private final Map<Integer, List<ProductoPaquete>> componentesPorPaquete = new java.util.HashMap<>();
+private final Map<Integer, Integer> carritoPaquetes = new LinkedHashMap<>();
+private boolean modoPaquetes = false;
     
     public Ventas() {
         this(null);
@@ -118,7 +115,6 @@ public class Ventas extends javax.swing.JFrame {
         btnAvisos.addActionListener(e -> mostrarAvisos());
         btnAbrirCaja.addActionListener(e -> abrirCaja());
         btnCerrarCaja.addActionListener(e -> cerrarCaja());
-        btnPaquetes.addActionListener(e -> alternarModoPaquetes());
         iniciarRelojCaja();
     }
 
@@ -131,141 +127,149 @@ public class Ventas extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        pnlPrincipal = new JPanel();
-        pnlEncabezado = new JPanel();
-        jLabel1 = new JLabel();
-        jLabel2 = new JLabel();
-        btnImprimirTicket = new JButton();
-        btnCancelarVenta = new JButton();
-        btnCerrarCaja = new JButton();
-        btnMenuprincipal = new JButton();
-        btnServicios = new JButton();
-        btnPaquetes = new JButton();
-        btnAbrirCaja = new JButton();
-        jLabel3 = new JLabel();
-        jLabel4 = new JLabel();
-        btnAvisos = new JButton();
-        pnlArticulos = new JPanel();
-        jLabel5 = new JLabel();
+        pnlPrincipal = new javax.swing.JPanel();
+        pnlEncabezado = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        btnImprimirTicket = new javax.swing.JButton();
+        btnCancelarVenta = new javax.swing.JButton();
+        btnCerrarCaja = new javax.swing.JButton();
+        btnMenuprincipal = new javax.swing.JButton();
+        btnServicios = new javax.swing.JButton();
+        btnAbrirCaja = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        btnAvisos = new javax.swing.JButton();
+        pnlArticulos = new javax.swing.JPanel();
+        jLabel5 = new javax.swing.JLabel();
         jScrollPaneArticulos = new javax.swing.JScrollPane();
-        tblArticulos = new JTable();
-        pnlPago = new JPanel();
-        jLabel7 = new JLabel();
-        jLabel8 = new JLabel();
-        btnTarjeta = new JButton();
-        btnEfectivo = new JButton();
+        tblArticulos = new javax.swing.JTable();
+        pnlPago = new javax.swing.JPanel();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        btnTarjeta = new javax.swing.JButton();
+        btnEfectivo = new javax.swing.JButton();
         txtDineroRecibido = new javax.swing.JTextField();
-        jLabel10 = new JLabel();
-        btnLimpiar = new JButton();
-        btnVeinteP = new JButton();
-        btnCincuentaP = new JButton();
-        btnCienP = new JButton();
-        btnDoscientosP = new JButton();
-        btnQuinientosP = new JButton();
-        btnUnPeso = new JButton();
-        btnDosPesos = new JButton();
-        btnCincoPesos = new JButton();
-        btnDiezPesos = new JButton();
-        jLabel11 = new JLabel();
-        lblTotalAPagar1 = new JLabel();
-        jLabel22 = new JLabel();
-        lblCambio = new JLabel();
-        pnlResumen = new JPanel();
-        jLabel12 = new JLabel();
-        jLabel13 = new JLabel();
-        jLabel14 = new JLabel();
-        jLabel15 = new JLabel();
-        jLabel16 = new JLabel();
-        btnCobrar = new JButton();
-        lblSubtotal = new JLabel();
-        lblDescuento = new JLabel();
-        lbl_Iva = new JLabel();
-        lblTotalAPagar2 = new JLabel();
-        pnlProductos = new JPanel();
+        jLabel10 = new javax.swing.JLabel();
+        btnLimpiar = new javax.swing.JButton();
+        btnVeinteP = new javax.swing.JButton();
+        btnCincuentaP = new javax.swing.JButton();
+        btnCienP = new javax.swing.JButton();
+        btnDoscientosP = new javax.swing.JButton();
+        btnQuinientosP = new javax.swing.JButton();
+        btnUnPeso = new javax.swing.JButton();
+        btnDosPesos = new javax.swing.JButton();
+        btnCincoPesos = new javax.swing.JButton();
+        btnDiezPesos = new javax.swing.JButton();
+        jLabel11 = new javax.swing.JLabel();
+        lblTotalAPagar1 = new javax.swing.JLabel();
+        jLabel22 = new javax.swing.JLabel();
+        lblCambio = new javax.swing.JLabel();
+        pnlResumen = new javax.swing.JPanel();
+        jLabel12 = new javax.swing.JLabel();
+        jLabel13 = new javax.swing.JLabel();
+        jLabel14 = new javax.swing.JLabel();
+        jLabel16 = new javax.swing.JLabel();
+        btnCobrar = new javax.swing.JButton();
+        lblSubtotal = new javax.swing.JLabel();
+        lblDescuento = new javax.swing.JLabel();
+        lblTotalAPagar2 = new javax.swing.JLabel();
+        pnlProductos = new javax.swing.JPanel();
         txtBuscarProducto = new javax.swing.JTextField();
-        boton3 = new JButton();
-        boton2 = new JButton();
-        boton1 = new JButton();
-        boton4 = new JButton();
-        boton5 = new JButton();
-        boton6 = new JButton();
-        boton7 = new JButton();
-        boton10 = new JButton();
-        boton13 = new JButton();
-        boton8 = new JButton();
-        boton11 = new JButton();
-        boton14 = new JButton();
-        boton9 = new JButton();
-        boton15 = new JButton();
-        boton12 = new JButton();
-        boton16 = new JButton();
-        boton18 = new JButton();
-        boton17 = new JButton();
+        btnPaquetes = new javax.swing.JButton();
+        boton3 = new javax.swing.JButton();
+        boton2 = new javax.swing.JButton();
+        boton1 = new javax.swing.JButton();
+        boton4 = new javax.swing.JButton();
+        boton5 = new javax.swing.JButton();
+        boton6 = new javax.swing.JButton();
+        boton7 = new javax.swing.JButton();
+        boton10 = new javax.swing.JButton();
+        boton13 = new javax.swing.JButton();
+        boton8 = new javax.swing.JButton();
+        boton11 = new javax.swing.JButton();
+        boton14 = new javax.swing.JButton();
+        boton9 = new javax.swing.JButton();
+        boton15 = new javax.swing.JButton();
+        boton12 = new javax.swing.JButton();
+        boton16 = new javax.swing.JButton();
+        boton18 = new javax.swing.JButton();
+        boton17 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setBackground(new Color(255, 255, 255));
-        setSize(new Dimension(1440, 1024));
+        setBackground(new java.awt.Color(255, 255, 255));
+        setSize(new java.awt.Dimension(1440, 1024));
 
-        pnlPrincipal.setBackground(new Color(255, 255, 255));
-        pnlPrincipal.setMaximumSize(new Dimension(1440, 1025));
-        pnlPrincipal.setPreferredSize(new Dimension(1440, 1025));
+        pnlPrincipal.setBackground(new java.awt.Color(255, 255, 255));
+        pnlPrincipal.setMaximumSize(new java.awt.Dimension(1440, 1025));
+        pnlPrincipal.setPreferredSize(new java.awt.Dimension(1440, 1025));
 
-        pnlEncabezado.setBackground(new Color(255, 255, 255));
-        pnlEncabezado.setBorder(new javax.swing.border.LineBorder(new Color(153, 153, 153), 1, true));
+        pnlEncabezado.setBackground(new java.awt.Color(255, 255, 255));
+        pnlEncabezado.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(153, 153, 153), 1, true));
         pnlEncabezado.setAlignmentX(24);
         pnlEncabezado.setAlignmentY(16.0F);
-        pnlEncabezado.setPreferredSize(new Dimension(1308, 88));
+        pnlEncabezado.setPreferredSize(new java.awt.Dimension(1308, 88));
         pnlEncabezado.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel1.setFont(new java.awt.Font("Instrument Sans", 0, 32)); // NOI18N
-        jLabel1.setForeground(new Color(98, 158, 113));
+        jLabel1.setForeground(new java.awt.Color(98, 158, 113));
         jLabel1.setText("PAPELPOINT");
         pnlEncabezado.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(7, 27, -1, -1));
 
-        jLabel2.setBackground(new Color(51, 51, 51));
+        jLabel2.setBackground(new java.awt.Color(51, 51, 51));
         jLabel2.setFont(new java.awt.Font("Instrument Sans", 1, 12)); // NOI18N
-        jLabel2.setForeground(new Color(51, 51, 51));
+        jLabel2.setForeground(new java.awt.Color(51, 51, 51));
         jLabel2.setText("Caja: 01");
-        jLabel2.setPreferredSize(new Dimension(298, 73));
+        jLabel2.setPreferredSize(new java.awt.Dimension(298, 73));
         pnlEncabezado.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(1198, 29, 90, 21));
 
-        btnImprimirTicket.setBackground(new Color(153, 153, 153));
+        btnImprimirTicket.setBackground(new java.awt.Color(153, 153, 153));
         btnImprimirTicket.setFont(new java.awt.Font("Instrument Sans", 0, 12)); // NOI18N
         btnImprimirTicket.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/Imprimir.png"))); // NOI18N
         btnImprimirTicket.setText("Imprimir Ticket");
         btnImprimirTicket.setFocusable(false);
         btnImprimirTicket.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnImprimirTicket.setPreferredSize(new Dimension(116, 73));
+        btnImprimirTicket.setPreferredSize(new java.awt.Dimension(116, 73));
         btnImprimirTicket.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnImprimirTicket.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnImprimirTicketActionPerformed(evt);
+            }
+        });
         pnlEncabezado.add(btnImprimirTicket, new org.netbeans.lib.awtextra.AbsoluteConstraints(727, 16, 122, -1));
 
-        btnCancelarVenta.setBackground(new Color(153, 153, 153));
+        btnCancelarVenta.setBackground(new java.awt.Color(153, 153, 153));
         btnCancelarVenta.setFont(new java.awt.Font("Instrument Sans", 0, 12)); // NOI18N
         btnCancelarVenta.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/CancelarVenta.png"))); // NOI18N
         btnCancelarVenta.setText("Cancelar Venta");
         btnCancelarVenta.setFocusable(false);
         btnCancelarVenta.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnCancelarVenta.setPreferredSize(new Dimension(116, 73));
+        btnCancelarVenta.setPreferredSize(new java.awt.Dimension(116, 73));
         btnCancelarVenta.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnCancelarVenta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelarVentaActionPerformed(evt);
+            }
+        });
         pnlEncabezado.add(btnCancelarVenta, new org.netbeans.lib.awtextra.AbsoluteConstraints(599, 16, 122, -1));
 
-        btnCerrarCaja.setBackground(new Color(153, 153, 153));
+        btnCerrarCaja.setBackground(new java.awt.Color(153, 153, 153));
         btnCerrarCaja.setFont(new java.awt.Font("Instrument Sans", 0, 12)); // NOI18N
         btnCerrarCaja.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/CerrarCaja.png"))); // NOI18N
         btnCerrarCaja.setText("Cerrar Caja");
         btnCerrarCaja.setFocusable(false);
         btnCerrarCaja.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnCerrarCaja.setPreferredSize(new Dimension(116, 73));
+        btnCerrarCaja.setPreferredSize(new java.awt.Dimension(116, 73));
         btnCerrarCaja.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         pnlEncabezado.add(btnCerrarCaja, new org.netbeans.lib.awtextra.AbsoluteConstraints(471, 16, 122, -1));
 
-        btnMenuprincipal.setBackground(new Color(153, 153, 153));
+        btnMenuprincipal.setBackground(new java.awt.Color(153, 153, 153));
         btnMenuprincipal.setFont(new java.awt.Font("Instrument Sans", 0, 12)); // NOI18N
         btnMenuprincipal.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/Inicio.png"))); // NOI18N
         btnMenuprincipal.setText("Menu Principal");
         btnMenuprincipal.setFocusable(false);
         btnMenuprincipal.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnMenuprincipal.setPreferredSize(new Dimension(116, 73));
+        btnMenuprincipal.setPreferredSize(new java.awt.Dimension(116, 73));
         btnMenuprincipal.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         btnMenuprincipal.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -274,13 +278,13 @@ public class Ventas extends javax.swing.JFrame {
         });
         pnlEncabezado.add(btnMenuprincipal, new org.netbeans.lib.awtextra.AbsoluteConstraints(855, 16, -1, -1));
 
-        btnServicios.setBackground(new Color(153, 153, 153));
+        btnServicios.setBackground(new java.awt.Color(153, 153, 153));
         btnServicios.setFont(new java.awt.Font("Instrument Sans", 0, 12)); // NOI18N
         btnServicios.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/Servicios.png"))); // NOI18N
         btnServicios.setText("Servicios");
         btnServicios.setFocusable(false);
         btnServicios.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnServicios.setPreferredSize(new Dimension(116, 73));
+        btnServicios.setPreferredSize(new java.awt.Dimension(116, 73));
         btnServicios.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         btnServicios.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -289,43 +293,43 @@ public class Ventas extends javax.swing.JFrame {
         });
         pnlEncabezado.add(btnServicios, new org.netbeans.lib.awtextra.AbsoluteConstraints(221, 16, -1, -1));
 
-        btnAbrirCaja.setBackground(new Color(153, 153, 153));
+        btnAbrirCaja.setBackground(new java.awt.Color(153, 153, 153));
         btnAbrirCaja.setFont(new java.awt.Font("Instrument Sans", 0, 12)); // NOI18N
         btnAbrirCaja.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/AbrirCaja.png"))); // NOI18N
         btnAbrirCaja.setText("Abrir Caja");
         btnAbrirCaja.setFocusable(false);
         btnAbrirCaja.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnAbrirCaja.setPreferredSize(new Dimension(116, 73));
+        btnAbrirCaja.setPreferredSize(new java.awt.Dimension(116, 73));
         btnAbrirCaja.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         pnlEncabezado.add(btnAbrirCaja, new org.netbeans.lib.awtextra.AbsoluteConstraints(343, 16, 122, -1));
 
         jLabel3.setFont(new java.awt.Font("Instrument Sans", 1, 12)); // NOI18N
-        jLabel3.setForeground(new Color(51, 51, 51));
+        jLabel3.setForeground(new java.awt.Color(51, 51, 51));
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/user.png"))); // NOI18N
         jLabel3.setText("Te atiende: Erick Gamboa");
-        jLabel3.setPreferredSize(new Dimension(298, 73));
+        jLabel3.setPreferredSize(new java.awt.Dimension(298, 73));
         pnlEncabezado.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(977, 29, 215, 21));
 
         jLabel4.setFont(new java.awt.Font("Instrument Sans", 1, 12)); // NOI18N
-        jLabel4.setForeground(new Color(51, 51, 51));
+        jLabel4.setForeground(new java.awt.Color(51, 51, 51));
         jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/tiempo.png"))); // NOI18N
         jLabel4.setText("Tiempo en caja: 8:45:09");
-        jLabel4.setPreferredSize(new Dimension(298, 73));
+        jLabel4.setPreferredSize(new java.awt.Dimension(298, 73));
         pnlEncabezado.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(977, 56, -1, 21));
 
-        btnAvisos.setBackground(new Color(0, 153, 153));
+        btnAvisos.setBackground(new java.awt.Color(0, 153, 153));
         btnAvisos.setText("NOTIS");
         btnAvisos.setBorder(null);
-        btnAvisos.setMaximumSize(new Dimension(116, 73));
-        btnAvisos.setMinimumSize(new Dimension(116, 73));
-        btnAvisos.setPreferredSize(new Dimension(116, 73));
+        btnAvisos.setMaximumSize(new java.awt.Dimension(116, 73));
+        btnAvisos.setMinimumSize(new java.awt.Dimension(116, 73));
+        btnAvisos.setPreferredSize(new java.awt.Dimension(116, 73));
         pnlEncabezado.add(btnAvisos, new org.netbeans.lib.awtextra.AbsoluteConstraints(1270, 30, -1, 30));
 
-        pnlArticulos.setBackground(new Color(255, 255, 255));
-        pnlArticulos.setBorder(new javax.swing.border.LineBorder(new Color(204, 204, 204), 1, true));
+        pnlArticulos.setBackground(new java.awt.Color(255, 255, 255));
+        pnlArticulos.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(204, 204, 204), 1, true));
         pnlArticulos.setAlignmentX(24.0F);
         pnlArticulos.setAlignmentY(124.0F);
-        pnlArticulos.setPreferredSize(new Dimension(883, 404));
+        pnlArticulos.setPreferredSize(new java.awt.Dimension(883, 404));
 
         jLabel5.setFont(new java.awt.Font("Instrument Sans", 1, 18)); // NOI18N
         jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/articulos.png"))); // NOI18N
@@ -333,7 +337,7 @@ public class Ventas extends javax.swing.JFrame {
 
         jScrollPaneArticulos.setFont(new java.awt.Font("Instrument Sans", 0, 12)); // NOI18N
 
-        tblArticulos.setModel(new DefaultTableModel(
+        tblArticulos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -373,8 +377,8 @@ public class Ventas extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        pnlPago.setBackground(new Color(255, 255, 255));
-        pnlPago.setBorder(new javax.swing.border.LineBorder(new Color(204, 204, 204), 1, true));
+        pnlPago.setBackground(new java.awt.Color(255, 255, 255));
+        pnlPago.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(204, 204, 204), 1, true));
 
         jLabel7.setFont(new java.awt.Font("Instrument Sans", 1, 18)); // NOI18N
         jLabel7.setText("Pago de venta");
@@ -382,26 +386,26 @@ public class Ventas extends javax.swing.JFrame {
         jLabel8.setFont(new java.awt.Font("Instrument Sans", 1, 12)); // NOI18N
         jLabel8.setText("Metodos:");
 
-        btnTarjeta.setBackground(new Color(204, 204, 204));
+        btnTarjeta.setBackground(new java.awt.Color(204, 204, 204));
         btnTarjeta.setFont(new java.awt.Font("Instrument Sans", 1, 12)); // NOI18N
-        btnTarjeta.setForeground(new Color(51, 51, 51));
+        btnTarjeta.setForeground(new java.awt.Color(51, 51, 51));
         btnTarjeta.setText("Tarjeta");
         btnTarjeta.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        btnTarjeta.setMinimumSize(new Dimension(101, 26));
-        btnTarjeta.setPreferredSize(new Dimension(101, 26));
+        btnTarjeta.setMinimumSize(new java.awt.Dimension(101, 26));
+        btnTarjeta.setPreferredSize(new java.awt.Dimension(101, 26));
         btnTarjeta.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnTarjetaActionPerformed(evt);
             }
         });
 
-        btnEfectivo.setBackground(new Color(204, 204, 204));
+        btnEfectivo.setBackground(new java.awt.Color(204, 204, 204));
         btnEfectivo.setFont(new java.awt.Font("Instrument Sans", 1, 12)); // NOI18N
-        btnEfectivo.setForeground(new Color(51, 51, 51));
+        btnEfectivo.setForeground(new java.awt.Color(51, 51, 51));
         btnEfectivo.setText("Efectivo");
         btnEfectivo.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        btnEfectivo.setMinimumSize(new Dimension(101, 26));
-        btnEfectivo.setPreferredSize(new Dimension(101, 26));
+        btnEfectivo.setMinimumSize(new java.awt.Dimension(101, 26));
+        btnEfectivo.setPreferredSize(new java.awt.Dimension(101, 26));
         btnEfectivo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnEfectivoActionPerformed(evt);
@@ -411,7 +415,7 @@ public class Ventas extends javax.swing.JFrame {
         txtDineroRecibido.setFont(new java.awt.Font("Instrument Sans", 0, 12)); // NOI18N
         txtDineroRecibido.setText("$0");
         txtDineroRecibido.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.LOWERED));
-        txtDineroRecibido.setPreferredSize(new Dimension(287, 43));
+        txtDineroRecibido.setPreferredSize(new java.awt.Dimension(287, 43));
         txtDineroRecibido.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtDineroRecibidoActionPerformed(evt);
@@ -482,14 +486,14 @@ public class Ventas extends javax.swing.JFrame {
         jLabel11.setText("Total a pagar:");
 
         lblTotalAPagar1.setFont(new java.awt.Font("Instrument Sans", 1, 16)); // NOI18N
-        lblTotalAPagar1.setForeground(new Color(51, 51, 51));
+        lblTotalAPagar1.setForeground(new java.awt.Color(51, 51, 51));
         lblTotalAPagar1.setText("$0");
 
         jLabel22.setFont(new java.awt.Font("Instrument Sans", 1, 16)); // NOI18N
         jLabel22.setText("Cambio:");
 
         lblCambio.setFont(new java.awt.Font("Instrument Sans", 1, 16)); // NOI18N
-        lblCambio.setForeground(new Color(51, 51, 51));
+        lblCambio.setForeground(new java.awt.Color(51, 51, 51));
         lblCambio.setText("$0");
 
         javax.swing.GroupLayout pnlPagoLayout = new javax.swing.GroupLayout(pnlPago);
@@ -600,41 +604,36 @@ public class Ventas extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        pnlResumen.setBackground(new Color(255, 255, 255));
-        pnlResumen.setBorder(new javax.swing.border.LineBorder(new Color(204, 204, 204), 1, true));
+        pnlResumen.setBackground(new java.awt.Color(255, 255, 255));
+        pnlResumen.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(204, 204, 204), 1, true));
         pnlResumen.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel12.setFont(new java.awt.Font("Instrument Sans", 1, 18)); // NOI18N
         jLabel12.setText("Resumen de venta");
-        pnlResumen.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(43, 23, -1, -1));
+        pnlResumen.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 30, -1, -1));
 
         jLabel13.setFont(new java.awt.Font("Instrument Sans", 1, 16)); // NOI18N
-        jLabel13.setForeground(new Color(51, 51, 51));
+        jLabel13.setForeground(new java.awt.Color(51, 51, 51));
         jLabel13.setText("Subtotal:");
-        pnlResumen.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 64, -1, 29));
+        pnlResumen.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 100, -1, 29));
 
         jLabel14.setFont(new java.awt.Font("Instrument Sans", 1, 16)); // NOI18N
-        jLabel14.setForeground(new Color(51, 51, 51));
+        jLabel14.setForeground(new java.awt.Color(51, 51, 51));
         jLabel14.setText("Descuento:");
-        pnlResumen.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 111, -1, 29));
-
-        jLabel15.setFont(new java.awt.Font("Instrument Sans", 1, 16)); // NOI18N
-        jLabel15.setForeground(new Color(51, 51, 51));
-        jLabel15.setText("IVA (16%):");
-        pnlResumen.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 158, -1, 29));
+        pnlResumen.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 150, -1, 29));
 
         jLabel16.setFont(new java.awt.Font("Instrument Sans", 1, 16)); // NOI18N
-        jLabel16.setForeground(new Color(51, 51, 51));
+        jLabel16.setForeground(new java.awt.Color(51, 51, 51));
         jLabel16.setText("Total a pagar:");
         pnlResumen.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 205, -1, 29));
 
-        btnCobrar.setBackground(new Color(98, 147, 110));
+        btnCobrar.setBackground(new java.awt.Color(98, 147, 110));
         btnCobrar.setFont(new java.awt.Font("Instrument Sans", 1, 22)); // NOI18N
-        btnCobrar.setForeground(new Color(255, 255, 255));
+        btnCobrar.setForeground(new java.awt.Color(255, 255, 255));
         btnCobrar.setText("Cobrar $175.00");
         btnCobrar.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        btnCobrar.setMinimumSize(new Dimension(101, 26));
-        btnCobrar.setPreferredSize(new Dimension(286, 55));
+        btnCobrar.setMinimumSize(new java.awt.Dimension(101, 26));
+        btnCobrar.setPreferredSize(new java.awt.Dimension(286, 55));
         btnCobrar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCobrarActionPerformed(evt);
@@ -643,149 +642,149 @@ public class Ventas extends javax.swing.JFrame {
         pnlResumen.add(btnCobrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 250, -1, -1));
 
         lblSubtotal.setFont(new java.awt.Font("Instrument Sans", 1, 16)); // NOI18N
-        lblSubtotal.setForeground(new Color(51, 51, 51));
+        lblSubtotal.setForeground(new java.awt.Color(51, 51, 51));
         lblSubtotal.setText("$0");
-        pnlResumen.add(lblSubtotal, new org.netbeans.lib.awtextra.AbsoluteConstraints(335, 68, -1, -1));
+        pnlResumen.add(lblSubtotal, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 100, -1, -1));
 
         lblDescuento.setFont(new java.awt.Font("Instrument Sans", 1, 16)); // NOI18N
-        lblDescuento.setForeground(new Color(153, 0, 0));
+        lblDescuento.setForeground(new java.awt.Color(153, 0, 0));
         lblDescuento.setText("-$0");
-        pnlResumen.add(lblDescuento, new org.netbeans.lib.awtextra.AbsoluteConstraints(324, 115, -1, -1));
-
-        lbl_Iva.setFont(new java.awt.Font("Instrument Sans", 1, 16)); // NOI18N
-        lbl_Iva.setForeground(new Color(51, 51, 51));
-        lbl_Iva.setText("$0");
-        pnlResumen.add(lbl_Iva, new org.netbeans.lib.awtextra.AbsoluteConstraints(338, 162, -1, -1));
+        pnlResumen.add(lblDescuento, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 150, -1, -1));
 
         lblTotalAPagar2.setFont(new java.awt.Font("Instrument Sans", 1, 16)); // NOI18N
-        lblTotalAPagar2.setForeground(new Color(51, 51, 51));
+        lblTotalAPagar2.setForeground(new java.awt.Color(51, 51, 51));
         lblTotalAPagar2.setText("$0");
         pnlResumen.add(lblTotalAPagar2, new org.netbeans.lib.awtextra.AbsoluteConstraints(337, 209, -1, -1));
 
-        pnlProductos.setBackground(new Color(255, 255, 255));
-        pnlProductos.setBorder(new javax.swing.border.LineBorder(new Color(204, 204, 204), 1, true));
-        pnlProductos.setMaximumSize(new Dimension(436, 1014));
+        pnlProductos.setBackground(new java.awt.Color(255, 255, 255));
+        pnlProductos.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(204, 204, 204), 1, true));
+        pnlProductos.setMaximumSize(new java.awt.Dimension(436, 1014));
 
         txtBuscarProducto.setFont(new java.awt.Font("Instrument Sans", 0, 12)); // NOI18N
-        txtBuscarProducto.setForeground(new Color(51, 51, 51));
+        txtBuscarProducto.setForeground(new java.awt.Color(51, 51, 51));
         txtBuscarProducto.setText("Buscar Productos");
-        txtBuscarProducto.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.LOWERED, null, null, new Color(204, 204, 204), new Color(204, 204, 204)));
-        txtBuscarProducto.setPreferredSize(new Dimension(384, 42));
+        txtBuscarProducto.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.LOWERED, null, null, new java.awt.Color(204, 204, 204), new java.awt.Color(204, 204, 204)));
+        txtBuscarProducto.setPreferredSize(new java.awt.Dimension(384, 42));
 
-        boton3.setBackground(new Color(153, 153, 153));
-        boton3.setFont(new java.awt.Font("Instrument Sans", 1, 12)); // NOI18N
-        boton3.setText("Producto 3");
-        boton3.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        boton3.setPreferredSize(new Dimension(108, 73));
-
-        boton2.setBackground(new Color(153, 153, 153));
-        boton2.setFont(new java.awt.Font("Instrument Sans", 1, 12)); // NOI18N
-        boton2.setText("Producto 2");
-        boton2.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        boton2.setPreferredSize(new Dimension(108, 73));
-
-        boton1.setBackground(new Color(153, 153, 153));
-        boton1.setFont(new java.awt.Font("Instrument Sans", 1, 12)); // NOI18N
-        boton1.setText("Producto 1");
-        boton1.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        boton1.setPreferredSize(new Dimension(108, 73));
-
-        boton4.setBackground(new Color(153, 153, 153));
-        boton4.setFont(new java.awt.Font("Instrument Sans", 1, 12)); // NOI18N
-        boton4.setText("Producto 4");
-        boton4.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        boton4.setPreferredSize(new Dimension(108, 73));
-
-        boton5.setBackground(new Color(153, 153, 153));
-        boton5.setFont(new java.awt.Font("Instrument Sans", 1, 12)); // NOI18N
-        boton5.setText("Producto 5");
-        boton5.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        boton5.setPreferredSize(new Dimension(108, 73));
-
-        boton6.setBackground(new Color(153, 153, 153));
-        boton6.setFont(new java.awt.Font("Instrument Sans", 1, 12)); // NOI18N
-        boton6.setText("Producto 6");
-        boton6.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        boton6.setPreferredSize(new Dimension(108, 73));
-
-        boton7.setBackground(new Color(153, 153, 153));
-        boton7.setFont(new java.awt.Font("Instrument Sans", 1, 12)); // NOI18N
-        boton7.setText("Producto 7");
-        boton7.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        boton7.setPreferredSize(new Dimension(108, 73));
-
-        boton10.setBackground(new Color(153, 153, 153));
-        boton10.setFont(new java.awt.Font("Instrument Sans", 1, 12)); // NOI18N
-        boton10.setText("Producto 10");
-        boton10.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        boton10.setPreferredSize(new Dimension(108, 73));
-
-        boton13.setBackground(new Color(153, 153, 153));
-        boton13.setFont(new java.awt.Font("Instrument Sans", 1, 12)); // NOI18N
-        boton13.setText("Producto 13");
-        boton13.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        boton13.setPreferredSize(new Dimension(108, 73));
-
-        boton8.setBackground(new Color(153, 153, 153));
-        boton8.setFont(new java.awt.Font("Instrument Sans", 1, 12)); // NOI18N
-        boton8.setText("Producto 8");
-        boton8.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        boton8.setPreferredSize(new Dimension(108, 73));
-
-        boton11.setBackground(new Color(153, 153, 153));
-        boton11.setFont(new java.awt.Font("Instrument Sans", 1, 12)); // NOI18N
-        boton11.setText("Producto 11");
-        boton11.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        boton11.setPreferredSize(new Dimension(108, 73));
-
-        boton14.setBackground(new Color(153, 153, 153));
-        boton14.setFont(new java.awt.Font("Instrument Sans", 1, 12)); // NOI18N
-        boton14.setText("Producto 14");
-        boton14.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        boton14.setPreferredSize(new Dimension(108, 73));
-
-        boton9.setBackground(new Color(153, 153, 153));
-        boton9.setFont(new java.awt.Font("Instrument Sans", 1, 12)); // NOI18N
-        boton9.setText("Producto 9");
-        boton9.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        boton9.setPreferredSize(new Dimension(108, 73));
-
-        boton15.setBackground(new Color(153, 153, 153));
-        boton15.setFont(new java.awt.Font("Instrument Sans", 1, 12)); // NOI18N
-        boton15.setText("Producto 15");
-        boton15.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        boton15.setPreferredSize(new Dimension(108, 73));
-
-        boton12.setBackground(new Color(153, 153, 153));
-        boton12.setFont(new java.awt.Font("Instrument Sans", 1, 12)); // NOI18N
-        boton12.setText("Producto 12");
-        boton12.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        boton12.setPreferredSize(new Dimension(108, 73));
-
-        boton16.setBackground(new Color(153, 153, 153));
-        boton16.setFont(new java.awt.Font("Instrument Sans", 1, 12)); // NOI18N
-        boton16.setText("Producto 16");
-        boton16.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        boton16.setPreferredSize(new Dimension(108, 73));
-
-        boton18.setBackground(new Color(153, 153, 153));
-        boton18.setFont(new java.awt.Font("Instrument Sans", 1, 12)); // NOI18N
-        boton18.setText("Producto 18");
-        boton18.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        boton18.setPreferredSize(new Dimension(108, 73));
-
-        boton17.setBackground(new Color(153, 153, 153));
-        boton17.setFont(new java.awt.Font("Instrument Sans", 1, 12)); // NOI18N
-        boton17.setText("Producto 17");
-        boton17.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        boton17.setPreferredSize(new Dimension(108, 73));
-
-        btnPaquetes.setBackground(new Color(153, 153, 153));
+        btnPaquetes.setBackground(new java.awt.Color(153, 153, 153));
         btnPaquetes.setFont(new java.awt.Font("Instrument Sans", 1, 12)); // NOI18N
         btnPaquetes.setText("Paquetes");
         btnPaquetes.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         btnPaquetes.setFocusable(false);
-        btnPaquetes.setPreferredSize(new Dimension(108, 59));
+        btnPaquetes.setPreferredSize(new java.awt.Dimension(108, 59));
+        btnPaquetes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPaquetesActionPerformed(evt);
+            }
+        });
+
+        boton3.setBackground(new java.awt.Color(153, 153, 153));
+        boton3.setFont(new java.awt.Font("Instrument Sans", 1, 12)); // NOI18N
+        boton3.setText("Producto 3");
+        boton3.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        boton3.setPreferredSize(new java.awt.Dimension(108, 73));
+
+        boton2.setBackground(new java.awt.Color(153, 153, 153));
+        boton2.setFont(new java.awt.Font("Instrument Sans", 1, 12)); // NOI18N
+        boton2.setText("Producto 2");
+        boton2.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        boton2.setPreferredSize(new java.awt.Dimension(108, 73));
+
+        boton1.setBackground(new java.awt.Color(153, 153, 153));
+        boton1.setFont(new java.awt.Font("Instrument Sans", 1, 12)); // NOI18N
+        boton1.setText("Producto 1");
+        boton1.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        boton1.setPreferredSize(new java.awt.Dimension(108, 73));
+
+        boton4.setBackground(new java.awt.Color(153, 153, 153));
+        boton4.setFont(new java.awt.Font("Instrument Sans", 1, 12)); // NOI18N
+        boton4.setText("Producto 4");
+        boton4.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        boton4.setPreferredSize(new java.awt.Dimension(108, 73));
+
+        boton5.setBackground(new java.awt.Color(153, 153, 153));
+        boton5.setFont(new java.awt.Font("Instrument Sans", 1, 12)); // NOI18N
+        boton5.setText("Producto 5");
+        boton5.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        boton5.setPreferredSize(new java.awt.Dimension(108, 73));
+
+        boton6.setBackground(new java.awt.Color(153, 153, 153));
+        boton6.setFont(new java.awt.Font("Instrument Sans", 1, 12)); // NOI18N
+        boton6.setText("Producto 6");
+        boton6.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        boton6.setPreferredSize(new java.awt.Dimension(108, 73));
+
+        boton7.setBackground(new java.awt.Color(153, 153, 153));
+        boton7.setFont(new java.awt.Font("Instrument Sans", 1, 12)); // NOI18N
+        boton7.setText("Producto 7");
+        boton7.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        boton7.setPreferredSize(new java.awt.Dimension(108, 73));
+
+        boton10.setBackground(new java.awt.Color(153, 153, 153));
+        boton10.setFont(new java.awt.Font("Instrument Sans", 1, 12)); // NOI18N
+        boton10.setText("Producto 10");
+        boton10.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        boton10.setPreferredSize(new java.awt.Dimension(108, 73));
+
+        boton13.setBackground(new java.awt.Color(153, 153, 153));
+        boton13.setFont(new java.awt.Font("Instrument Sans", 1, 12)); // NOI18N
+        boton13.setText("Producto 13");
+        boton13.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        boton13.setPreferredSize(new java.awt.Dimension(108, 73));
+
+        boton8.setBackground(new java.awt.Color(153, 153, 153));
+        boton8.setFont(new java.awt.Font("Instrument Sans", 1, 12)); // NOI18N
+        boton8.setText("Producto 8");
+        boton8.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        boton8.setPreferredSize(new java.awt.Dimension(108, 73));
+
+        boton11.setBackground(new java.awt.Color(153, 153, 153));
+        boton11.setFont(new java.awt.Font("Instrument Sans", 1, 12)); // NOI18N
+        boton11.setText("Producto 11");
+        boton11.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        boton11.setPreferredSize(new java.awt.Dimension(108, 73));
+
+        boton14.setBackground(new java.awt.Color(153, 153, 153));
+        boton14.setFont(new java.awt.Font("Instrument Sans", 1, 12)); // NOI18N
+        boton14.setText("Producto 14");
+        boton14.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        boton14.setPreferredSize(new java.awt.Dimension(108, 73));
+
+        boton9.setBackground(new java.awt.Color(153, 153, 153));
+        boton9.setFont(new java.awt.Font("Instrument Sans", 1, 12)); // NOI18N
+        boton9.setText("Producto 9");
+        boton9.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        boton9.setPreferredSize(new java.awt.Dimension(108, 73));
+
+        boton15.setBackground(new java.awt.Color(153, 153, 153));
+        boton15.setFont(new java.awt.Font("Instrument Sans", 1, 12)); // NOI18N
+        boton15.setText("Producto 15");
+        boton15.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        boton15.setPreferredSize(new java.awt.Dimension(108, 73));
+
+        boton12.setBackground(new java.awt.Color(153, 153, 153));
+        boton12.setFont(new java.awt.Font("Instrument Sans", 1, 12)); // NOI18N
+        boton12.setText("Producto 12");
+        boton12.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        boton12.setPreferredSize(new java.awt.Dimension(108, 73));
+
+        boton16.setBackground(new java.awt.Color(153, 153, 153));
+        boton16.setFont(new java.awt.Font("Instrument Sans", 1, 12)); // NOI18N
+        boton16.setText("Producto 16");
+        boton16.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        boton16.setPreferredSize(new java.awt.Dimension(108, 73));
+
+        boton18.setBackground(new java.awt.Color(153, 153, 153));
+        boton18.setFont(new java.awt.Font("Instrument Sans", 1, 12)); // NOI18N
+        boton18.setText("Producto 18");
+        boton18.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        boton18.setPreferredSize(new java.awt.Dimension(108, 73));
+
+        boton17.setBackground(new java.awt.Color(153, 153, 153));
+        boton17.setFont(new java.awt.Font("Instrument Sans", 1, 12)); // NOI18N
+        boton17.setText("Producto 17");
+        boton17.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        boton17.setPreferredSize(new java.awt.Dimension(108, 73));
 
         javax.swing.GroupLayout pnlProductosLayout = new javax.swing.GroupLayout(pnlProductos);
         pnlProductos.setLayout(pnlProductosLayout);
@@ -985,6 +984,17 @@ public class Ventas extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_btnMenuprincipalActionPerformed
 
+    private void btnImprimirTicketActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImprimirTicketActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnImprimirTicketActionPerformed
+
+    private void btnPaquetesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPaquetesActionPerformed
+        alternarModoPaquetes();
+    }//GEN-LAST:event_btnPaquetesActionPerformed
+
+     private void btnCancelarVentaActionPerformed(java.awt.event.ActionEvent evt) {                                                  
+cancelarVenta();
+     }   
     /**
      * @param args the command line arguments
      */
@@ -1021,104 +1031,103 @@ public class Ventas extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private JButton boton1;
-    private JButton boton10;
-    private JButton boton11;
-    private JButton boton12;
-    private JButton boton13;
-    private JButton boton14;
-    private JButton boton15;
-    private JButton boton16;
-    private JButton boton17;
-    private JButton boton18;
-    private JButton boton2;
-    private JButton boton3;
-    private JButton boton4;
-    private JButton boton5;
-    private JButton boton6;
-    private JButton boton7;
-    private JButton boton8;
-    private JButton boton9;
-    private JButton btnAbrirCaja;
-    private JButton btnAvisos;
-    private JButton btnCancelarVenta;
-    private JButton btnCerrarCaja;
-    private JButton btnCienP;
-    private JButton btnCincoPesos;
-    private JButton btnCincuentaP;
-    private JButton btnCobrar;
-    private JButton btnDiezPesos;
-    private JButton btnDosPesos;
-    private JButton btnDoscientosP;
-    private JButton btnEfectivo;
-    private JButton btnImprimirTicket;
-    private JButton btnLimpiar;
-    private JButton btnMenuprincipal;
-    private JButton btnPaquetes;
-    private JButton btnQuinientosP;
-    private JButton btnServicios;
-    private JButton btnTarjeta;
-    private JButton btnUnPeso;
-    private JButton btnVeinteP;
-    private JLabel jLabel1;
-    private JLabel jLabel10;
-    private JLabel jLabel11;
-    private JLabel jLabel12;
-    private JLabel jLabel13;
-    private JLabel jLabel14;
-    private JLabel jLabel15;
-    private JLabel jLabel16;
-    private JLabel jLabel2;
-    private JLabel jLabel22;
-    private JLabel jLabel3;
-    private JLabel jLabel4;
-    private JLabel jLabel5;
-    private JLabel jLabel7;
-    private JLabel jLabel8;
+    private javax.swing.JButton boton1;
+    private javax.swing.JButton boton10;
+    private javax.swing.JButton boton11;
+    private javax.swing.JButton boton12;
+    private javax.swing.JButton boton13;
+    private javax.swing.JButton boton14;
+    private javax.swing.JButton boton15;
+    private javax.swing.JButton boton16;
+    private javax.swing.JButton boton17;
+    private javax.swing.JButton boton18;
+    private javax.swing.JButton boton2;
+    private javax.swing.JButton boton3;
+    private javax.swing.JButton boton4;
+    private javax.swing.JButton boton5;
+    private javax.swing.JButton boton6;
+    private javax.swing.JButton boton7;
+    private javax.swing.JButton boton8;
+    private javax.swing.JButton boton9;
+    private javax.swing.JButton btnAbrirCaja;
+    private javax.swing.JButton btnAvisos;
+    private javax.swing.JButton btnCancelarVenta;
+    private javax.swing.JButton btnCerrarCaja;
+    private javax.swing.JButton btnCienP;
+    private javax.swing.JButton btnCincoPesos;
+    private javax.swing.JButton btnCincuentaP;
+    private javax.swing.JButton btnCobrar;
+    private javax.swing.JButton btnDiezPesos;
+    private javax.swing.JButton btnDosPesos;
+    private javax.swing.JButton btnDoscientosP;
+    private javax.swing.JButton btnEfectivo;
+    private javax.swing.JButton btnImprimirTicket;
+    private javax.swing.JButton btnLimpiar;
+    private javax.swing.JButton btnMenuprincipal;
+    private javax.swing.JButton btnPaquetes;
+    private javax.swing.JButton btnQuinientosP;
+    private javax.swing.JButton btnServicios;
+    private javax.swing.JButton btnTarjeta;
+    private javax.swing.JButton btnUnPeso;
+    private javax.swing.JButton btnVeinteP;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel22;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JScrollPane jScrollPaneArticulos;
-    private JLabel lblCambio;
-    private JLabel lblDescuento;
-    private JLabel lblSubtotal;
-    private JLabel lblTotalAPagar1;
-    private JLabel lblTotalAPagar2;
-    private JLabel lbl_Iva;
-    private JPanel pnlArticulos;
-    private JPanel pnlEncabezado;
-    private JPanel pnlPago;
-    private JPanel pnlPrincipal;
-    private JPanel pnlProductos;
-    private JPanel pnlResumen;
-    private JTable tblArticulos;
+    private javax.swing.JLabel lblCambio;
+    private javax.swing.JLabel lblDescuento;
+    private javax.swing.JLabel lblSubtotal;
+    private javax.swing.JLabel lblTotalAPagar1;
+    private javax.swing.JLabel lblTotalAPagar2;
+    private javax.swing.JPanel pnlArticulos;
+    private javax.swing.JPanel pnlEncabezado;
+    private javax.swing.JPanel pnlPago;
+    private javax.swing.JPanel pnlPrincipal;
+    private javax.swing.JPanel pnlProductos;
+    private javax.swing.JPanel pnlResumen;
+    private javax.swing.JTable tblArticulos;
     private javax.swing.JTextField txtBuscarProducto;
     private javax.swing.JTextField txtDineroRecibido;
     // End of variables declaration//GEN-END:variables
 
 
     
-private void configurarProductos() {
-    botonesProducto = new JButton[]{
-        boton1, boton2, boton3,
-        boton4, boton5, boton6,
-        boton7, boton8, boton9,
-        boton10, boton11, boton12,
-        boton13, boton14, boton15,boton16,boton17,boton18
-    };
-
-    for (int i = 0; i < botonesProducto.length; i++) {
-        final int idx = i;
-
-        botonesProducto[i].addActionListener(e -> {
-            if (modoPaquetes) {
-                if (idx < paquetesVisibles.size()) {
-                    agregarPaqueteAlCarrito(paquetesVisibles.get(idx));
+ private void configurarProductos() {
+        botonesProducto = new JButton[]{
+            boton1, boton2, boton3,
+            boton4, boton5, boton6,
+            boton7, boton8, boton9,
+            boton10, boton11, boton12,
+            boton13, boton14, boton15, boton16, boton17, boton18
+        };
+ 
+        for (int i = 0; i < botonesProducto.length; i++) {
+            final int idx = i;
+ 
+            botonesProducto[i].addActionListener(e -> {
+                if (modoPaquetes) {
+                    if (idx < paquetesVisibles.size()) {
+                        agregarPaqueteAlCarrito(paquetesVisibles.get(idx));
+                    }
+                } else if (idx < visibles.size()) {
+                    agregarAlCarrito(visibles.get(idx));
                 }
-            } else if (idx < visibles.size()) {
-                agregarAlCarrito(visibles.get(idx));
-            }
-        });
+            });
+        }
     }
 
-}
+
 
     private void cargarProductos() {
         catalogo.clear();
@@ -1137,11 +1146,10 @@ private void configurarProductos() {
         cargarPaquetes();
         ajustarCarrito();
         actualizarAvisos();
-                cargarBotonesProductos();
-
+        cargarBotonesProductos();
     }
 
-    private void ajustarCarrito() {
+     private void ajustarCarrito() {
         List<Integer> ids = new ArrayList<>(carrito.keySet());
         for (Integer id : ids) {
             Producto p = productosPorId.get(id);
@@ -1155,9 +1163,9 @@ private void configurarProductos() {
         refrescarCarrito();
     }
 
-   private void configurarBusqueda() {
+private void configurarBusqueda() {
         txtBuscarProducto.setText(placeholderBusqueda());
-
+ 
         popupBusqueda.setFocusable(false);
         lstSugerencias.setFocusable(false);
         lstSugerencias.setModel(modeloSugerencias);
@@ -1165,7 +1173,7 @@ private void configurarProductos() {
         PnlFilaSugerencia filaSug = new PnlFilaSugerencia();
         filaSug.setCalculadoraPrecio(this::precioConDescuento);
         lstSugerencias.setCellRenderer(filaSug);
-
+ 
         lstSugerencias.addMouseMotionListener(new MouseAdapter() {
             @Override
             public void mouseMoved(MouseEvent e) {
@@ -1182,7 +1190,7 @@ private void configurarProductos() {
         });
         popupBusqueda.setBorder(javax.swing.BorderFactory.createLineBorder(new Color(204, 204, 204)));
         popupBusqueda.add(pnlSugerencias);
-
+ 
         txtBuscarProducto.addActionListener(e -> {
             if (modeloSugerencias.isEmpty() || !popupBusqueda.isVisible()) return;
             Producto p = lstSugerencias.getSelectedValue();
@@ -1209,7 +1217,7 @@ private void configurarProductos() {
                 if (n > 0) lstSugerencias.setSelectedIndex((lstSugerencias.getSelectedIndex() - 1 + n) % n);
             }
         });
-
+ 
         txtBuscarProducto.addFocusListener(new java.awt.event.FocusAdapter() {
             @Override
             public void focusGained(java.awt.event.FocusEvent e) {
@@ -1217,7 +1225,7 @@ private void configurarProductos() {
                     txtBuscarProducto.setText("");
                 }
             }
-
+ 
             @Override
             public void focusLost(java.awt.event.FocusEvent e) {
                 popupBusqueda.setVisible(false);
@@ -1229,10 +1237,11 @@ private void configurarProductos() {
         txtBuscarProducto.getDocument().addDocumentListener(new DocumentListener() {
             public void insertUpdate(DocumentEvent e) { mostrarSugerencias(); }
             public void removeUpdate(DocumentEvent e) { mostrarSugerencias(); }
-            public void changedUpdate(DocumentEvent e) {  mostrarSugerencias(); }
+            public void changedUpdate(DocumentEvent e) { mostrarSugerencias(); }
         });
     }
-
+ 
+   
     private void mostrarSugerencias() {
         if (modoPaquetes) {
             filtrarPaquetes();
@@ -1272,38 +1281,37 @@ private void configurarProductos() {
         txtBuscarProducto.requestFocusInWindow();
     }   
 
-    private void cargarBotonesProductos() {
-    if (modoPaquetes) {
-        filtrarPaquetes();
-        return;
-    }
-    visibles.clear();
-
-    for (Producto p : catalogo) {
-        if (visibles.size() >= botonesProducto.length) {
-            break;
+     private void cargarBotonesProductos() {
+        if (modoPaquetes) {
+            filtrarPaquetes();
+            return;
         }
-
-        visibles.add(p);
+        visibles.clear();
+ 
+        for (Producto p : catalogo) {
+            if (visibles.size() >= botonesProducto.length) {
+                break;
+            }
+            visibles.add(p);
+        }
+ 
+        mostrarProductos();
     }
 
-    mostrarProductos();
-}
 
-
-    private void mostrarProductos() {
+        private void mostrarProductos() {
         if (modoPaquetes) {
             mostrarPaquetes();
             return;
         }
-
+ 
         for (int i = 0; i < botonesProducto.length; i++) {
             JButton boton = botonesProducto[i];
             if (i < visibles.size()) {
                 Producto p = visibles.get(i);
                 boolean disponible = p.getExistencias() != null && p.getExistencias() > 0;
                 double precioFinal = precioConDescuento(p);
-                boton.setText("<html><center>" + escapar(p.getNombre()) + "<br>" + (disponible ? moneda.format(precioFinal): "Agotado") + "</center></html>");
+                boton.setText("<html><center>" + escapar(p.getNombre()) + "<br>" + (disponible ? moneda.format(precioFinal) : "Agotado") + "</center></html>");
                 boton.setEnabled(disponible);
             } else {
                 boton.setText("");
@@ -1312,22 +1320,24 @@ private void configurarProductos() {
         }
     }
     
-    private void agregarAlCarrito(Producto p) {
-    int actual = carrito.getOrDefault(p.getIdProducto(), 0);
-    int enPaquetes = reservadoPorPaquetes().getOrDefault(p.getIdProducto(), 0);
-
-    if (actual + 1 + enPaquetes > p.getExistencias()) {
-        mostrarError("No hay mas existencias de \""
-                + p.getNombre()
-                + "\" (disponibles: "
-                + p.getExistencias() + ").");
-        return;
+        private void agregarAlCarrito(Producto p) {
+        int actual = carrito.getOrDefault(p.getIdProducto(), 0);
+        int enPaquetes = reservadoPorPaquetes().getOrDefault(p.getIdProducto(), 0);
+ 
+        if (actual + 1 + enPaquetes > p.getExistencias()) {
+            mostrarError("No hay mas existencias de \""
+                    + p.getNombre()
+                    + "\" (disponibles: "
+                    + p.getExistencias() + ").");
+            return;
+        }
+ 
+        carrito.put(p.getIdProducto(), actual + 1);
+        refrescarCarrito();
     }
 
-    carrito.put(p.getIdProducto(), actual + 1);
-    refrescarCarrito();
-}
 
+    // eso sucede solo cuando se confirma el cobro
     public void agregarServicioAlCarrito(DetalleVentaServicio detalle) {
         if (detalle == null || detalle.getServicio() == null ||
                 detalle.getServicio().getIdServicio() == null ||
@@ -1340,7 +1350,8 @@ private void configurarProductos() {
             throw new IllegalArgumentException("Selecciona un material y escribe la descripcion del trabajo.");
         }
         int materialId = detalle.getProductoMaterial().getIdProducto();
-        int reservado = carrito.getOrDefault(materialId, 0);
+        int reservado = carrito.getOrDefault(materialId, 0)
+                + reservadoPorPaquetes().getOrDefault(materialId, 0);
         for (DetalleVentaServicio otro : carritoServicios) {
             if (otro.getProductoMaterial() != null &&
                     materialId == otro.getProductoMaterial().getIdProducto()) {
@@ -1353,214 +1364,13 @@ private void configurarProductos() {
         carritoServicios.add(detalle);
         refrescarCarrito();
     }
+ 
 
-       //Paquetes
-
-    private String placeholderBusqueda() {
-        return modoPaquetes ? tempBUSQUEDA_PAQUETES : tempBUSQUEDA;
-    }
-
-    private boolean esPlaceholder(String texto) {
-        String t = texto == null ? "" : texto.trim();
-        return t.equalsIgnoreCase(tempBUSQUEDA) || t.equalsIgnoreCase(tempBUSQUEDA_PAQUETES);
-    }
-
-    private void cargarPaquetes() {
-        catalogoPaquetes.clear();
-        paquetesPorId.clear();
-        componentesPorPaquete.clear();
-        try {
-            for (Paquete p : ServiceFacadeLocator.getInstanceFacadePaquete().obtenerPaquetesActivos()) {
-                catalogoPaquetes.add(p);
-                paquetesPorId.put(p.getIdPaquete(), p);
-                componentesPorPaquete.put(p.getIdPaquete(),
-                        ServiceFacadeLocator.getInstanceFacadePaquete().obtenerComponentesActuales(p.getIdPaquete()));
-            }
-        } catch (Exception | ExceptionInInitializerError ex) {
-            catalogoPaquetes.clear();
-            paquetesPorId.clear();
-            componentesPorPaquete.clear();
-            ex.printStackTrace();
-            if (!catalogo.isEmpty()) {
-                mostrarError("No se pudieron cargar los paquetes: " + ex.getMessage());
-            }
-        }
-    }
-
-    private void alternarModoPaquetes() {
-        modoPaquetes = !modoPaquetes;
-        btnPaquetes.setText(modoPaquetes ? "Productos" : "Paquetes");
-        popupBusqueda.setVisible(false);
-        for (JButton b : botonesProducto) {
-            b.setToolTipText(null);
-        }
-        txtBuscarProducto.setText(placeholderBusqueda());
-        if (modoPaquetes) {
-            filtrarPaquetes();
-        } else {
-            cargarBotonesProductos();
-        }
-    }
-
-    private void filtrarPaquetes() {
-        String texto = esPlaceholder(txtBuscarProducto.getText())
-                ? "" : txtBuscarProducto.getText().trim().toLowerCase();
-        paquetesVisibles.clear();
-        for (Paquete p : catalogoPaquetes) {
-            if (paquetesVisibles.size() >= botonesProducto.length) {
-                break;
-            }
-            boolean coincide = texto.isEmpty()
-                    || p.getNombrePaquete().toLowerCase().contains(texto)
-                    || (p.getDescripcion() != null && p.getDescripcion().toLowerCase().contains(texto));
-            if (coincide) {
-                paquetesVisibles.add(p);
-            }
-        }
-        mostrarPaquetes();
-    }
-
-    private void mostrarPaquetes() {
-        Map<Integer, Integer> existencias = existenciasActuales();
-        for (int i = 0; i < botonesProducto.length; i++) {
-            JButton boton = botonesProducto[i];
-            if (i < paquetesVisibles.size()) {
-                Paquete p = paquetesVisibles.get(i);
-                boolean disponible = DelegateVenta.validarExistenciasPaquete(p.getNombrePaquete(),
-                        componentesPorPaquete.get(p.getIdPaquete()), 1, existencias, new LinkedHashMap<>()) == null;
-                boton.setText("<html><center>" + escapar(p.getNombrePaquete()) + "<br>"
-                        + (disponible ? moneda.format(p.getPrecio()) : "Agotado") + "</center></html>");
-                boton.setToolTipText(p.getDescripcion());
-                boton.setEnabled(disponible);
-            } else {
-                boton.setText("");
-                boton.setToolTipText(null);
-                boton.setEnabled(false);
-            }
-        }
-    }
-
-    private Map<Integer, Integer> existenciasActuales() {
-        Map<Integer, Integer> m = new LinkedHashMap<>();
-        for (Producto p : productosPorId.values()) {
-            m.put(p.getIdProducto(), p.getExistencias() == null ? 0 : p.getExistencias());
-        }
-        return m;
-    }
-
-    private Map<Integer, Integer> reservadoSinPaquetes() {
-        Map<Integer, Integer> r = new LinkedHashMap<>(carrito);
-        for (DetalleVentaServicio d : carritoServicios) {
-            if (d.getProductoMaterial() != null && d.getProductoMaterial().getIdProducto() != null) {
-                r.merge(d.getProductoMaterial().getIdProducto(), d.getCantidad(), Integer::sum);
-            }
-        }
-        return r;
-    }
-
-    private Map<Integer, Integer> reservadoPorPaquetes() {
-        Map<Integer, Integer> r = new LinkedHashMap<>();
-        for (Map.Entry<Integer, Integer> en : carritoPaquetes.entrySet()) {
-            List<ProductoPaquete> comps = componentesPorPaquete.get(en.getKey());
-            if (comps == null) {
-                continue;
-            }
-            for (ProductoPaquete pp : comps) {
-                r.merge(pp.getProducto().getIdProducto(), pp.getCantidad() * en.getValue(), Integer::sum);
-            }
-        }
-        return r;
-    }
-
-    private Map<Integer, Integer> reservadoTotal() {
-        Map<Integer, Integer> r = reservadoSinPaquetes();
-        reservadoPorPaquetes().forEach((id, n) -> r.merge(id, n, Integer::sum));
-        return r;
-    }
-
-    private String validarPaquete(Paquete p, int adicionales) {
-        return DelegateVenta.validarExistenciasPaquete(p.getNombrePaquete(),
-                componentesPorPaquete.get(p.getIdPaquete()), adicionales, existenciasActuales(), reservadoTotal());
-    }
-
-    private void agregarPaqueteAlCarrito(Paquete p) {
-        String falta = validarPaquete(p, 1);
-        if (falta != null) {
-            mostrarError(falta);
-            return;
-        }
-        carritoPaquetes.merge(p.getIdPaquete(), 1, Integer::sum);
-        refrescarCarrito();
-    }
-
-    private void ajustarCarritoPaquetes() {
-        Map<Integer, Integer> existencias = existenciasActuales();
-        Map<Integer, Integer> reservado = reservadoSinPaquetes();
-        for (Integer id : new ArrayList<>(carritoPaquetes.keySet())) {
-            Paquete p = paquetesPorId.get(id);
-            List<ProductoPaquete> comps = componentesPorPaquete.get(id);
-            int q = carritoPaquetes.get(id);
-            while (p != null && q > 0 && DelegateVenta.validarExistenciasPaquete(
-                    p.getNombrePaquete(), comps, q, existencias, reservado) != null) {
-                q--;
-            }
-            if (p == null || q <= 0) {
-                carritoPaquetes.remove(id);
-                continue;
-            }
-            carritoPaquetes.put(id, q);
-            for (ProductoPaquete pp : comps) {
-                reservado.merge(pp.getProducto().getIdProducto(), pp.getCantidad() * q, Integer::sum);
-            }
-        }
-    }
-
-    private List<DetalleVentaPaquete> armarDetallesPaquetes() {
-        List<DetalleVentaPaquete> lista = new ArrayList<>();
-        for (Map.Entry<Integer, Integer> en : carritoPaquetes.entrySet()) {
-            DetalleVentaPaquete d = new DetalleVentaPaquete();
-            d.setPaquete(paquetesPorId.get(en.getKey()));
-            d.setCantidad(en.getValue());
-            lista.add(d);
-        }
-        return lista;
-    }
-
-    private void clickEnPaquete(int fila, int indice, int col, MouseEvent e) {
-        if (indice < 0 || indice >= carritoPaquetes.size()) {
-            return;
-        }
-        Integer id = new ArrayList<>(carritoPaquetes.keySet()).get(indice);
-        Paquete p = paquetesPorId.get(id);
-        int cantidad = carritoPaquetes.get(id);
-        if (col == 4) {
-            carritoPaquetes.remove(id);
-        } else if (col == 2 && p != null) {
-            Rectangle r = tblArticulos.getCellRect(fila, col, false);
-            double rel = (e.getX() - r.x) / (double) r.width;
-            if (rel < 0.4) {
-                if (cantidad > 1) carritoPaquetes.put(id, cantidad - 1);
-            } else if (rel > 0.6) {
-                String falta = validarPaquete(p, 1);
-                if (falta != null) {
-                    mostrarError(falta);
-                    return;
-                }
-                carritoPaquetes.put(id, cantidad + 1);
-            } else {
-                return;
-            }
-        } else {
-            return;
-        }
-        refrescarCarrito();
-    }
-
-    private void clickEnCarrito(MouseEvent e) {
+     private void clickEnCarrito(MouseEvent e) {
         int fila = tblArticulos.rowAtPoint(e.getPoint());
         int col = tblArticulos.columnAtPoint(e.getPoint());
         if (fila < 0) return;
-
+ 
         if (fila >= carrito.size()) {
             int indiceServicio = fila - carrito.size();
             if (indiceServicio >= carritoServicios.size()) {
@@ -1587,7 +1397,7 @@ private void configurarProductos() {
             refrescarCarrito();
             return;
         }
-
+ 
         Integer id = new ArrayList<>(carrito.keySet()).get(fila);
         Producto p = productosPorId.get(id);
         if (p == null) return;
@@ -1615,7 +1425,7 @@ private void configurarProductos() {
         refrescarCarrito();
     }
 
-    private void refrescarCarrito() {
+     private void refrescarCarrito() {
         DefaultTableModel modelo = (DefaultTableModel) tblArticulos.getModel();
         modelo.setRowCount(0);
         for (Map.Entry<Integer, Integer> en : carrito.entrySet()) {
@@ -1646,11 +1456,11 @@ private void configurarProductos() {
         calcularTotales();
     }
 
-    private void calcularTotales() {
+     private void calcularTotales() {
         double subtotal = 0;
         double descuento = 0;
         for (Map.Entry<Integer, Integer> en : carrito.entrySet()) {
-
+ 
             Producto producto = productosPorId.get(en.getKey());
             int cantidad = en.getValue();
             double precioNormal = producto.getPrecio();
@@ -1665,12 +1475,10 @@ private void configurarProductos() {
             subtotal += paquetesPorId.get(en.getKey()).getPrecio() * en.getValue();
         }
         double base = subtotal - descuento;
-        double iva = base * IVA;
-        totalVenta = base + iva;
-
+        totalVenta = base;
+ 
         lblSubtotal.setText(moneda.format(subtotal));
         lblDescuento.setText("-" + moneda.format(descuento));
-        lbl_Iva.setText(moneda.format(iva));
         lblTotalAPagar1.setText(moneda.format(totalVenta));
         lblTotalAPagar2.setText(moneda.format(totalVenta));
         btnCobrar.setText("Cobrar " + moneda.format(totalVenta));
@@ -1741,7 +1549,7 @@ private void configurarProductos() {
         }
     }
 
-    private void confirmarVenta() {
+      private void confirmarVenta() {
         refrescarCarrito();
         if (carrito.isEmpty() && carritoServicios.isEmpty() && carritoPaquetes.isEmpty()) {
             mostrarError("Agrega al menos un producto, servicio o paquete a la venta.");
@@ -1764,7 +1572,7 @@ private void configurarProductos() {
                 return;
             }
         }
-
+ 
         int op = JOptionPane.showConfirmDialog(this,
                 "Total: " + moneda.format(totalVenta) + "\n"
                         + "Método de pago: " + (EFECTIVO.equals(metodoPago) ? "Efectivo" : "Tarjeta") + "\n"
@@ -1774,7 +1582,7 @@ private void configurarProductos() {
         if (op != JOptionPane.YES_OPTION) {
             return;
         }
-
+ 
         try {
             List<DetalleVentaProducto> detalles = new ArrayList<>();
             for (Map.Entry<Integer, Integer> en : carrito.entrySet()) {
@@ -1786,17 +1594,17 @@ private void configurarProductos() {
             List<DetalleVentaPaquete> paquetesVenta = armarDetallesPaquetes();
             boolean ef = EFECTIVO.equals(metodoPago);
             double recibido = ef ? leerDineroRecibido() : 0;
-
+ 
             Venta venta = ServiceFacadeLocator.getInstanceFacadeVenta()
                     .registrarVenta(usuarioActual, metodoPago, detalles, carritoServicios, paquetesVenta);
-
+ 
             List<TicketDialog.Linea> lineas = new ArrayList<>();
             for (DetalleVentaProducto d : detalles) {
-
+ 
                 double precioFinal = d.getPrecioUnitario();
-
+ 
                 double precioOriginal = d.getPrecioOriginal() != null ? d.getPrecioOriginal() : precioFinal;
-
+ 
                 lineas.add(new TicketDialog.Linea(d.getProducto().getNombre(), d.getCantidad(), precioFinal * d.getCantidad(),
                         precioOriginal * d.getCantidad()));
             }
@@ -1811,15 +1619,14 @@ private void configurarProductos() {
                         d.getCantidad(), d.getPrecioUnitario() * d.getCantidad()));
             }
             double total = venta.getTotal();
-            double iva = Math.round((total - venta.getSubtotal()) * 100) / 100.0;
             double cambio = ef ? Math.max(0, recibido - total) : 0;
-
+ 
             nuevaVenta();
             cargarProductos();
-
+ 
             new TicketDialog(this, DelegateVenta.folio(venta.getIdVenta()), venta.getFecha(),
                     usuarioActual.getNombrePersona(), ef ? "Efectivo" : "Tarjeta",
-                    lineas, iva, total, ef ? recibido : total, cambio).setVisible(true);
+                    lineas, total, ef ? recibido : total, cambio).setVisible(true);
         } catch (IllegalArgumentException ex) {
             mostrarError(ex.getMessage());
             cargarProductos();
@@ -1828,6 +1635,7 @@ private void configurarProductos() {
         }
     }
 
+    
     private void nuevaVenta() {
         carrito.clear();
         carritoServicios.clear();
@@ -2007,6 +1815,7 @@ private void configurarProductos() {
 
     //  Abrir / Cerrar caja
 
+
     private static final java.time.format.DateTimeFormatter FECHA_HORA_CAJA =
             java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
     private javax.swing.Timer relojCaja;
@@ -2058,12 +1867,12 @@ private void configurarProductos() {
         }
     }
 
-    private void cerrarCaja() {
+       private void cerrarCaja() {
         if (usuarioActual == null) {
             JOptionPane.showMessageDialog(this, "No hay un usuario en sesión.", "Cerrar caja", JOptionPane.WARNING_MESSAGE);
             return;
         }
-        if (!carrito.isEmpty() || !carritoServicios.isEmpty()) {
+        if (!carrito.isEmpty() || !carritoServicios.isEmpty() || !carritoPaquetes.isEmpty()) {
             JOptionPane.showMessageDialog(this,
                     "Hay una venta en proceso.\nCóbrala o límpiala antes de cerrar la caja.",
                     "Cerrar caja", JOptionPane.WARNING_MESSAGE);
@@ -2073,7 +1882,7 @@ private void configurarProductos() {
             mx.desarrollo.delegate.ResumenCorte turno = ServiceFacadeLocator.getInstanceFacadeCorteCaja()
                     .consultarTurno(usuarioActual, usuarioActual);
             mx.desarrollo.delegate.SesionCaja.Apertura ap = mx.desarrollo.delegate.SesionCaja.de(usuarioActual);
-
+ 
             if (turno.getVentas().isEmpty()) {
                 if (ap == null) {
                     JOptionPane.showMessageDialog(this,
@@ -2091,7 +1900,7 @@ private void configurarProductos() {
                 }
                 return;
             }
-
+ 
             CerrarCajaDialog dialogo = new CerrarCajaDialog(this, usuarioActual, turno);
             dialogo.setVisible(true);
             if (dialogo.getCorteCerrado() != null) {
@@ -2106,5 +1915,217 @@ private void configurarProductos() {
                     "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
-
+private void cancelarVenta() {
+    if (usuarioActual == null) {
+        JOptionPane.showMessageDialog(this, "No hay un usuario en sesión.",
+                "Cancelar venta", JOptionPane.WARNING_MESSAGE);
+        return;
+    }
+    CancelarVentaDialog dialogo = new CancelarVentaDialog(this, usuarioActual);
+    dialogo.setVisible(true);
+    if (dialogo.huboCancelacion()) {
+        cargarProductos();   // refresca existencias y avisos
+    }
+}
+   private String placeholderBusqueda() {
+        return modoPaquetes ? tempBUSQUEDA_PAQUETES : tempBUSQUEDA;
+    }
+ 
+    private boolean esPlaceholder(String texto) {
+        String t = texto == null ? "" : texto.trim();
+        return t.equalsIgnoreCase(tempBUSQUEDA) || t.equalsIgnoreCase(tempBUSQUEDA_PAQUETES);
+    }
+ 
+    private void cargarPaquetes() {
+        catalogoPaquetes.clear();
+        paquetesPorId.clear();
+        componentesPorPaquete.clear();
+        try {
+            for (Paquete p : ServiceFacadeLocator.getInstanceFacadePaquete().obtenerPaquetesActivos()) {
+                catalogoPaquetes.add(p);
+                paquetesPorId.put(p.getIdPaquete(), p);
+                componentesPorPaquete.put(p.getIdPaquete(),
+                        ServiceFacadeLocator.getInstanceFacadePaquete().obtenerComponentesActuales(p.getIdPaquete()));
+            }
+        } catch (Exception | ExceptionInInitializerError ex) {
+            catalogoPaquetes.clear();
+            paquetesPorId.clear();
+            componentesPorPaquete.clear();
+            ex.printStackTrace();
+            if (!catalogo.isEmpty()) {
+                mostrarError("No se pudieron cargar los paquetes: " + ex.getMessage());
+            }
+        }
+    }
+ 
+    private void alternarModoPaquetes() {
+        modoPaquetes = !modoPaquetes;
+        btnPaquetes.setText(modoPaquetes ? "Productos" : "Paquetes");
+        popupBusqueda.setVisible(false);
+        for (JButton b : botonesProducto) {
+            b.setToolTipText(null);
+        }
+        // Si el campo ya tiene el cursor, lo dejamos vacío; si no, mostramos el placeholder
+        txtBuscarProducto.setText(txtBuscarProducto.hasFocus() ? "" : placeholderBusqueda());
+        if (modoPaquetes) {
+            filtrarPaquetes();
+        } else {
+            cargarBotonesProductos();
+        }
+    }
+ 
+    private void filtrarPaquetes() {
+        String texto = esPlaceholder(txtBuscarProducto.getText())
+                ? "" : txtBuscarProducto.getText().trim().toLowerCase();
+        paquetesVisibles.clear();
+        for (Paquete p : catalogoPaquetes) {
+            if (paquetesVisibles.size() >= botonesProducto.length) {
+                break;
+            }
+            boolean coincide = texto.isEmpty()
+                    || p.getNombrePaquete().toLowerCase().contains(texto)
+                    || (p.getDescripcion() != null && p.getDescripcion().toLowerCase().contains(texto));
+            if (coincide) {
+                paquetesVisibles.add(p);
+            }
+        }
+        mostrarPaquetes();
+    }
+ 
+    private void mostrarPaquetes() {
+        Map<Integer, Integer> existencias = existenciasActuales();
+        for (int i = 0; i < botonesProducto.length; i++) {
+            JButton boton = botonesProducto[i];
+            if (i < paquetesVisibles.size()) {
+                Paquete p = paquetesVisibles.get(i);
+                boolean disponible = DelegateVenta.validarExistenciasPaquete(p.getNombrePaquete(),
+                        componentesPorPaquete.get(p.getIdPaquete()), 1, existencias, new LinkedHashMap<>()) == null;
+                boton.setText("<html><center>" + escapar(p.getNombrePaquete()) + "<br>"
+                        + (disponible ? moneda.format(p.getPrecio()) : "Agotado") + "</center></html>");
+                boton.setToolTipText(p.getDescripcion());
+                boton.setEnabled(disponible);
+            } else {
+                boton.setText("");
+                boton.setToolTipText(null);
+                boton.setEnabled(false);
+            }
+        }
+    }
+ 
+    private Map<Integer, Integer> existenciasActuales() {
+        Map<Integer, Integer> m = new LinkedHashMap<>();
+        for (Producto p : productosPorId.values()) {
+            m.put(p.getIdProducto(), p.getExistencias() == null ? 0 : p.getExistencias());
+        }
+        return m;
+    }
+ 
+    private Map<Integer, Integer> reservadoSinPaquetes() {
+        Map<Integer, Integer> r = new LinkedHashMap<>(carrito);
+        for (DetalleVentaServicio d : carritoServicios) {
+            if (d.getProductoMaterial() != null && d.getProductoMaterial().getIdProducto() != null) {
+                r.merge(d.getProductoMaterial().getIdProducto(), d.getCantidad(), Integer::sum);
+            }
+        }
+        return r;
+    }
+ 
+    private Map<Integer, Integer> reservadoPorPaquetes() {
+        Map<Integer, Integer> r = new LinkedHashMap<>();
+        for (Map.Entry<Integer, Integer> en : carritoPaquetes.entrySet()) {
+            List<ProductoPaquete> comps = componentesPorPaquete.get(en.getKey());
+            if (comps == null) {
+                continue;
+            }
+            for (ProductoPaquete pp : comps) {
+                r.merge(pp.getProducto().getIdProducto(), pp.getCantidad() * en.getValue(), Integer::sum);
+            }
+        }
+        return r;
+    }
+ 
+    private Map<Integer, Integer> reservadoTotal() {
+        Map<Integer, Integer> r = reservadoSinPaquetes();
+        reservadoPorPaquetes().forEach((id, n) -> r.merge(id, n, Integer::sum));
+        return r;
+    }
+ 
+    private String validarPaquete(Paquete p, int adicionales) {
+        return DelegateVenta.validarExistenciasPaquete(p.getNombrePaquete(),
+                componentesPorPaquete.get(p.getIdPaquete()), adicionales, existenciasActuales(), reservadoTotal());
+    }
+ 
+    private void agregarPaqueteAlCarrito(Paquete p) {
+        String falta = validarPaquete(p, 1);
+        if (falta != null) {
+            mostrarError(falta);
+            return;
+        }
+        carritoPaquetes.merge(p.getIdPaquete(), 1, Integer::sum);
+        refrescarCarrito();
+    }
+ 
+    private void ajustarCarritoPaquetes() {
+        Map<Integer, Integer> existencias = existenciasActuales();
+        Map<Integer, Integer> reservado = reservadoSinPaquetes();
+        for (Integer id : new ArrayList<>(carritoPaquetes.keySet())) {
+            Paquete p = paquetesPorId.get(id);
+            List<ProductoPaquete> comps = componentesPorPaquete.get(id);
+            int q = carritoPaquetes.get(id);
+            while (p != null && q > 0 && DelegateVenta.validarExistenciasPaquete(
+                    p.getNombrePaquete(), comps, q, existencias, reservado) != null) {
+                q--;
+            }
+            if (p == null || q <= 0) {
+                carritoPaquetes.remove(id);
+                continue;
+            }
+            carritoPaquetes.put(id, q);
+            for (ProductoPaquete pp : comps) {
+                reservado.merge(pp.getProducto().getIdProducto(), pp.getCantidad() * q, Integer::sum);
+            }
+        }
+    }
+ 
+    private List<DetalleVentaPaquete> armarDetallesPaquetes() {
+        List<DetalleVentaPaquete> lista = new ArrayList<>();
+        for (Map.Entry<Integer, Integer> en : carritoPaquetes.entrySet()) {
+            DetalleVentaPaquete d = new DetalleVentaPaquete();
+            d.setPaquete(paquetesPorId.get(en.getKey()));
+            d.setCantidad(en.getValue());
+            lista.add(d);
+        }
+        return lista;
+    }
+ 
+    private void clickEnPaquete(int fila, int indice, int col, MouseEvent e) {
+        if (indice < 0 || indice >= carritoPaquetes.size()) {
+            return;
+        }
+        Integer id = new ArrayList<>(carritoPaquetes.keySet()).get(indice);
+        Paquete p = paquetesPorId.get(id);
+        int cantidad = carritoPaquetes.get(id);
+        if (col == 4) {
+            carritoPaquetes.remove(id);
+        } else if (col == 2 && p != null) {
+            Rectangle r = tblArticulos.getCellRect(fila, col, false);
+            double rel = (e.getX() - r.x) / (double) r.width;
+            if (rel < 0.4) {
+                if (cantidad > 1) carritoPaquetes.put(id, cantidad - 1);
+            } else if (rel > 0.6) {
+                String falta = validarPaquete(p, 1);
+                if (falta != null) {
+                    mostrarError(falta);
+                    return;
+                }
+                carritoPaquetes.put(id, cantidad + 1);
+            } else {
+                return;
+            }
+        } else {
+            return;
+        }
+        refrescarCarrito();
+    }
+ 
 }

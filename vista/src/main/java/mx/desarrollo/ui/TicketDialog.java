@@ -56,11 +56,9 @@ public class TicketDialog extends javax.swing.JDialog {
         pnlTicket = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        lblIva = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblProductos = new javax.swing.JTable();
-        jLabel9 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
         lblTotal = new javax.swing.JLabel();
@@ -95,10 +93,6 @@ public class TicketDialog extends javax.swing.JDialog {
         jLabel5.setText("Direccion, CP");
         pnlTicket.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 40, 80, -1));
 
-        lblIva.setFont(new java.awt.Font("Lucida Console", 0, 12)); // NOI18N
-        lblIva.setText("0$");
-        pnlTicket.add(lblIva, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 430, 20, -1));
-
         jLabel7.setFont(new java.awt.Font("Lucida Console", 0, 12)); // NOI18N
         jLabel7.setText("===============================");
         pnlTicket.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 50, 240, -1));
@@ -123,10 +117,6 @@ public class TicketDialog extends javax.swing.JDialog {
         }
 
         pnlTicket.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 180, 220, 130));
-
-        jLabel9.setFont(new java.awt.Font("Lucida Console", 0, 12)); // NOI18N
-        jLabel9.setText("IVA:");
-        pnlTicket.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 430, 60, -1));
 
         jLabel10.setFont(new java.awt.Font("Lucida Console", 1, 14)); // NOI18N
         jLabel10.setText("TOTAL:");
@@ -300,13 +290,11 @@ public class TicketDialog extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblCajero;
     private javax.swing.JLabel lblCambio;
     private javax.swing.JLabel lblFecha;
     private javax.swing.JLabel lblFolio;
-    private javax.swing.JLabel lblIva;
     private javax.swing.JLabel lblRecibido;
     private javax.swing.JLabel lblTipoPago;
     private javax.swing.JLabel lblTotal;
@@ -348,19 +336,19 @@ public class TicketDialog extends javax.swing.JDialog {
 
 
     public TicketDialog(java.awt.Frame parent, String folio, LocalDateTime fecha, String cajero,
-                        String tipoPago, List<Linea> lineas, double iva, double total,
+                        String tipoPago, List<Linea> lineas, double total,
                         double recibido, double cambio) {
-        this(parent, folio, fecha, cajero, tipoPago, lineas, iva, total, recibido, cambio, false);
+        this(parent, folio, fecha, cajero, tipoPago, lineas, total, recibido, cambio, false);
     }
 
 
     public TicketDialog(java.awt.Frame parent, String folio, LocalDateTime fecha, String cajero,
-                        String tipoPago, List<Linea> lineas, double iva, double total) {
-        this(parent, folio, fecha, cajero, tipoPago, lineas, iva, total, total, 0, true);
+                        String tipoPago, List<Linea> lineas, double total) {
+        this(parent, folio, fecha, cajero, tipoPago, lineas, total, total, 0, true);
     }
 
     private TicketDialog(java.awt.Frame parent, String folio, LocalDateTime fecha, String cajero,
-                         String tipoPago, List<Linea> lineas, double iva, double total,
+                         String tipoPago, List<Linea> lineas, double total,
                          double recibido, double cambio, boolean reimpresion) {
         this(parent, true);
         this.folio = folio;
@@ -372,7 +360,6 @@ public class TicketDialog extends javax.swing.JDialog {
         lblFecha.setText(fecha.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")));
         lblCajero.setText(cajero == null || cajero.isBlank() ? "-" : cajero);
         lblTipoPago.setText(tipoPago);
-        lblIva.setText(moneda.format(iva));
         lblTotal.setText(moneda.format(total));
         lblRecibido.setText(moneda.format(recibido));
         lblCambio.setText(moneda.format(cambio));
@@ -389,7 +376,6 @@ public class TicketDialog extends javax.swing.JDialog {
         alinearDerecha(lblFecha);
         alinearDerecha(lblCajero);
         alinearDerecha(lblTipoPago);
-        alinearDerecha(lblIva);
         alinearDerecha(lblTotal);
         if (!reimpresion) {
             alinearDerecha(lblRecibido);

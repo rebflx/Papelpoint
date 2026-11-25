@@ -1,5 +1,14 @@
 package mx.desarrollo.ui;
 
+import java.awt.Component;
+import java.awt.Dimension;
+import java.text.NumberFormat;
+import java.util.Locale;
+import javax.swing.BorderFactory;
+import javax.swing.JLabel;
+import javax.swing.JTable;
+import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.Color;
 import java.awt.Font;
 import java.util.List;
@@ -148,7 +157,7 @@ placeholder.changeStyle(Font.BOLD); // Estilo de fuente (ej. Itálica)
                 {null, null, null, null, null}
             },
             new String [] {
-                "Imagen", "Nombre", "Precio", "Existencias", "Stock Minimo"
+                "Id", "Nombre", "Precio", "Existencias", "Stock Minimo"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -161,6 +170,7 @@ placeholder.changeStyle(Font.BOLD); // Estilo de fuente (ej. Itálica)
         });
         tablaProductos.setColumnSelectionAllowed(true);
         jScrollPane1.setViewportView(tablaProductos);
+        tablaProductos.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_INTERVAL_SELECTION);
 
         add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 410, 900, 310));
 
@@ -307,7 +317,7 @@ private void aplicarFiltro() {
         if (coincide) {
             visibles.add(p);
             modelo.addRow(new Object[]{
-                p.getImagen(),
+                p.getIdProducto(),
                 p.getNombre(),
                 p.getPrecio(),
                 p.getExistencias(),
@@ -347,7 +357,6 @@ private Producto copiar(Producto o) {
     c.setPrecio(o.getPrecio());
     c.setExistencias(o.getExistencias());
     c.setStockMinimo(o.getStockMinimo());
-    c.setImagen(o.getImagen());
     c.setActivo(o.getActivo());
     return c;
 }

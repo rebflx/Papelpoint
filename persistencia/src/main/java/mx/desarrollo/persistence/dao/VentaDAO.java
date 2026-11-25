@@ -13,6 +13,9 @@ import java.util.List;
 
 public class VentaDAO extends AbstractDAO<Venta> {
 
+    public static final String ESTADO_COMPLETADA = "COMPLETADA";
+    public static final String ESTADO_CANCELADA = "CANCELADA";
+
     public VentaDAO(){
         super(Venta.class);
     }
@@ -27,18 +30,18 @@ public class VentaDAO extends AbstractDAO<Venta> {
     }
 
 
-    public Venta registrarVenta(Venta venta, List<DetalleVentaProducto> detalles, double tasaIva){
-        return registrarVenta(venta, detalles, List.of(), tasaIva);
+    public Venta registrarVenta(Venta venta, List<DetalleVentaProducto> detalles){
+        return registrarVenta(venta, detalles, List.of());
     }
 
     public Venta registrarVenta(Venta venta, List<DetalleVentaProducto> detalles,
-                                List<DetalleVentaServicio> servicios, double tasaIva){
-        return registrarVenta(venta, detalles, servicios, List.of(), tasaIva);
+                                List<DetalleVentaServicio> servicios){
+        return registrarVenta(venta, detalles, servicios, List.of());
     }
 
     public Venta registrarVenta(Venta venta, List<DetalleVentaProducto> detalles,
                                 List<DetalleVentaServicio> servicios,
-                                List<DetalleVentaPaquete> paquetes, double tasaIva){
+                                List<DetalleVentaPaquete> paquetes){
         EntityManager em = getEntityManager();
         EntityTransaction tx = em.getTransaction();
         try{
@@ -154,7 +157,7 @@ public class VentaDAO extends AbstractDAO<Venta> {
 
             venta.setUsuario(em.getReference(Usuario.class, venta.getUsuario().getIdUsuario()));
             venta.setSubtotal(redondear(subtotal));
-            venta.setTotal(redondear(subtotal * (1 + tasaIva)));
+            venta.setTotal(redondear(subtotal));
 
             em.persist(venta);
             for(DetalleVentaProducto d: detalles){
@@ -204,6 +207,7 @@ public class VentaDAO extends AbstractDAO<Venta> {
 
         StringBuilder jpql = new StringBuilder(
                 "SELECT t FROM Ticket t JOIN FETCH t.venta v JOIN FETCH v.usuario WHERE 1 = 1");
+        jpql.append(" AND v.estado <> :cancelada");
         if(!texto.isEmpty()){
             jpql.append(" AND LOWER(t.folio) LIKE :folio");
         }
@@ -215,6 +219,7 @@ public class VentaDAO extends AbstractDAO<Venta> {
         EntityManager em = getEntityManager();
         try{
             TypedQuery<Ticket> q = em.createQuery(jpql.toString(), Ticket.class);
+            q.setParameter("cancelada", ESTADO_CANCELADA);
             if(!texto.isEmpty()){
                 q.setParameter("folio", "%" + texto + "%");
             }
@@ -301,6 +306,99 @@ public class VentaDAO extends AbstractDAO<Venta> {
                 throw new IllegalArgumentException("El trabajo ya no esta pendiente.");
             }
             detalle.setEstadoTrabajo("Realizado");
+            tx.commit();
+        } catch (RuntimeException ex) {
+            if (tx.isActive()) tx.rollback();
+            throw ex;
+        } finally {
+            em.close();
+        }
+    }
+
+    public List<Venta> ventasPendientesDeCorte(Integer idUsuario) {
+        EntityManager em = getEntityManager();
+        try {
+            return em.createQuery(
+                            "SELECT v FROM Venta v JOIN FETCH v.usuario "
+                                    + "WHERE v.corteCaja IS NULL AND v.estado = :est "
+                                    + "AND v.usuario.idUsuario = :u "
+                                    + "ORDER BY v.fecha DESC, v.idVenta DESC", Venta.class)
+                    .setParameter("est", ESTADO_COMPLETADA)
+                    .setParameter("u", idUsuario)
+                    .getResultList();
+        } finally {
+            em.close();
+        }
+    }
+
+    public void cancelarVenta(Integer idVenta, Integer idUsuario) {
+        EntityManager em = getEntityManager();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            Venta v = em.find(Venta.class, idVenta, LockModeType.PESSIMISTIC_WRITE);
+            if (v == null) {
+                throw new IllegalArgumentException("La venta ya no existe.");
+            }
+            if (!ESTADO_COMPLETADA.equals(v.getEstado())) {
+                throw new IllegalArgumentException("La venta ya fue cancelada.");
+            }
+            if (v.getCorteCaja() != null) {
+                throw new IllegalArgumentException("La venta ya pertenece a un corte de caja.");
+            }
+            if (!v.getUsuario().getIdUsuario().equals(idUsuario)) {
+                throw new IllegalArgumentException("Solo puedes cancelar ventas de tu turno.");
+            }
+
+            List<DetalleVentaServicio> servicios = em.createQuery(
+                            "SELECT d FROM DetalleVentaServicio d LEFT JOIN FETCH d.productoMaterial "
+                                    + "WHERE d.venta.idVenta = :id", DetalleVentaServicio.class)
+                    .setParameter("id", idVenta).getResultList();
+            for (DetalleVentaServicio d : servicios) {
+                if ("Realizado".equalsIgnoreCase(d.getEstadoTrabajo())) {
+                    throw new IllegalArgumentException(
+                            "No se puede cancelar: un servicio de esta venta ya fue realizado.");
+                }
+            }
+
+            // Productos sueltos
+            List<DetalleVentaProducto> productos = em.createQuery(
+                            "SELECT d FROM DetalleVentaProducto d WHERE d.venta.idVenta = :id",
+                            DetalleVentaProducto.class)
+                    .setParameter("id", idVenta).getResultList();
+            for (DetalleVentaProducto d : productos) {
+                Producto p = em.find(Producto.class, d.getProducto().getIdProducto(),
+                        LockModeType.PESSIMISTIC_WRITE);
+                p.setExistencias(p.getExistencias() + d.getCantidad());
+            }
+
+            // Materiales usados en servicios
+            for (DetalleVentaServicio d : servicios) {
+                if (d.getProductoMaterial() != null) {
+                    Producto m = em.find(Producto.class, d.getProductoMaterial().getIdProducto(),
+                            LockModeType.PESSIMISTIC_WRITE);
+                    m.setExistencias(m.getExistencias() + d.getCantidad());
+                }
+            }
+
+            // Productos que componen cada paquete vendido
+            List<DetalleVentaPaquete> paquetes = em.createQuery(
+                            "SELECT d FROM DetalleVentaPaquete d WHERE d.venta.idVenta = :id",
+                            DetalleVentaPaquete.class)
+                    .setParameter("id", idVenta).getResultList();
+            for (DetalleVentaPaquete d : paquetes) {
+                List<ProductoPaquete> componentes = em.createQuery(
+                                "SELECT pp FROM ProductoPaquete pp WHERE pp.paquete.idPaquete = :id",
+                                ProductoPaquete.class)
+                        .setParameter("id", d.getPaquete().getIdPaquete()).getResultList();
+                for (ProductoPaquete pp : componentes) {
+                    Producto p = em.find(Producto.class, pp.getProducto().getIdProducto(),
+                            LockModeType.PESSIMISTIC_WRITE);
+                    p.setExistencias(p.getExistencias() + pp.getCantidad() * d.getCantidad());
+                }
+            }
+
+            v.setEstado(ESTADO_CANCELADA);
             tx.commit();
         } catch (RuntimeException ex) {
             if (tx.isActive()) tx.rollback();

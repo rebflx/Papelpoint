@@ -37,4 +37,22 @@ public class FacadeVenta {
     public List<Venta> listarVentas() {
         return delegateVenta.listarVentas();
     }
+    public List<Venta> ventasCancelablesDelTurno(Usuario usuario) {
+        return delegateVenta.ventasCancelablesDelTurno(usuario);
+    }
+
+    public void cancelarVenta(Usuario usuario, Integer idVenta) {
+        delegateVenta.cancelarVenta(usuario, idVenta);
+    }
+
+    public List<DetalleVentaProducto> detallesDeVenta(Integer idVenta) {
+        return delegateVenta.detallesDeVenta(idVenta);
+    }
+
+    public List<DetalleVentaServicio> detallesServicioDeVenta(Integer idVenta) {
+        return delegateVenta.detallesServicioDeVenta(idVenta);
+    }
+    public List<DetalleVentaPaquete> detallesPaqueteDeVenta(Integer idVenta) {
+        return delegateVenta.detallesPaqueteDeVenta(idVenta);
+    }
 }

@@ -214,7 +214,7 @@ public class Descuentos extends JPanel {
         );
 
         String[] columnas = {
-                "Imagen",
+                "ID producto",
                 "Nombre",
                 "ID descuento",
                 "Porcentaje",
@@ -367,7 +367,7 @@ public class Descuentos extends JPanel {
 
 
     public void agregarDescuento(
-            String imagen,
+            int idProducto,
             String nombre,
             int id,
             double porcentaje,
@@ -384,7 +384,7 @@ public class Descuentos extends JPanel {
                 );
 
         modeloTabla.addRow(new Object[]{
-                cargarIcono(imagen),
+                idProducto,
                 nombre,
                 id,
                 porcentaje + "%",
@@ -532,7 +532,7 @@ public class Descuentos extends JPanel {
                 double precioEspecial = Math.round(precioNormal * (1 - porcentaje / 100.0) * 100) / 100.0;
 
                 modeloTabla.addRow(new Object[]{
-                        cargarIcono(producto.getImagen()),
+                        producto.getIdProducto(),
                         producto.getNombre(),
                         descuento.getIdDescuento(),
                         String.format("%.2f%%", porcentaje),
