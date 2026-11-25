@@ -214,7 +214,12 @@ private LocalDate convertirFecha(Date fecha) {
             }
         });
 
+        btnConsultar.setBackground(new java.awt.Color(136, 180, 123));
+        btnConsultar.setFont(new java.awt.Font("Instrument Sans", 1, 12)); // NOI18N
+        btnConsultar.setForeground(new java.awt.Color(255, 255, 255));
         btnConsultar.setText("Consultar");
+        btnConsultar.setMnemonic('S');
+        btnConsultar.setFocusPainted(false);
         btnConsultar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnConsultarActionPerformed(evt);

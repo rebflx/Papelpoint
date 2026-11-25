@@ -330,8 +330,11 @@ public class ConsultasServicios extends javax.swing.JPanel {
         add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 130, 900, 36));
 
         jButton1.setBackground(new java.awt.Color(136, 180, 123));
+        jButton1.setFont(new java.awt.Font("Instrument Sans", 1, 12)); // NOI18N
         jButton1.setForeground(new java.awt.Color(255, 255, 255));
         jButton1.setText("Actualizar estado");
+        jButton1.setMnemonic('A');
+        jButton1.setFocusPainted(false);
         add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(830, 670, -1, -1));
     }// </editor-fold>//GEN-END:initComponents
 

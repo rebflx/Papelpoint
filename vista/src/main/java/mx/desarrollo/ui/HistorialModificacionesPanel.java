@@ -181,9 +181,11 @@ public class HistorialModificacionesPanel extends javax.swing.JPanel {
         add(txtFecha, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 160, 180, 30));
 
         btnLimpiar.setBackground(new java.awt.Color(136, 180, 123));
-        btnLimpiar.setFont(new java.awt.Font("Instrument Sans", 0, 12)); // NOI18N
+        btnLimpiar.setFont(new java.awt.Font("Instrument Sans", 1, 12)); // NOI18N
         btnLimpiar.setForeground(new java.awt.Color(255, 255, 255));
         btnLimpiar.setText("Limpiar filtros");
+        btnLimpiar.setMnemonic('L');
+        btnLimpiar.setFocusPainted(false);
         btnLimpiar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnLimpiarActionPerformed(evt);

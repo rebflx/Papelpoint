@@ -20,7 +20,6 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import mx.desarrollo.entity.Producto;
-import mx.desarrollo.facade.FacadeProducto;
 import mx.desarrollo.integration.ServiceFacadeLocator;
 
 /**
@@ -244,6 +243,7 @@ placeholder.changeStyle(Font.BOLD); // Estilo de fuente (ej. Itálica)
         btnGuardar.setFont(new java.awt.Font("Instrument Sans", 1, 12)); // NOI18N
         btnGuardar.setForeground(new java.awt.Color(255, 255, 255));
         btnGuardar.setText("Guardar");
+        btnGuardar.setMnemonic('G');
         btnGuardar.setFocusPainted(false);
         btnGuardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -256,6 +256,7 @@ placeholder.changeStyle(Font.BOLD); // Estilo de fuente (ej. Itálica)
         btnLimpiar.setFont(new java.awt.Font("Instrument Sans", 1, 12)); // NOI18N
         btnLimpiar.setForeground(new java.awt.Color(255, 255, 255));
         btnLimpiar.setText("Limpiar");
+        btnLimpiar.setMnemonic('L');
         btnLimpiar.setFocusPainted(false);
         btnLimpiar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

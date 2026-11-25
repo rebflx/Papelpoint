@@ -10,8 +10,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import java.awt.Font;
-import java.awt.Cursor;
 
 
 import mx.desarrollo.delegate.DelegateUsuario;
@@ -102,7 +100,6 @@ public class MenuPrincipalFrame extends javax.swing.JFrame {
 
         panelIzquierda = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        botonSeg = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JSeparator();
         botonConsultas = new javax.swing.JButton();
         botonTickets = new javax.swing.JButton();
@@ -123,11 +120,9 @@ public class MenuPrincipalFrame extends javax.swing.JFrame {
         botonDescuentos = new javax.swing.JButton();
         imgConsulta2 = new javax.swing.JLabel();
         imgConsulta3 = new javax.swing.JLabel();
-        imgSeg1 = new javax.swing.JLabel();
         botonReportes = new javax.swing.JButton();
-        imgSeg = new javax.swing.JLabel();
+        imgReportes = new javax.swing.JLabel();
         panelCambiante = new javax.swing.JPanel();
-        SEGURIDAD = new javax.swing.JPanel();
         EDITAR = new javax.swing.JPanel();
         USUARIOS = new javax.swing.JPanel();
         CORTES = new javax.swing.JPanel();
@@ -157,32 +152,13 @@ public class MenuPrincipalFrame extends javax.swing.JFrame {
         jLabel2.setText("Admin");
         panelIzquierda.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 400, -1, -1));
 
-        botonSeg.setFont(new java.awt.Font("Instrument Sans", 1, 16)); // NOI18N
-        botonSeg.setForeground(new java.awt.Color(255, 255, 255));
-        botonSeg.setText("Seguridad");
-        botonSeg.setBorderPainted(false);
-        botonSeg.setContentAreaFilled(false);
-        botonSeg.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                botonSegMouseEntered(evt);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                botonSegMouseExited(evt);
-            }
-        });
-        botonSeg.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                botonSegActionPerformed(evt);
-            }
-        });
-        panelIzquierda.add(botonSeg, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 560, 140, 60));
-
         jSeparator1.setAutoscrolls(true);
         panelIzquierda.add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 440, 180, 20));
 
         botonConsultas.setFont(new java.awt.Font("Instrument Sans", 1, 16)); // NOI18N
         botonConsultas.setForeground(new java.awt.Color(255, 255, 255));
         botonConsultas.setText("Consultas");
+        botonConsultas.setMnemonic('C');
         botonConsultas.setBorderPainted(false);
         botonConsultas.setContentAreaFilled(false);
         botonConsultas.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -203,6 +179,7 @@ public class MenuPrincipalFrame extends javax.swing.JFrame {
         botonTickets.setFont(new java.awt.Font("Instrument Sans", 1, 16)); // NOI18N
         botonTickets.setForeground(new java.awt.Color(255, 255, 255));
         botonTickets.setText("Tickets");
+        botonTickets.setMnemonic('T');
         botonTickets.setBorderPainted(false);
         botonTickets.setContentAreaFilled(false);
         botonTickets.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -223,6 +200,7 @@ public class MenuPrincipalFrame extends javax.swing.JFrame {
         botonInventario.setFont(new java.awt.Font("Instrument Sans", 1, 16)); // NOI18N
         botonInventario.setForeground(new java.awt.Color(255, 255, 255));
         botonInventario.setText("Inventario");
+        botonInventario.setMnemonic('I');
         botonInventario.setBorderPainted(false);
         botonInventario.setContentAreaFilled(false);
         botonInventario.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -252,6 +230,7 @@ public class MenuPrincipalFrame extends javax.swing.JFrame {
         botonVentas.setFont(new java.awt.Font("Instrument Sans", 1, 16)); // NOI18N
         botonVentas.setForeground(new java.awt.Color(255, 255, 255));
         botonVentas.setText("Ventas");
+        botonVentas.setMnemonic('V');
         botonVentas.setContentAreaFilled(false);
         botonVentas.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
@@ -271,6 +250,7 @@ public class MenuPrincipalFrame extends javax.swing.JFrame {
         botonCortes.setFont(new java.awt.Font("Instrument Sans", 1, 16)); // NOI18N
         botonCortes.setForeground(new java.awt.Color(255, 255, 255));
         botonCortes.setText("Cortes");
+        botonCortes.setMnemonic('O');
         botonCortes.setBorderPainted(false);
         botonCortes.setContentAreaFilled(false);
         botonCortes.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -291,6 +271,7 @@ public class MenuPrincipalFrame extends javax.swing.JFrame {
         botonUsuarios.setFont(new java.awt.Font("Instrument Sans", 1, 16)); // NOI18N
         botonUsuarios.setForeground(new java.awt.Color(255, 255, 255));
         botonUsuarios.setText("Usuarios");
+        botonUsuarios.setMnemonic('U');
         botonUsuarios.setBorderPainted(false);
         botonUsuarios.setContentAreaFilled(false);
         botonUsuarios.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -311,6 +292,7 @@ public class MenuPrincipalFrame extends javax.swing.JFrame {
         botonEditar.setFont(new java.awt.Font("Instrument Sans", 1, 16)); // NOI18N
         botonEditar.setForeground(new java.awt.Color(255, 255, 255));
         botonEditar.setText("Editar");
+        botonEditar.setMnemonic('E');
         botonEditar.setAutoscrolls(true);
         botonEditar.setBorderPainted(false);
         botonEditar.setContentAreaFilled(false);
@@ -353,6 +335,7 @@ public class MenuPrincipalFrame extends javax.swing.JFrame {
         botonDescuentos.setFont(new java.awt.Font("Instrument Sans", 1, 16)); // NOI18N
         botonDescuentos.setForeground(new java.awt.Color(255, 255, 255));
         botonDescuentos.setText("Promociones");
+        botonDescuentos.setMnemonic('P');
         botonDescuentos.setBorderPainted(false);
         botonDescuentos.setContentAreaFilled(false);
         botonDescuentos.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -376,12 +359,10 @@ public class MenuPrincipalFrame extends javax.swing.JFrame {
         imgConsulta3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/Rectangle4.png"))); // NOI18N
         panelIzquierda.add(imgConsulta3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 240, -1, -1));
 
-        imgSeg1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/Rectangle4.png"))); // NOI18N
-        panelIzquierda.add(imgSeg1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 570, -1, 40));
-
         botonReportes.setFont(new java.awt.Font("Instrument Sans", 1, 16)); // NOI18N
         botonReportes.setForeground(new java.awt.Color(255, 255, 255));
         botonReportes.setText("Reportes");
+        botonReportes.setMnemonic('R');
         botonReportes.setBorderPainted(false);
         botonReportes.setContentAreaFilled(false);
         botonReportes.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -397,26 +378,13 @@ public class MenuPrincipalFrame extends javax.swing.JFrame {
                 botonReportesActionPerformed(evt);
             }
         });
-        panelIzquierda.add(botonReportes, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 610, 140, 60));
+        panelIzquierda.add(botonReportes, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 560, 140, 60));
 
-        imgSeg.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/Rectangle4.png"))); // NOI18N
-        panelIzquierda.add(imgSeg, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 620, -1, -1));
+        imgReportes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/Rectangle4.png"))); // NOI18N
+        panelIzquierda.add(imgReportes, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 570, -1, -1));
 
         panelCambiante.setBackground(new java.awt.Color(255, 102, 102));
         panelCambiante.setLayout(new java.awt.CardLayout());
-
-        javax.swing.GroupLayout SEGURIDADLayout = new javax.swing.GroupLayout(SEGURIDAD);
-        SEGURIDAD.setLayout(SEGURIDADLayout);
-        SEGURIDADLayout.setHorizontalGroup(
-            SEGURIDADLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1280, Short.MAX_VALUE)
-        );
-        SEGURIDADLayout.setVerticalGroup(
-            SEGURIDADLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 770, Short.MAX_VALUE)
-        );
-
-        panelCambiante.add(SEGURIDAD, "card8");
 
         javax.swing.GroupLayout EDITARLayout = new javax.swing.GroupLayout(EDITAR);
         EDITAR.setLayout(EDITARLayout);
@@ -485,7 +453,12 @@ public class MenuPrincipalFrame extends javax.swing.JFrame {
         INVENTARIO.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, -1, -1));
 
         btnReabastecimiento.setBackground(new java.awt.Color(195, 217, 189));
+        btnReabastecimiento.setFont(new java.awt.Font("Instrument Sans", 1, 14)); // NOI18N
+        btnReabastecimiento.setForeground(new java.awt.Color(46, 94, 42));
         btnReabastecimiento.setText("<html><center>REABASTECIMIENTO</center></html>");
+        btnReabastecimiento.setMnemonic('B');
+        btnReabastecimiento.setToolTipText("Reabastecimiento (Alt+B)");
+        btnReabastecimiento.setFocusPainted(false);
         btnReabastecimiento.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnReabastecimientoActionPerformed(evt);
@@ -497,7 +470,12 @@ public class MenuPrincipalFrame extends javax.swing.JFrame {
         INVENTARIO.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(1143, 672, 137, 90));
 
         btnHistorial.setBackground(new java.awt.Color(195, 217, 189));
+        btnHistorial.setFont(new java.awt.Font("Instrument Sans", 1, 14)); // NOI18N
+        btnHistorial.setForeground(new java.awt.Color(46, 94, 42));
         btnHistorial.setText("<html><center>HISTORIAL DE<br>MODIFICACIONES</center></html>");
+        btnHistorial.setMnemonic('H');
+        btnHistorial.setToolTipText("Historial de modificaciones (Alt+H)");
+        btnHistorial.setFocusPainted(false);
         btnHistorial.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnHistorialActionPerformed(evt);
@@ -506,7 +484,11 @@ public class MenuPrincipalFrame extends javax.swing.JFrame {
         INVENTARIO.add(btnHistorial, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 290, 220, 110));
 
         jButton11.setBackground(new java.awt.Color(195, 217, 189));
+        jButton11.setFont(new java.awt.Font("Instrument Sans", 1, 14)); // NOI18N
+        jButton11.setForeground(new java.awt.Color(46, 94, 42));
         jButton11.setText("AGREGAR PRODUCTO");
+        jButton11.setMnemonic('A');
+        jButton11.setFocusPainted(false);
         jButton11.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton11ActionPerformed(evt);
@@ -515,7 +497,12 @@ public class MenuPrincipalFrame extends javax.swing.JFrame {
         INVENTARIO.add(jButton11, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 160, 220, 110));
 
         btnConsultaServicios.setBackground(new java.awt.Color(195, 217, 189));
+        btnConsultaServicios.setFont(new java.awt.Font("Instrument Sans", 1, 14)); // NOI18N
+        btnConsultaServicios.setForeground(new java.awt.Color(46, 94, 42));
         btnConsultaServicios.setText("<html><center>CONSULTA SERVICIOS</center></html>");
+        btnConsultaServicios.setMnemonic('S');
+        btnConsultaServicios.setToolTipText("Consulta de servicios (Alt+S)");
+        btnConsultaServicios.setFocusPainted(false);
         btnConsultaServicios.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnConsultaServiciosActionPerformed(evt);
@@ -541,7 +528,11 @@ public class MenuPrincipalFrame extends javax.swing.JFrame {
         panelCambiante.add(TICKETS, "card2");
 
         jButton12.setBackground(new java.awt.Color(195, 217, 189));
+        jButton12.setFont(new java.awt.Font("Instrument Sans", 1, 14)); // NOI18N
+        jButton12.setForeground(new java.awt.Color(46, 94, 42));
         jButton12.setText("PAQUETES");
+        jButton12.setMnemonic('Q');
+        jButton12.setFocusPainted(false);
         jButton12.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton12ActionPerformed(evt);
@@ -549,7 +540,11 @@ public class MenuPrincipalFrame extends javax.swing.JFrame {
         });
 
         jButton13.setBackground(new java.awt.Color(195, 217, 189));
+        jButton13.setFont(new java.awt.Font("Instrument Sans", 1, 14)); // NOI18N
+        jButton13.setForeground(new java.awt.Color(46, 94, 42));
         jButton13.setText("DESCUENTOS");
+        jButton13.setMnemonic('D');
+        jButton13.setFocusPainted(false);
         jButton13.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton13ActionPerformed(evt);
@@ -602,16 +597,6 @@ public class MenuPrincipalFrame extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void botonSegActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonSegActionPerformed
-        if (!validarAdmin()) {
-            return;
-        }
-        panelCambiante.removeAll();
-        panelCambiante.add(SEGURIDAD);
-        panelCambiante.repaint();
-        panelCambiante.revalidate();
-    }//GEN-LAST:event_botonSegActionPerformed
 
     private void botonVentasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonVentasActionPerformed
         if (ventasOrigen != null && ventasOrigen.isDisplayable()) {
@@ -728,14 +713,6 @@ public class MenuPrincipalFrame extends javax.swing.JFrame {
         desactivarHover(imgConsulta3, botonConsultas);
     }//GEN-LAST:event_botonConsultasMouseExited
 
-    private void botonSegMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botonSegMouseEntered
-        activarHover(imgSeg, botonSeg);
-    }//GEN-LAST:event_botonSegMouseEntered
-
-    private void botonSegMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botonSegMouseExited
-        desactivarHover(imgSeg, botonSeg);
-    }//GEN-LAST:event_botonSegMouseExited
-
     private void botonCortesMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botonCortesMouseEntered
         activarHover(imgCortes, botonCortes);
     }//GEN-LAST:event_botonCortesMouseEntered
@@ -850,11 +827,11 @@ public class MenuPrincipalFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton13ActionPerformed
 
     private void botonReportesMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botonReportesMouseEntered
-        // TODO add your handling code here:
+        activarHover(imgReportes, botonReportes);
     }//GEN-LAST:event_botonReportesMouseEntered
 
     private void botonReportesMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botonReportesMouseExited
-        // TODO add your handling code here:
+        desactivarHover(imgReportes, botonReportes);
     }//GEN-LAST:event_botonReportesMouseExited
 
     private void botonReportesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonReportesActionPerformed
@@ -956,7 +933,6 @@ public class MenuPrincipalFrame extends javax.swing.JFrame {
     private javax.swing.JPanel EDITAR;
     private javax.swing.JPanel INVENTARIO;
     private javax.swing.JPanel PROMOCIONES;
-    private javax.swing.JPanel SEGURIDAD;
     private javax.swing.JPanel TICKETS;
     private javax.swing.JPanel USUARIOS;
     private javax.swing.JButton botonConsultas;
@@ -965,7 +941,6 @@ public class MenuPrincipalFrame extends javax.swing.JFrame {
     private javax.swing.JButton botonEditar;
     private javax.swing.JButton botonInventario;
     private javax.swing.JButton botonReportes;
-    private javax.swing.JButton botonSeg;
     private javax.swing.JButton botonTickets;
     private javax.swing.JButton botonUsuarios;
     private javax.swing.JButton botonVentas;
@@ -977,8 +952,7 @@ public class MenuPrincipalFrame extends javax.swing.JFrame {
     private javax.swing.JLabel imgCortes;
     private javax.swing.JLabel imgEditar;
     private javax.swing.JLabel imgInventario;
-    private javax.swing.JLabel imgSeg;
-    private javax.swing.JLabel imgSeg1;
+    private javax.swing.JLabel imgReportes;
     private javax.swing.JLabel imgTicket;
     private javax.swing.JLabel imgTickets;
     private javax.swing.JLabel imgUsuario;

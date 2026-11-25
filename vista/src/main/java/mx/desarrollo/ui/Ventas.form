@@ -184,6 +184,7 @@
                   <Image iconType="3" name="/icons/Imprimir.png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Imprimir Ticket"/>
+                <Property name="mnemonic" type="int" value="73"/>
                 <Property name="focusable" type="boolean" value="false"/>
                 <Property name="horizontalTextPosition" type="int" value="0"/>
                 <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
@@ -212,6 +213,7 @@
                   <Image iconType="3" name="/icons/CancelarVenta.png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Cancelar Venta"/>
+                <Property name="mnemonic" type="int" value="86"/>
                 <Property name="focusable" type="boolean" value="false"/>
                 <Property name="horizontalTextPosition" type="int" value="0"/>
                 <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
@@ -240,6 +242,7 @@
                   <Image iconType="3" name="/icons/CerrarCaja.png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Cerrar Caja"/>
+                <Property name="mnemonic" type="int" value="82"/>
                 <Property name="focusable" type="boolean" value="false"/>
                 <Property name="horizontalTextPosition" type="int" value="0"/>
                 <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
@@ -265,6 +268,7 @@
                   <Image iconType="3" name="/icons/Inicio.png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Menu Principal"/>
+                <Property name="mnemonic" type="int" value="77"/>
                 <Property name="focusable" type="boolean" value="false"/>
                 <Property name="horizontalTextPosition" type="int" value="0"/>
                 <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
@@ -293,6 +297,7 @@
                   <Image iconType="3" name="/icons/Servicios.png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Servicios"/>
+                <Property name="mnemonic" type="int" value="83"/>
                 <Property name="focusable" type="boolean" value="false"/>
                 <Property name="horizontalTextPosition" type="int" value="0"/>
                 <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
@@ -321,6 +326,7 @@
                   <Image iconType="3" name="/icons/AbrirCaja.png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Abrir Caja"/>
+                <Property name="mnemonic" type="int" value="65"/>
                 <Property name="focusable" type="boolean" value="false"/>
                 <Property name="horizontalTextPosition" type="int" value="0"/>
                 <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
@@ -384,6 +390,7 @@
                   <Color blue="99" green="99" red="0" type="rgb"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="NOTIS"/>
+                <Property name="mnemonic" type="int" value="78"/>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="null"/>
                 </Property>
@@ -706,6 +713,7 @@
                   <Color blue="33" green="33" red="33" type="rgb"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Tarjeta"/>
+                <Property name="mnemonic" type="int" value="84"/>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.SoftBevelBorderInfo">
                     <BevelBorder/>
@@ -734,6 +742,7 @@
                   <Color blue="33" green="33" red="33" type="rgb"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Efectivo"/>
+                <Property name="mnemonic" type="int" value="69"/>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.SoftBevelBorderInfo">
                     <BevelBorder/>
@@ -782,6 +791,8 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/icons/limpiar.png"/>
                 </Property>
+                <Property name="mnemonic" type="int" value="76"/>
+                <Property name="toolTipText" type="java.lang.String" value="Limpiar venta (Alt+L)"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnLimpiarActionPerformed"/>
@@ -1011,6 +1022,7 @@
                   <Color blue="ff" green="ff" red="ff" type="rgb"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Cobrar $175.00"/>
+                <Property name="mnemonic" type="int" value="67"/>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.SoftBevelBorderInfo">
                     <BevelBorder/>
@@ -1243,6 +1255,7 @@
                   <Font name="Instrument Sans" size="12" style="1"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Paquetes"/>
+                <Property name="mnemonic" type="int" value="80"/>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.SoftBevelBorderInfo">
                     <BevelBorder/>

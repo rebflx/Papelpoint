@@ -143,7 +143,8 @@ public class Descuentos extends JPanel {
         promptVigencia.setForeground(GRIS_PLACEHOLDER);
 
         btnCalendario = new JButton(new IconoCalendario());
-        btnCalendario.setToolTipText("Elegir fecha");
+        btnCalendario.setToolTipText("Elegir fecha (Alt+F)");
+        btnCalendario.setMnemonic('F');
         btnCalendario.setBorderPainted(false);
         btnCalendario.setContentAreaFilled(false);
         btnCalendario.setFocusPainted(false);
@@ -173,6 +174,9 @@ public class Descuentos extends JPanel {
         btnGuardar = crearBoton("Guardar", new IconoGuardar());
         btnModificar = crearBoton("Modificar", null);
         btnEliminar = crearBoton("Eliminar", null);
+        btnGuardar.setMnemonic('G');
+        btnModificar.setMnemonic('M');
+        btnEliminar.setMnemonic('N');
 
         botones.add(btnGuardar);
         botones.add(Box.createHorizontalStrut(30));

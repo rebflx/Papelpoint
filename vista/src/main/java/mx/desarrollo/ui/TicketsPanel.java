@@ -232,9 +232,11 @@ public class TicketsPanel extends javax.swing.JPanel {
         jPanel1.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 240, 190, 460));
 
         btnPdf.setBackground(new java.awt.Color(136, 180, 123));
-        btnPdf.setFont(new java.awt.Font("Instrument Sans", 0, 12)); // NOI18N
+        btnPdf.setFont(new java.awt.Font("Instrument Sans", 1, 12)); // NOI18N
         btnPdf.setForeground(new java.awt.Color(255, 255, 255));
         btnPdf.setText("PDF");
+        btnPdf.setMnemonic('F');
+        btnPdf.setFocusPainted(false);
         btnPdf.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnPdfActionPerformed(evt);
@@ -243,9 +245,11 @@ public class TicketsPanel extends javax.swing.JPanel {
         jPanel1.add(btnPdf, new org.netbeans.lib.awtextra.AbsoluteConstraints(830, 130, 150, 30));
 
         btnImprimir.setBackground(new java.awt.Color(136, 180, 123));
-        btnImprimir.setFont(new java.awt.Font("Instrument Sans", 0, 12)); // NOI18N
+        btnImprimir.setFont(new java.awt.Font("Instrument Sans", 1, 12)); // NOI18N
         btnImprimir.setForeground(new java.awt.Color(255, 255, 255));
         btnImprimir.setText("Imprimir");
+        btnImprimir.setMnemonic('M');
+        btnImprimir.setFocusPainted(false);
         btnImprimir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnImprimirActionPerformed(evt);

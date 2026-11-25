@@ -78,12 +78,18 @@ public class CancelarVentaDialog extends javax.swing.JDialog {
 
         pnlAbajo.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT, 8, 8));
 
+        btnCerrar.setBackground(new java.awt.Color(195, 217, 189));
+        btnCerrar.setFont(new java.awt.Font("Instrument Sans", 1, 12)); // NOI18N
+        btnCerrar.setForeground(new java.awt.Color(46, 94, 42));
         btnCerrar.setText("Cerrar");
+        btnCerrar.setMnemonic('C');
+        btnCerrar.setFocusPainted(false);
         pnlAbajo.add(btnCerrar);
 
         btnCancelarVenta.setBackground(new java.awt.Color(190, 60, 60));
         btnCancelarVenta.setForeground(new java.awt.Color(255, 255, 255));
         btnCancelarVenta.setText("Cancelar venta");
+        btnCancelarVenta.setMnemonic('V');
         pnlAbajo.add(btnCancelarVenta);
 
         getContentPane().add(pnlAbajo, java.awt.BorderLayout.SOUTH);

@@ -1,7 +1,5 @@
 
 package mx.desarrollo.ui;
-import java.awt.CardLayout;
-import mx.desarrollo.ui.Servicios;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -35,7 +33,7 @@ import mx.desarrollo.integration.ServiceFacadeLocator;
 import javax.swing.DefaultListModel;
 import javax.swing.JList;
 import javax.swing.JPopupMenu;
-import javax.swing.ListCellRenderer;
+
 import mx.desarrollo.entity.DetalleVentaPaquete;
 import mx.desarrollo.entity.Paquete;
 import mx.desarrollo.entity.ProductoPaquete;
@@ -109,6 +107,7 @@ private boolean modoPaquetes = false;
         configurarProductos();
         configurarBusqueda();
         configurarPago();
+        instalarAtajosTeclado();
 
         cargarProductos();
         refrescarCarrito();
@@ -227,6 +226,7 @@ private boolean modoPaquetes = false;
         btnImprimirTicket.setFont(new java.awt.Font("Instrument Sans", 0, 12)); // NOI18N
         btnImprimirTicket.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/Imprimir.png"))); // NOI18N
         btnImprimirTicket.setText("Imprimir Ticket");
+        btnImprimirTicket.setMnemonic('I');
         btnImprimirTicket.setFocusable(false);
         btnImprimirTicket.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnImprimirTicket.setPreferredSize(new java.awt.Dimension(116, 73));
@@ -242,6 +242,7 @@ private boolean modoPaquetes = false;
         btnCancelarVenta.setFont(new java.awt.Font("Instrument Sans", 0, 12)); // NOI18N
         btnCancelarVenta.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/CancelarVenta.png"))); // NOI18N
         btnCancelarVenta.setText("Cancelar Venta");
+        btnCancelarVenta.setMnemonic('V');
         btnCancelarVenta.setFocusable(false);
         btnCancelarVenta.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnCancelarVenta.setPreferredSize(new java.awt.Dimension(116, 73));
@@ -257,6 +258,7 @@ private boolean modoPaquetes = false;
         btnCerrarCaja.setFont(new java.awt.Font("Instrument Sans", 0, 12)); // NOI18N
         btnCerrarCaja.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/CerrarCaja.png"))); // NOI18N
         btnCerrarCaja.setText("Cerrar Caja");
+        btnCerrarCaja.setMnemonic('R');
         btnCerrarCaja.setFocusable(false);
         btnCerrarCaja.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnCerrarCaja.setPreferredSize(new java.awt.Dimension(116, 73));
@@ -267,6 +269,7 @@ private boolean modoPaquetes = false;
         btnMenuprincipal.setFont(new java.awt.Font("Instrument Sans", 0, 12)); // NOI18N
         btnMenuprincipal.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/Inicio.png"))); // NOI18N
         btnMenuprincipal.setText("Menu Principal");
+        btnMenuprincipal.setMnemonic('M');
         btnMenuprincipal.setFocusable(false);
         btnMenuprincipal.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnMenuprincipal.setPreferredSize(new java.awt.Dimension(116, 73));
@@ -282,6 +285,7 @@ private boolean modoPaquetes = false;
         btnServicios.setFont(new java.awt.Font("Instrument Sans", 0, 12)); // NOI18N
         btnServicios.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/Servicios.png"))); // NOI18N
         btnServicios.setText("Servicios");
+        btnServicios.setMnemonic('S');
         btnServicios.setFocusable(false);
         btnServicios.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnServicios.setPreferredSize(new java.awt.Dimension(116, 73));
@@ -297,6 +301,7 @@ private boolean modoPaquetes = false;
         btnAbrirCaja.setFont(new java.awt.Font("Instrument Sans", 0, 12)); // NOI18N
         btnAbrirCaja.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/AbrirCaja.png"))); // NOI18N
         btnAbrirCaja.setText("Abrir Caja");
+        btnAbrirCaja.setMnemonic('A');
         btnAbrirCaja.setFocusable(false);
         btnAbrirCaja.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnAbrirCaja.setPreferredSize(new java.awt.Dimension(116, 73));
@@ -319,6 +324,7 @@ private boolean modoPaquetes = false;
 
         btnAvisos.setBackground(new java.awt.Color(0, 153, 153));
         btnAvisos.setText("NOTIS");
+        btnAvisos.setMnemonic('N');
         btnAvisos.setBorder(null);
         btnAvisos.setMaximumSize(new java.awt.Dimension(116, 73));
         btnAvisos.setMinimumSize(new java.awt.Dimension(116, 73));
@@ -390,6 +396,7 @@ private boolean modoPaquetes = false;
         btnTarjeta.setFont(new java.awt.Font("Instrument Sans", 1, 12)); // NOI18N
         btnTarjeta.setForeground(new java.awt.Color(51, 51, 51));
         btnTarjeta.setText("Tarjeta");
+        btnTarjeta.setMnemonic('T');
         btnTarjeta.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         btnTarjeta.setMinimumSize(new java.awt.Dimension(101, 26));
         btnTarjeta.setPreferredSize(new java.awt.Dimension(101, 26));
@@ -403,6 +410,7 @@ private boolean modoPaquetes = false;
         btnEfectivo.setFont(new java.awt.Font("Instrument Sans", 1, 12)); // NOI18N
         btnEfectivo.setForeground(new java.awt.Color(51, 51, 51));
         btnEfectivo.setText("Efectivo");
+        btnEfectivo.setMnemonic('E');
         btnEfectivo.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         btnEfectivo.setMinimumSize(new java.awt.Dimension(101, 26));
         btnEfectivo.setPreferredSize(new java.awt.Dimension(101, 26));
@@ -426,6 +434,8 @@ private boolean modoPaquetes = false;
         jLabel10.setText("Dinero recibido:");
 
         btnLimpiar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/limpiar.png"))); // NOI18N
+        btnLimpiar.setMnemonic('L');
+        btnLimpiar.setToolTipText("Limpiar venta (Alt+L)");
         btnLimpiar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnLimpiarActionPerformed(evt);
@@ -631,6 +641,7 @@ private boolean modoPaquetes = false;
         btnCobrar.setFont(new java.awt.Font("Instrument Sans", 1, 22)); // NOI18N
         btnCobrar.setForeground(new java.awt.Color(255, 255, 255));
         btnCobrar.setText("Cobrar $175.00");
+        btnCobrar.setMnemonic('C');
         btnCobrar.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         btnCobrar.setMinimumSize(new java.awt.Dimension(101, 26));
         btnCobrar.setPreferredSize(new java.awt.Dimension(286, 55));
@@ -669,6 +680,7 @@ private boolean modoPaquetes = false;
         btnPaquetes.setBackground(new java.awt.Color(153, 153, 153));
         btnPaquetes.setFont(new java.awt.Font("Instrument Sans", 1, 12)); // NOI18N
         btnPaquetes.setText("Paquetes");
+        btnPaquetes.setMnemonic('P');
         btnPaquetes.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         btnPaquetes.setFocusable(false);
         btnPaquetes.setPreferredSize(new java.awt.Dimension(108, 59));
@@ -1128,6 +1140,43 @@ cancelarVenta();
     }
 
 
+
+    // ------------------------------------------------------------------
+    // Atajos de teclado (codigo propio, fuera de la zona generada por NetBeans).
+    // Los botones con texto fijo usan mnemonicos (Alt+letra) definidos en el .form.
+    // Aqui se agregan los que no se pueden expresar como mnemonico:
+    //   F1..F9        -> $1, $2, $5, $10, $20, $50, $100, $200, $500
+    //   Alt+1..Alt+9  -> productos (o paquetes) 1 a 9 de la cuadricula
+    //   Ctrl+1..Ctrl+9-> productos (o paquetes) 10 a 18 de la cuadricula
+    // ------------------------------------------------------------------
+    private void instalarAtajosTeclado() {
+        JButton[] dinero = {
+            btnUnPeso, btnDosPesos, btnCincoPesos, btnDiezPesos,
+            btnVeinteP, btnCincuentaP, btnCienP, btnDoscientosP, btnQuinientosP
+        };
+        for (int i = 0; i < dinero.length; i++) {
+            agregarAtajo(dinero[i], javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F1 + i, 0), "F" + (i + 1));
+            dinero[i].setToolTipText("Atajo: F" + (i + 1));
+        }
+        for (int i = 0; i < botonesProducto.length; i++) {
+            int tecla = java.awt.event.KeyEvent.VK_1 + (i % 9);
+            int modificador = i < 9 ? java.awt.event.InputEvent.ALT_DOWN_MASK : java.awt.event.InputEvent.CTRL_DOWN_MASK;
+            agregarAtajo(botonesProducto[i], javax.swing.KeyStroke.getKeyStroke(tecla, modificador), "producto" + (i + 1));
+        }
+    }
+
+    private void agregarAtajo(final JButton boton, javax.swing.KeyStroke tecla, String nombre) {
+        String clave = "atajo-" + nombre;
+        getRootPane().getInputMap(javax.swing.JComponent.WHEN_IN_FOCUSED_WINDOW).put(tecla, clave);
+        getRootPane().getActionMap().put(clave, new javax.swing.AbstractAction() {
+            @Override
+            public void actionPerformed(java.awt.event.ActionEvent ev) {
+                if (boton.isShowing() && boton.isEnabled()) {
+                    boton.doClick();
+                }
+            }
+        });
+    }
 
     private void cargarProductos() {
         catalogo.clear();

@@ -190,14 +190,24 @@ public class TicketDialog extends javax.swing.JDialog {
         lblCajero.setText("Jesus");
         pnlTicket.add(lblCajero, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 120, 40, -1));
 
+        btnImprimir.setBackground(new java.awt.Color(136, 180, 123));
+        btnImprimir.setFont(new java.awt.Font("Instrument Sans", 1, 12)); // NOI18N
+        btnImprimir.setForeground(new java.awt.Color(255, 255, 255));
         btnImprimir.setText("IMPRIMIR");
+        btnImprimir.setMnemonic('I');
+        btnImprimir.setFocusPainted(false);
         btnImprimir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnImprimirActionPerformed(evt);
             }
         });
 
+        btnCerrar.setBackground(new java.awt.Color(195, 217, 189));
+        btnCerrar.setFont(new java.awt.Font("Instrument Sans", 1, 12)); // NOI18N
+        btnCerrar.setForeground(new java.awt.Color(46, 94, 42));
         btnCerrar.setText("CERRAR");
+        btnCerrar.setMnemonic('C');
+        btnCerrar.setFocusPainted(false);
         btnCerrar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCerrarActionPerformed(evt);

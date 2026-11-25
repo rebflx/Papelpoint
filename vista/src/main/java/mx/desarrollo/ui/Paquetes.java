@@ -605,6 +605,7 @@ public class Paquetes extends JPanel {
         btnGuardar.setFont(new java.awt.Font("Instrument Sans", 1, 12)); // NOI18N
         btnGuardar.setForeground(new java.awt.Color(255, 255, 255));
         btnGuardar.setText("Guardar");
+        btnGuardar.setMnemonic('G');
         btnGuardar.setFocusPainted(false);
         btnGuardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -627,6 +628,7 @@ public class Paquetes extends JPanel {
         btnModificar.setFont(new java.awt.Font("Instrument Sans", 1, 12)); // NOI18N
         btnModificar.setForeground(new java.awt.Color(255, 255, 255));
         btnModificar.setText("Modificar");
+        btnModificar.setMnemonic('M');
         btnModificar.setFocusPainted(false);
         btnModificar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -639,6 +641,7 @@ public class Paquetes extends JPanel {
         btnEliminar.setFont(new java.awt.Font("Instrument Sans", 1, 12)); // NOI18N
         btnEliminar.setForeground(new java.awt.Color(255, 255, 255));
         btnEliminar.setText("Eliminar");
+        btnEliminar.setMnemonic('N');
         btnEliminar.setFocusPainted(false);
         btnEliminar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

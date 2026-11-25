@@ -587,6 +587,7 @@ public class CortesCajaPanel extends javax.swing.JPanel {
         rbTicket.setBackground(new java.awt.Color(255, 255, 255));
         rbTicket.setFont(new java.awt.Font("Instrument Sans", 0, 14)); // NOI18N
         rbTicket.setText("Ticket");
+        rbTicket.setMnemonic('K');
         rbTicket.setSelected(true);
         add(rbTicket, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 88, 70, 28));
 
@@ -594,12 +595,14 @@ public class CortesCajaPanel extends javax.swing.JPanel {
         rbLaser.setBackground(new java.awt.Color(255, 255, 255));
         rbLaser.setFont(new java.awt.Font("Instrument Sans", 0, 14)); // NOI18N
         rbLaser.setText("Láser");
+        rbLaser.setMnemonic('L');
         add(rbLaser, new org.netbeans.lib.awtextra.AbsoluteConstraints(785, 88, 70, 28));
 
         btnCerrarCaja.setBackground(new java.awt.Color(136, 180, 123));
         btnCerrarCaja.setFont(new java.awt.Font("Instrument Sans", 1, 12)); // NOI18N
         btnCerrarCaja.setForeground(new java.awt.Color(255, 255, 255));
         btnCerrarCaja.setText("Cerrar caja");
+        btnCerrarCaja.setMnemonic('A');
         btnCerrarCaja.setFocusPainted(false);
         btnCerrarCaja.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -612,6 +615,7 @@ public class CortesCajaPanel extends javax.swing.JPanel {
         btnCorteFinal.setFont(new java.awt.Font("Instrument Sans", 1, 12)); // NOI18N
         btnCorteFinal.setForeground(new java.awt.Color(255, 255, 255));
         btnCorteFinal.setText("Corte final");
+        btnCorteFinal.setMnemonic('F');
         btnCorteFinal.setFocusPainted(false);
         btnCorteFinal.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -624,6 +628,7 @@ public class CortesCajaPanel extends javax.swing.JPanel {
         btnImprimir.setFont(new java.awt.Font("Instrument Sans", 1, 12)); // NOI18N
         btnImprimir.setForeground(new java.awt.Color(255, 255, 255));
         btnImprimir.setText("Imprimir corte");
+        btnImprimir.setMnemonic('M');
         btnImprimir.setFocusPainted(false);
         btnImprimir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -636,6 +641,7 @@ public class CortesCajaPanel extends javax.swing.JPanel {
         btnHistorial.setFont(new java.awt.Font("Instrument Sans", 1, 12)); // NOI18N
         btnHistorial.setForeground(new java.awt.Color(255, 255, 255));
         btnHistorial.setText("Historial");
+        btnHistorial.setMnemonic('H');
         btnHistorial.setFocusPainted(false);
         btnHistorial.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -648,6 +654,7 @@ public class CortesCajaPanel extends javax.swing.JPanel {
         btnActualizar.setFont(new java.awt.Font("Instrument Sans", 1, 12)); // NOI18N
         btnActualizar.setForeground(new java.awt.Color(255, 255, 255));
         btnActualizar.setText("Actualizar");
+        btnActualizar.setMnemonic('Z');
         btnActualizar.setFocusPainted(false);
         btnActualizar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

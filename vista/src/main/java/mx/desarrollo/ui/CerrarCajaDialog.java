@@ -676,8 +676,11 @@ public class CerrarCajaDialog extends javax.swing.JDialog {
         pnlBotones.setBackground(new java.awt.Color(255, 255, 255));
         pnlBotones.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT, 10, 8));
 
+        btnCancelar.setBackground(new java.awt.Color(195, 217, 189));
+        btnCancelar.setFont(new java.awt.Font("Instrument Sans", 1, 12)); // NOI18N
+        btnCancelar.setForeground(new java.awt.Color(46, 94, 42));
         btnCancelar.setText("Cancelar");
-        btnCancelar.setFont(new java.awt.Font("Instrument Sans", 0, 12));
+        btnCancelar.setMnemonic('C');
         btnCancelar.setFocusPainted(false);
         btnCancelar.setPreferredSize(new java.awt.Dimension(110, 34));
         btnCancelar.addActionListener(new java.awt.event.ActionListener() {
@@ -692,6 +695,7 @@ public class CerrarCajaDialog extends javax.swing.JDialog {
         btnCerrar.setFont(new java.awt.Font("Instrument Sans", 1, 12));
         btnCerrar.setForeground(new java.awt.Color(255, 255, 255));
         btnCerrar.setText("Cerrar caja");
+        btnCerrar.setMnemonic('R');
         btnCerrar.setFocusPainted(false);
         btnCerrar.setOpaque(true);
         btnCerrar.setBorder(javax.swing.BorderFactory.createEmptyBorder(6, 14, 6, 14));

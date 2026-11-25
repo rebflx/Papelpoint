@@ -233,12 +233,14 @@
           <Color blue="7b" green="b4" red="88" type="rgb"/>
         </Property>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-          <Font name="Instrument Sans" size="12" style="0"/>
+          <Font name="Instrument Sans" size="12" style="1"/>
         </Property>
         <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="ff" green="ff" red="ff" type="rgb"/>
         </Property>
         <Property name="text" type="java.lang.String" value="Eliminar"/>
+        <Property name="focusPainted" type="boolean" value="false"/>
+        <Property name="mnemonic" type="int" value="78"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="guardarBotonActionPerformed"/>
@@ -267,12 +269,14 @@
           <Color blue="7b" green="b4" red="88" type="rgb"/>
         </Property>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-          <Font name="Instrument Sans" size="12" style="0"/>
+          <Font name="Instrument Sans" size="12" style="1"/>
         </Property>
         <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="ff" green="ff" red="ff" type="rgb"/>
         </Property>
         <Property name="text" type="java.lang.String" value="Modificar"/>
+        <Property name="focusPainted" type="boolean" value="false"/>
+        <Property name="mnemonic" type="int" value="77"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="guardarBoton1ActionPerformed"/>

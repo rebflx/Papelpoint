@@ -429,9 +429,12 @@ public class reabastecimientoPanel1 extends javax.swing.JPanel {
         jLabel8.setText("Filtrar por:");
         add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(25, 120, 150, 22));
 
-        jButton1.setBackground(new java.awt.Color(98, 158, 113));
+        jButton1.setBackground(new java.awt.Color(136, 180, 123));
+        jButton1.setFont(new java.awt.Font("Instrument Sans", 1, 12)); // NOI18N
         jButton1.setForeground(new java.awt.Color(255, 255, 255));
         jButton1.setText("Guardar");
+        jButton1.setMnemonic('G');
+        jButton1.setFocusPainted(false);
         add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(820, 645, 165, 45));
     }// </editor-fold>//GEN-END:initComponents
 

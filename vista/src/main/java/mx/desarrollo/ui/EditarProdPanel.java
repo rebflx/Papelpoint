@@ -1,14 +1,5 @@
 package mx.desarrollo.ui;
 
-import java.awt.Component;
-import java.awt.Dimension;
-import java.text.NumberFormat;
-import java.util.Locale;
-import javax.swing.BorderFactory;
-import javax.swing.JLabel;
-import javax.swing.JTable;
-import javax.swing.SwingConstants;
-import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.Color;
 import java.awt.Font;
 import java.util.List;
@@ -19,7 +10,6 @@ import javax.swing.event.DocumentListener;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import mx.desarrollo.entity.Producto;
-import mx.desarrollo.facade.FacadeProducto;
 import mx.desarrollo.integration.ServiceFacadeLocator;
 
 /**
@@ -180,9 +170,11 @@ placeholder.changeStyle(Font.BOLD); // Estilo de fuente (ej. Itálica)
         add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 70, -1, -1));
 
         guardarBoton.setBackground(new java.awt.Color(136, 180, 123));
-        guardarBoton.setFont(new java.awt.Font("Instrument Sans", 0, 12)); // NOI18N
+        guardarBoton.setFont(new java.awt.Font("Instrument Sans", 1, 12)); // NOI18N
         guardarBoton.setForeground(new java.awt.Color(255, 255, 255));
         guardarBoton.setText("Eliminar");
+        guardarBoton.setMnemonic('N');
+        guardarBoton.setFocusPainted(false);
         guardarBoton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 guardarBotonActionPerformed(evt);
@@ -194,9 +186,11 @@ placeholder.changeStyle(Font.BOLD); // Estilo de fuente (ej. Itálica)
         add(stockTxt, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 240, 180, 30));
 
         guardarBoton1.setBackground(new java.awt.Color(136, 180, 123));
-        guardarBoton1.setFont(new java.awt.Font("Instrument Sans", 0, 12)); // NOI18N
+        guardarBoton1.setFont(new java.awt.Font("Instrument Sans", 1, 12)); // NOI18N
         guardarBoton1.setForeground(new java.awt.Color(255, 255, 255));
         guardarBoton1.setText("Modificar");
+        guardarBoton1.setMnemonic('M');
+        guardarBoton1.setFocusPainted(false);
         guardarBoton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 guardarBoton1ActionPerformed(evt);

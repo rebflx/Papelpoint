@@ -113,6 +113,7 @@ public class Servicios extends javax.swing.JPanel {
         btnGuardar.setFont(new java.awt.Font("Instrument Sans", 1, 12)); // NOI18N
         btnGuardar.setForeground(new java.awt.Color(255, 255, 255));
         btnGuardar.setText("Guardar");
+        btnGuardar.setMnemonic('G');
         btnGuardar.setFocusPainted(false);
         btnGuardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -125,6 +126,7 @@ public class Servicios extends javax.swing.JPanel {
         btnLimpiar.setFont(new java.awt.Font("Instrument Sans", 1, 12)); // NOI18N
         btnLimpiar.setForeground(new java.awt.Color(255, 255, 255));
         btnLimpiar.setText("Limpiar");
+        btnLimpiar.setMnemonic('L');
         btnLimpiar.setFocusPainted(false);
         btnLimpiar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -154,6 +156,7 @@ public class Servicios extends javax.swing.JPanel {
         btnGuardar1.setFont(new java.awt.Font("Instrument Sans", 1, 12)); // NOI18N
         btnGuardar1.setForeground(new java.awt.Color(255, 255, 255));
         btnGuardar1.setText("Agregar al carrito");
+        btnGuardar1.setMnemonic('A');
         btnGuardar1.setFocusPainted(false);
         btnGuardar1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -166,6 +169,7 @@ public class Servicios extends javax.swing.JPanel {
         btnLimpiar1.setFont(new java.awt.Font("Instrument Sans", 1, 12)); // NOI18N
         btnLimpiar1.setForeground(new java.awt.Color(255, 255, 255));
         btnLimpiar1.setText("Limpiar");
+        btnLimpiar1.setMnemonic('M');
         btnLimpiar1.setFocusPainted(false);
         btnLimpiar1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -195,8 +199,11 @@ public class Servicios extends javax.swing.JPanel {
         jPanel2.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(425, 35, 200, 20));
 
         btnEditarPrecio.setBackground(new java.awt.Color(136, 180, 123));
+        btnEditarPrecio.setFont(new java.awt.Font("Instrument Sans", 1, 12)); // NOI18N
         btnEditarPrecio.setForeground(new java.awt.Color(255, 255, 255));
         btnEditarPrecio.setText("Editar precio");
+        btnEditarPrecio.setMnemonic('D');
+        btnEditarPrecio.setFocusPainted(false);
         btnEditarPrecio.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnEditarPrecioActionPerformed(evt);

@@ -66,6 +66,7 @@ public PnlAvisos() {
         lblTitulo.setText("Avisos de inventario");
 
         btnMute.setText("🔇︎");
+        btnMute.setMnemonic('U');
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -119,7 +120,7 @@ public void setAlSilenciar(Runnable r) { this.alSilenciar = r; }
 
     public void setSilenciado(boolean silenciado) {
         btnMute.setText(silenciado ? "\uD83D\uDD15" : "\uD83D\uDD14");
-        btnMute.setToolTipText(silenciado ? "Activar avisos" : "Silenciar avisos");
+        btnMute.setToolTipText(silenciado ? "Activar avisos (Alt+U)" : "Silenciar avisos (Alt+U)");
     }
     public void limpiar() { pnlFilas.removeAll(); }
 

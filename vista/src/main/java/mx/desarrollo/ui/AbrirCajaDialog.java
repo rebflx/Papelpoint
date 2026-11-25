@@ -293,6 +293,7 @@ public class AbrirCajaDialog extends javax.swing.JDialog {
         pnlRapidos.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 6, 0));
 
         btn200.setText("$200");
+        btn200.setMnemonic('2');
         btn200.setFont(new java.awt.Font("Instrument Sans", 0, 11));
         btn200.setFocusable(false);
         btn200.setActionCommand("200.00");
@@ -305,6 +306,7 @@ public class AbrirCajaDialog extends javax.swing.JDialog {
         pnlRapidos.add(btn200);
 
         btn500.setText("$500");
+        btn500.setMnemonic('5');
         btn500.setFont(new java.awt.Font("Instrument Sans", 0, 11));
         btn500.setFocusable(false);
         btn500.setActionCommand("500.00");
@@ -317,6 +319,7 @@ public class AbrirCajaDialog extends javax.swing.JDialog {
         pnlRapidos.add(btn500);
 
         btn1000.setText("$1,000");
+        btn1000.setMnemonic('1');
         btn1000.setFont(new java.awt.Font("Instrument Sans", 0, 11));
         btn1000.setFocusable(false);
         btn1000.setActionCommand("1000.00");
@@ -366,8 +369,11 @@ public class AbrirCajaDialog extends javax.swing.JDialog {
         pnlPie.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 12, 8, 12));
         pnlPie.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT, 10, 10));
 
+        btnCancelar.setBackground(new java.awt.Color(195, 217, 189));
+        btnCancelar.setFont(new java.awt.Font("Instrument Sans", 1, 12)); // NOI18N
+        btnCancelar.setForeground(new java.awt.Color(46, 94, 42));
         btnCancelar.setText("Cancelar");
-        btnCancelar.setFont(new java.awt.Font("Instrument Sans", 0, 12));
+        btnCancelar.setMnemonic('C');
         btnCancelar.setFocusPainted(false);
         btnCancelar.setPreferredSize(new java.awt.Dimension(110, 34));
         btnCancelar.addActionListener(new java.awt.event.ActionListener() {
@@ -382,6 +388,7 @@ public class AbrirCajaDialog extends javax.swing.JDialog {
         btnAbrir.setFont(new java.awt.Font("Instrument Sans", 1, 12));
         btnAbrir.setForeground(new java.awt.Color(255, 255, 255));
         btnAbrir.setText("Abrir caja");
+        btnAbrir.setMnemonic('A');
         btnAbrir.setFocusPainted(false);
         btnAbrir.setOpaque(true);
         btnAbrir.setBorder(javax.swing.BorderFactory.createEmptyBorder(6, 14, 6, 14));

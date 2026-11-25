@@ -325,6 +325,7 @@ public class HistorialCortesDialog extends javax.swing.JDialog {
         btnBuscar.setFont(new java.awt.Font("Instrument Sans", 1, 12)); // NOI18N
         btnBuscar.setForeground(new java.awt.Color(255, 255, 255));
         btnBuscar.setText("Buscar");
+        btnBuscar.setMnemonic('B');
         btnBuscar.setFocusPainted(false);
         btnBuscar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -337,6 +338,7 @@ public class HistorialCortesDialog extends javax.swing.JDialog {
         btnLimpiar.setFont(new java.awt.Font("Instrument Sans", 1, 12)); // NOI18N
         btnLimpiar.setForeground(new java.awt.Color(255, 255, 255));
         btnLimpiar.setText("Limpiar");
+        btnLimpiar.setMnemonic('L');
         btnLimpiar.setFocusPainted(false);
         btnLimpiar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -407,6 +409,7 @@ public class HistorialCortesDialog extends javax.swing.JDialog {
         rbTicket.setBackground(new java.awt.Color(255, 255, 255));
         rbTicket.setFont(new java.awt.Font("Instrument Sans", 0, 14)); // NOI18N
         rbTicket.setText("Ticket");
+        rbTicket.setMnemonic('T');
         rbTicket.setSelected(true);
         panelRaiz.add(rbTicket, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 610, 70, 28));
 
@@ -414,12 +417,14 @@ public class HistorialCortesDialog extends javax.swing.JDialog {
         rbLaser.setBackground(new java.awt.Color(255, 255, 255));
         rbLaser.setFont(new java.awt.Font("Instrument Sans", 0, 14)); // NOI18N
         rbLaser.setText("Láser");
+        rbLaser.setMnemonic('A');
         panelRaiz.add(rbLaser, new org.netbeans.lib.awtextra.AbsoluteConstraints(595, 610, 70, 28));
 
         btnReimprimir.setBackground(new java.awt.Color(136, 180, 123));
         btnReimprimir.setFont(new java.awt.Font("Instrument Sans", 1, 12)); // NOI18N
         btnReimprimir.setForeground(new java.awt.Color(255, 255, 255));
         btnReimprimir.setText("Reimprimir");
+        btnReimprimir.setMnemonic('R');
         btnReimprimir.setFocusPainted(false);
         btnReimprimir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -428,10 +433,11 @@ public class HistorialCortesDialog extends javax.swing.JDialog {
         });
         panelRaiz.add(btnReimprimir, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 608, 130, 32));
 
-        btnCerrar.setBackground(new java.awt.Color(136, 180, 123));
+        btnCerrar.setBackground(new java.awt.Color(195, 217, 189));
         btnCerrar.setFont(new java.awt.Font("Instrument Sans", 1, 12)); // NOI18N
-        btnCerrar.setForeground(new java.awt.Color(255, 255, 255));
+        btnCerrar.setForeground(new java.awt.Color(46, 94, 42));
         btnCerrar.setText("Cerrar");
+        btnCerrar.setMnemonic('C');
         btnCerrar.setFocusPainted(false);
         btnCerrar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

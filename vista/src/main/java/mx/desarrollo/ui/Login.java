@@ -98,6 +98,7 @@ public class Login extends JFrame {
 
         btnIngresar.setFont(new java.awt.Font("Dosis", 0, 14)); // NOI18N
         btnIngresar.setText("Iniciar sesión →");
+        btnIngresar.setMnemonic('I');
         btnIngresar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnIngresarActionPerformed(evt);

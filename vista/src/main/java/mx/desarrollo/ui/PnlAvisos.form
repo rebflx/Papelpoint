@@ -76,6 +76,7 @@
         </Component>
         <Component class="javax.swing.JButton" name="btnMute">
           <Properties>
+            <Property name="mnemonic" type="int" value="85"/>
             <Property name="text" type="java.lang.String" value="\ud83d\udd07&#xfe0e;" containsInvalidXMLChars="true"/>
           </Properties>
         </Component>
