@@ -102,8 +102,8 @@ public class MenuPrincipalFrame extends javax.swing.JFrame {
 
         panelIzquierda = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        jSeparator1 = new javax.swing.JSeparator();
         botonSeg = new javax.swing.JButton();
+        jSeparator1 = new javax.swing.JSeparator();
         botonConsultas = new javax.swing.JButton();
         botonTickets = new javax.swing.JButton();
         botonInventario = new javax.swing.JButton();
@@ -114,7 +114,6 @@ public class MenuPrincipalFrame extends javax.swing.JFrame {
         botonUsuarios = new javax.swing.JButton();
         botonEditar = new javax.swing.JButton();
         imgTicket = new javax.swing.JLabel();
-        imgSeg = new javax.swing.JLabel();
         imgTickets = new javax.swing.JLabel();
         imgVenta = new javax.swing.JLabel();
         imgInventario = new javax.swing.JLabel();
@@ -124,6 +123,9 @@ public class MenuPrincipalFrame extends javax.swing.JFrame {
         botonDescuentos = new javax.swing.JButton();
         imgConsulta2 = new javax.swing.JLabel();
         imgConsulta3 = new javax.swing.JLabel();
+        imgSeg1 = new javax.swing.JLabel();
+        botonReportes = new javax.swing.JButton();
+        imgSeg = new javax.swing.JLabel();
         panelCambiante = new javax.swing.JPanel();
         SEGURIDAD = new javax.swing.JPanel();
         EDITAR = new javax.swing.JPanel();
@@ -155,9 +157,6 @@ public class MenuPrincipalFrame extends javax.swing.JFrame {
         jLabel2.setText("Admin");
         panelIzquierda.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 400, -1, -1));
 
-        jSeparator1.setAutoscrolls(true);
-        panelIzquierda.add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 440, 180, 20));
-
         botonSeg.setFont(new java.awt.Font("Instrument Sans", 1, 16)); // NOI18N
         botonSeg.setForeground(new java.awt.Color(255, 255, 255));
         botonSeg.setText("Seguridad");
@@ -176,7 +175,10 @@ public class MenuPrincipalFrame extends javax.swing.JFrame {
                 botonSegActionPerformed(evt);
             }
         });
-        panelIzquierda.add(botonSeg, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 550, 140, 60));
+        panelIzquierda.add(botonSeg, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 560, 140, 60));
+
+        jSeparator1.setAutoscrolls(true);
+        panelIzquierda.add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 440, 180, 20));
 
         botonConsultas.setFont(new java.awt.Font("Instrument Sans", 1, 16)); // NOI18N
         botonConsultas.setForeground(new java.awt.Color(255, 255, 255));
@@ -330,9 +332,6 @@ public class MenuPrincipalFrame extends javax.swing.JFrame {
         imgTicket.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/Rectangle4.png"))); // NOI18N
         panelIzquierda.add(imgTicket, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 140, -1, -1));
 
-        imgSeg.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/Rectangle4.png"))); // NOI18N
-        panelIzquierda.add(imgSeg, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 560, -1, 40));
-
         imgTickets.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/Rectangle4.png"))); // NOI18N
         panelIzquierda.add(imgTickets, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 140, -1, -1));
 
@@ -376,6 +375,32 @@ public class MenuPrincipalFrame extends javax.swing.JFrame {
 
         imgConsulta3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/Rectangle4.png"))); // NOI18N
         panelIzquierda.add(imgConsulta3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 240, -1, -1));
+
+        imgSeg1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/Rectangle4.png"))); // NOI18N
+        panelIzquierda.add(imgSeg1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 570, -1, 40));
+
+        botonReportes.setFont(new java.awt.Font("Instrument Sans", 1, 16)); // NOI18N
+        botonReportes.setForeground(new java.awt.Color(255, 255, 255));
+        botonReportes.setText("Reportes");
+        botonReportes.setBorderPainted(false);
+        botonReportes.setContentAreaFilled(false);
+        botonReportes.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                botonReportesMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                botonReportesMouseExited(evt);
+            }
+        });
+        botonReportes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonReportesActionPerformed(evt);
+            }
+        });
+        panelIzquierda.add(botonReportes, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 610, 140, 60));
+
+        imgSeg.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/Rectangle4.png"))); // NOI18N
+        panelIzquierda.add(imgSeg, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 620, -1, -1));
 
         panelCambiante.setBackground(new java.awt.Color(255, 102, 102));
         panelCambiante.setLayout(new java.awt.CardLayout());
@@ -824,6 +849,30 @@ public class MenuPrincipalFrame extends javax.swing.JFrame {
         mostrarDescuentos();
     }//GEN-LAST:event_jButton13ActionPerformed
 
+    private void botonReportesMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botonReportesMouseEntered
+        // TODO add your handling code here:
+    }//GEN-LAST:event_botonReportesMouseEntered
+
+    private void botonReportesMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botonReportesMouseExited
+        // TODO add your handling code here:
+    }//GEN-LAST:event_botonReportesMouseExited
+
+    private void botonReportesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonReportesActionPerformed
+        // TODO add your handling code here:
+         if (!validarAdmin()) {
+        return;
+    }
+    if (reportesPanel != null) {
+        panelCambiante.remove(reportesPanel);
+    }
+    reportesPanel = new ReportesPanel(usuarioActual);
+    panelCambiante.add(reportesPanel, "REPORTES");
+    CardLayout cl = (CardLayout) panelCambiante.getLayout();
+    cl.show(panelCambiante, "REPORTES");
+    panelCambiante.revalidate();
+    panelCambiante.repaint();
+    }//GEN-LAST:event_botonReportesActionPerformed
+
     private void activarHover(JLabel imagen, JButton boton) {
         imagen.setIcon(new ImageIcon(
                 getClass().getResource("/imagenes/Rectangle3.png")
@@ -874,6 +923,7 @@ public class MenuPrincipalFrame extends javax.swing.JFrame {
         panelCambiante.repaint();
     }
     
+ private ReportesPanel reportesPanel;
  
 
 
@@ -914,6 +964,7 @@ public class MenuPrincipalFrame extends javax.swing.JFrame {
     private javax.swing.JButton botonDescuentos;
     private javax.swing.JButton botonEditar;
     private javax.swing.JButton botonInventario;
+    private javax.swing.JButton botonReportes;
     private javax.swing.JButton botonSeg;
     private javax.swing.JButton botonTickets;
     private javax.swing.JButton botonUsuarios;
@@ -927,6 +978,7 @@ public class MenuPrincipalFrame extends javax.swing.JFrame {
     private javax.swing.JLabel imgEditar;
     private javax.swing.JLabel imgInventario;
     private javax.swing.JLabel imgSeg;
+    private javax.swing.JLabel imgSeg1;
     private javax.swing.JLabel imgTicket;
     private javax.swing.JLabel imgTickets;
     private javax.swing.JLabel imgUsuario;
